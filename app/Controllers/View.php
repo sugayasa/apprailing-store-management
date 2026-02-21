@@ -7,7 +7,6 @@ use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use CodeIgniter\I18n\Time;
 use App\Models\AccessModel;
 
 class View extends ResourceController
@@ -64,6 +63,26 @@ class View extends ResourceController
         $content    =   view(
             'Menu/daftarHarga',
             [],
+            ['debug' => false]
+        );
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
+
+    public function monitoringMutasiStok()
+    {
+        $accessModel    =   new AccessModel();
+        $dataRegional   =   $accessModel->getDataRegional();
+        $arrRegional    =   array_map(function($item) {
+            return [
+                'IDKOTA'    =>  hashidEncode($item->IDKOTA),
+                'NAMAKOTA'  =>  $item->NAMAKOTA
+            ];
+        }, $dataRegional);
+        $content        =   view(
+            'Menu/monitoringMutasiStok',
+            ['arrRegional' => $arrRegional],
             ['debug' => false]
         );
         return $this->setResponseFormat('json')->respond([

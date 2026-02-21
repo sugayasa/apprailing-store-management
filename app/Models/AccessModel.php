@@ -73,6 +73,17 @@ class AccessModel extends Model
         return $this->get()->getResultObject();
     }
 
+    public function getDataRegional()
+    {
+        $this->select('IDKOTA, NAMAKOTA, NAMADATABASE');
+        $this->from(APP_MAIN_DATABASE_NAME.'.a_kota', true);
+        $this->where('IDKOTA = IDKOTAUTAMA');
+        $this->where('IDKOTA != 4');
+        $this->orderBy('IDKOTA');
+
+        return $this->get()->getResultObject();
+    }
+
     public function getDataUserAdminLevel()
     {
         $this->select('IDUSERADMINLEVEL AS ID, LEVELNAME AS VALUE');

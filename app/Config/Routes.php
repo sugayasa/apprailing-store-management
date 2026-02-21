@@ -39,6 +39,10 @@ $routes->post('access/check', 'Access::check');
 $routes->get('access/logout/(:any)', 'Access::logout/$1');
 $routes->get('access/captcha/(:any)', 'Access::captcha/$1');
 
+$routes->get('databaseTool/migrate', 'DatabaseTool::migrate', ['filter' => 'databaseTool']);
+$routes->get('databaseTool/rollback', 'DatabaseTool::rollback', ['filter' => 'databaseTool']);
+$routes->get('databaseTool/seed/(:any)', 'DatabaseTool::seed/$1', ['filter' => 'databaseTool']);
+
 $routes->group('access', ['filter' => 'auth:mustNotBeLoggedIn'], function($routes) {
     $routes->post('login', 'Access::login', ['filter' => 'auth:mustNotBeLoggedIn']);
 });
@@ -62,6 +66,8 @@ $routes->group('view', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
     $routes->post('dashboard', $functionRoute.'::dashboard');
     $routes->post('katalog-produk', $functionRoute.'::katalogProduk');
     $routes->post('daftar-harga', $functionRoute.'::daftarHarga');
+    $routes->post('stok-barang', $functionRoute.'::stokBarang');
+    $routes->post('monitoring-mutasi-stok', $functionRoute.'::monitoringMutasiStok');
     $routes->post('pengaturan-level-menu', $functionRoute.'::pengaturanLevelMenu');
     $routes->post('pengaturan-daftar-pengguna', $functionRoute.'::pengaturanDaftarPengguna');
     $routes->post('pengaturan-variabel-sistem', $functionRoute.'::pengaturanVariabelSistem');
@@ -75,6 +81,11 @@ $routes->group('dashboard', ['filter' => 'auth:mustBeLoggedIn'], function($route
 $routes->group('katalogProduk', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
     $functionRoute =   'KatalogProduk';
     $routes->post('getDataKatalogProduk', $functionRoute.'::getDataKatalogProduk');
+});
+
+$routes->group('monitoringMutasiStok', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+    $functionRoute =   'MonitoringMutasiStok';
+    $routes->post('getDataMonitoringMutasiStok', $functionRoute.'::getDataMonitoringMutasiStok');
 });
 
 $routes->group('pengaturan', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
