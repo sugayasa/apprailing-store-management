@@ -39,6 +39,8 @@ $routes->post('access/check', 'Access::check');
 $routes->get('access/logout/(:any)', 'Access::logout/$1');
 $routes->get('access/captcha/(:any)', 'Access::captcha/$1');
 
+$routes->get('cron/getPerubahanDataStok', 'Cron::getPerubahanDataStok');
+
 $routes->get('databaseTool/migrate', 'DatabaseTool::migrate', ['filter' => 'databaseTool']);
 $routes->get('databaseTool/rollback', 'DatabaseTool::rollback', ['filter' => 'databaseTool']);
 $routes->get('databaseTool/seed/(:any)', 'DatabaseTool::seed/$1', ['filter' => 'databaseTool']);

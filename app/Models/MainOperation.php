@@ -211,12 +211,13 @@ class MainOperation extends Model
         return $result['DATASETTING'];
     }
 
-    public function getDataDetailRegional()
+    public function getDataDetailRegional($idKotaExclude = [])
     {	
         $this->select("IDKOTA, NAMAKOTA, INISIALKOTA, NAMADATABASE, CLASSWARNA");
         $this->from(APP_MAIN_DATABASE_NAME.'.a_kota', true);
         $this->where('KOTAUTAMA', 1);
         $this->where('STATUS', 1);
+        if(!empty($idKotaExclude)) $this->whereNotIn('IDKOTA', $idKotaExclude);
         $this->orderBy('IDKOTA', 'ASC');
 
         $result =   $this->get()->getResultObject();
