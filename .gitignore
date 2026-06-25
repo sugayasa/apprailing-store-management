@@ -142,3 +142,4 @@ build/
 #-------------------------
 *.log
 .htaccess
+.vscode/settings.json

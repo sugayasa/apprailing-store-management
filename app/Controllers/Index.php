@@ -64,14 +64,17 @@ class Index extends BaseController
                             );
 
                             try {
-                                $listMenuDB =   $accessModel->getUserAdminMenu($idUserAdminLevel);
-                                $menuElement=	$this->menuBuilder($listMenuDB, $lastPageAlias);
-                                $htmlRes    =   view(
+                                $listPlatform   =   $accessModel->getDataPlatform();
+                                $platformElem   =   $this->generatePlatformElement($listPlatform);
+                                $listMenuDB     =   $accessModel->getUserAdminMenu($idUserAdminLevel);
+                                $menuElement    =	$this->menuBuilder($listMenuDB, $lastPageAlias);
+                                $htmlRes        =   view(
                                     'mainPage',
                                     array(
-                                        "userAdminData"         => $userAdminData,
-                                        "menuElement"           => $menuElement,
-                                        "allowNotifList"        => []
+                                        "userAdminData" => $userAdminData,
+                                        "platformElem"  => $platformElem,
+                                        "menuElement"   => $menuElement,
+                                        "allowNotifList"=> []
                                     ),
                                     ['debug' => false]
                                 );
@@ -100,14 +103,39 @@ class Index extends BaseController
         }
     }
 
+    private function generatePlatformElement($listPlatform)
+    {
+        if(is_null($listPlatform) || !is_array($listPlatform) || empty($listPlatform)) return ["firstPlatform" => "", "platformElem" => ""];
+        $platformElem   =   "";
+        if(is_array($listPlatform) && !empty($listPlatform)){
+            foreach($listPlatform as $platform){
+                $platformElem   .=  '<a class="dropdown-item" href="#"
+                                            data-select="platform-dropdown-selection"
+                                            data-target="#platformOption"
+                                            data-id="'.hashidEncode($platform->IDPLATFORM).'"
+                                            data-value="'.$platform->NAMAPLATFORM.'"
+                                    >
+                                    '.$platform->NAMAPLATFORM.'
+                                    </a>';
+            }
+        }
+
+        return [
+            "firstPlatform" => $listPlatform[0]->NAMAPLATFORM ?? "",
+            "platformElem"  => $platformElem
+        ];
+    }
+
     public function menuBuilder($listMenuDB, $lastPageAlias)
     {
         if($listMenuDB == "" || !is_array($listMenuDB) || empty($listMenuDB)){
 			return "";
 		} else {			
+			$activePlatformID       =	0;
 			$activeGroupMenu        =	"";
             $activeGroupMenuChild   =	0;
-			$menuElement	        =	"";				
+			$menuElement	        =	"";
+
 			foreach($listMenuDB as $indexMenu => $keyMenu){
                 $groupName      =   $keyMenu->GROUPNAME;
                 $menuName       =   $keyMenu->MENUNAME;
@@ -121,6 +149,11 @@ class Index extends BaseController
                 if($activeGroupMenu != $groupName){
                     if($activeGroupMenu != "" && $activeGroupMenuChild > 1){
                         $menuElement    .=  '</div></div>';
+                    }
+
+                    if($activePlatformID != $keyMenu->IDPLATFORM){
+                        $activePlatformID   =   $keyMenu->IDPLATFORM;
+                        $menuElement        .=  '<div class="vr mx-2 px-1 text-white"></div>';
                     }
 
                     if($groupName == $menuName){

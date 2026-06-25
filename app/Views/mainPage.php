@@ -29,7 +29,18 @@
 			</a>
 		</div>
 		<div class="menu">
-			<div class="menu-search mx-auto text-center"></div>
+			<div class="menu-item ms-auto">
+				<div class="dropdown">
+					<button type="button" data-bs-toggle="dropdown" class="btn bg-white bg-opacity-25 bg-blur-2 rounded-3 border-0">
+						<i class="fa fa-fw fa-layer-group me-2px"></i>
+						<span id="platformOption"><?=$platformElem['firstPlatform']?></span>
+						<i class="fa fa-chevron-down fa-fw opacity-50 ms-1"></i>
+					</button>
+					<div class="dropdown-menu dropdown-menu-end rounded-3">
+						<?=$platformElem['platformElem']?>
+					</div>
+				</div>
+			</div>
 			<div class="menu-item dropdown">
 				<a href="#" data-bs-toggle="dropdown" data-display="static" class="menu-link">
 					<div class="menu-icon"><i class="fa fa-bell nav-icon"></i></div>
@@ -250,10 +261,7 @@
 		}
 
 		if(showWarning){
-			$("#modalWarning").on("show.bs.modal", function () {
-				$("#modalWarningBody").html("Cache aplikasi telah dibersihkan.");
-			});
-			$("#modalWarning").modal("show");
+			toastMessage("success", "Cache aplikasi telah dibersihkan", 2000);
 		}
 	}
 

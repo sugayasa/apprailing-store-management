@@ -157,9 +157,9 @@ class Dashboard extends ResourceController
             }
         }
 
+        $statistikRegionalMarginBottom  =   2;
         if($dataDetailRegional && count($dataDetailRegional) > 0){
-            $jumlahRegional                 =   count($dataDetailRegional);
-            $statistikRegionalMarginBottom  =   2;
+            $jumlahRegional =   count($dataDetailRegional);
 
             switch($jumlahRegional){
                 case 4: $statistikRegionalMarginBottom  =   5; break;

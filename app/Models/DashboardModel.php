@@ -52,7 +52,7 @@ class DashboardModel extends Model
             $subQuery->where('DATE(B.TANGGALWAKTU) <= ', $tanggalPeriodeAkhir);
             $subQuery->where('B.STATUSPENAWARAN != ', -1);
             $subQuery->where('B.IDMARKETPLACE != ', 0);
-            $subQuery->groupBy('C.IDMERK, DATE_FORMAT(B.TANGGALWAKTU, "%d")');
+            $subQuery->groupBy('C.IDMERK, D.NAMAMERK, DATE_FORMAT(B.TANGGALWAKTU, "%d")');
             $subQuery   =   $subQuery->getCompiledSelect();
             $unionQuery .=   "({$subQuery}) UNION ALL ";
         }
@@ -61,7 +61,7 @@ class DashboardModel extends Model
         $finalQuery =   $this->db->query(
                             "SELECT NAMAMERK, TANGGAL, SUM(HARGATOTAL) AS HARGATOTAL
                             FROM ({$unionQuery}) AS A
-                            GROUP BY IDMERK, TANGGAL
+                            GROUP BY NAMAMERK, TANGGAL
                             ORDER BY TANGGAL"
                         );
         $result     =   $finalQuery->getResultObject();
@@ -91,7 +91,8 @@ class DashboardModel extends Model
         $finalQuery =   $this->db->query(
                             "SELECT IDMERK, SUM(TOTALSALESORDER) AS TOTALSALESORDER, SUM(TOTALNOMINAL) AS TOTALNOMINAL
                             FROM ({$unionQuery}) AS A
-                            WHERE IDMERK IS NOT NULL GROUP BY IDMERK"
+                            WHERE IDMERK IS NOT NULL
+                            GROUP BY IDMERK"
                         );
         $result     =   $finalQuery->getResultObject();
 
@@ -150,7 +151,7 @@ class DashboardModel extends Model
             $subQuery->where('DATE(B.TANGGALWAKTU) <= ', $tanggalPeriodeAkhir);
             $subQuery->where('B.STATUSPENAWARAN != ', -1);
             $subQuery->where('B.IDMARKETPLACE != ', 0);
-            $subQuery->groupBy('A.IDBARANG');
+            $subQuery->groupBy('A.IDBARANG, C.IMAGE1, D.NAMAMERK, E.KATEGORIBARANG');
             $subQuery   =   $subQuery->getCompiledSelect();
             $unionQuery .=   "({$subQuery}) UNION ALL ";
         }
@@ -159,7 +160,7 @@ class DashboardModel extends Model
         $finalQuery =   $this->db->query(
                             "SELECT IMAGE1, NAMAMERK, KATEGORIBARANG, NAMAKODEBARANG, SUM(HARGATOTAL) AS HARGATOTAL, SUM(JUMLAHPCS) AS JUMLAHPCS
                             FROM ({$unionQuery}) AS A
-                            GROUP BY IDBARANG
+                            GROUP BY IDBARANG, IMAGE1, NAMAMERK, KATEGORIBARANG, NAMAKODEBARANG
                             ORDER BY SUM(JUMLAHPCS) DESC
                             LIMIT 6"
                         );

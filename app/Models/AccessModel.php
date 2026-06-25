@@ -62,13 +62,38 @@ class AccessModel extends Model
         return $this->get()->getRowArray();
     }
 
+    public function getMenuDetailByAlias($alias)
+    {
+        $this->select('MENUNAME, DESCRIPTION');
+        $this->from('m_menuadmin', true);
+        $this->where('MENUALIAS', $alias);
+
+        $result = $this->get()->getRowArray();
+        if(is_null($result)) return [
+            'MENUNAME'      =>  '',
+            'DESCRIPTION'   =>  ''
+        ];
+        
+        return $result;
+    }
+
     public function getUserAdminMenu($idUserAdminLevel)
     {
-        $this->select('B.GROUPNAME, B.MENUNAME, B.MENUALIAS, B.URL, B.ICON');
+        $this->select('B.IDPLATFORM, B.GROUPNAME, B.MENUNAME, B.MENUALIAS, B.URL, B.ICON');
         $this->from('m_menuleveladmin AS A', true);
         $this->join('m_menuadmin AS B', 'A.IDMENUADMIN = B.IDMENUADMIN', 'LEFT');
         $this->where('A.IDUSERADMINLEVEL', $idUserAdminLevel);
-        $this->orderBy('B.ORDERGROUP, B.ORDERMENU');
+        $this->orderBy('B.IDPLATFORM, B.ORDERGROUP, B.ORDERMENU');
+
+        return $this->get()->getResultObject();
+    }
+
+    public function getDataPlatform()
+    {
+        $this->select('IDPLATFORM, NAMAPLATFORM');
+        $this->from('m_platform', true);
+        $this->where('STATUS', true);
+        $this->orderBy('IDPLATFORM');
 
         return $this->get()->getResultObject();
     }

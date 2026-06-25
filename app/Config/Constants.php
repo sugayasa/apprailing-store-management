@@ -151,7 +151,15 @@ defined('APP_NAME_FORMAL')                              || define('APP_NAME_FORM
 defined('APP_TIMEZONE')                                 || define('APP_TIMEZONE', $_ENV['APP_TIMEZONE'] ?: 'Asia/Jakarta');
 defined('APP_MAIN_DATABASE_NAME')                       || define('APP_MAIN_DATABASE_NAME', $_ENV['APP_MAIN_DATABASE_NAME'] ?: 'db_main');
 defined('APP_MAIN_DATABASE_DEFAULT')                    || define('APP_MAIN_DATABASE_DEFAULT', $_ENV['APP_MAIN_DATABASE_DEFAULT'] ?: 'db_default');
+defined('APP_MAIN_DATABASE_CUSTOMER')                   || define('APP_MAIN_DATABASE_CUSTOMER', $_ENV['APP_MAIN_DATABASE_CUSTOMER'] ?: 'db_customer');
+defined('APP_MAIN_DATABASE_CUSTOMER_CI_VALIDATION')     || define('APP_MAIN_DATABASE_CUSTOMER_CI_VALIDATION', $_ENV['APP_MAIN_DATABASE_CUSTOMER_CI_VALIDATION'] ?: 'dbcustomer');
 defined('APP_DATABASE_TOOL_SECRET_KEY')                 || define('APP_DATABASE_TOOL_SECRET_KEY', $_ENV['APP_DATABASE_TOOL_SECRET_KEY'] ?: 'secretkey');
+defined('APP_PAGE_PROPERTY_DEFAULT_RULES')              || define('APP_PAGE_PROPERTY_DEFAULT_RULES', [
+                                                                    'pageNumber'    =>  ['label' => 'Halaman', 'rules' => 'permit_empty|numeric|min_length[1]|greater_than[0]'],
+                                                                    'dataPerPage'   =>  ['label' => 'Data Per Halaman', 'rules' => 'permit_empty|in_list[10,25,50,100]']
+                                                                ]
+                                                            );
+defined('APP_PAGE_PROPERTY_DEFAULT_MESSAGES')           || define('APP_PAGE_PROPERTY_DEFAULT_MESSAGES', []);
 
 defined('MAX_INACTIVE_SESSION_MINUTES')                 || define('MAX_INACTIVE_SESSION_MINUTES', $_ENV['MAX_INACTIVE_SESSION_MINUTES'] ?: 60);
 defined('LOG_USER_REQUEST')                             || define('LOG_USER_REQUEST', $_ENV['LOG_USER_REQUEST'] ?: false);
@@ -159,7 +167,7 @@ defined('LOG_USER_REQUEST')                             || define('LOG_USER_REQU
 defined('PRODUCTION_URL')						        || define('PRODUCTION_URL', $productionURL);
 defined('BASE_URL')                                     || define('BASE_URL', $_ENV['BASE_URL'] ?: 'https://example.com/');
 defined('BASE_URL_ADMIN_APPS')                          || define('BASE_URL_ADMIN_APPS', $_ENV['BASE_URL_ADMIN_APPS'] ?: 'https://example.com/');
-defined('BASE_URL_ASSETS')                              || define('BASE_URL_ASSETS', str_replace(array("http:", "https:"), "", $_ENV['BASE_URL_ASSETS'] ?: 'https://example.com/'));
+defined('BASE_URL_ASSETS')                              || define('BASE_URL_ASSETS', $_ENV['BASE_URL_ASSETS'] ?: 'https://example.com/');
 defined('BASE_URL_ASSETS_FULL_PATH')                    || define('BASE_URL_ASSETS_FULL_PATH', BASE_URL_ASSETS.$_ENV['BASE_URL_ASSETS_PATH'] ?: 'example.com/');
 defined('BASE_URL_ASSETS_IMG')                          || define('BASE_URL_ASSETS_IMG', BASE_URL_ASSETS_FULL_PATH.$_ENV['BASE_URL_ASSETS_IMG_PATH'] ?: 'img/');
 defined('BASE_URL_ASSETS_CSS')                          || define('BASE_URL_ASSETS_CSS', BASE_URL_ASSETS_FULL_PATH.$_ENV['BASE_URL_ASSETS_CSS_PATH'] ?: 'css/');
@@ -170,6 +178,8 @@ defined('BASE_URL_ASSETS_SOUND')                        || define('BASE_URL_ASSE
 defined('BASE_URL_ASSETS_CUSTOM')                       || define('BASE_URL_ASSETS_CUSTOM', BASE_URL.$_ENV['BASE_URL_ASSETS_CUSTOM'] ?: 'assets/');
 defined('BASE_URL_ASSETS_LOGO_MERK')                    || define('BASE_URL_ASSETS_LOGO_MERK', BASE_URL_ASSETS_CUSTOM.$_ENV['BASE_URL_ASSETS_LOGO_MERK_PATH'] ?: 'logoMerk/');
 defined('BASE_URL_ASSETS_LOGO_MARKETPLACE')             || define('BASE_URL_ASSETS_LOGO_MARKETPLACE', BASE_URL_ASSETS_CUSTOM.$_ENV['BASE_URL_ASSETS_LOGO_MARKETPLACE_PATH'] ?: 'logoMarketplace/');
+defined('BASE_URL_ASSETS_CARD_LEVEL_LOYALTI')           || define('BASE_URL_ASSETS_CARD_LEVEL_LOYALTI', BASE_URL_ASSETS_CUSTOM.$_ENV['BASE_URL_ASSETS_CARD_LEVEL_LOYALTI_PATH'] ?: 'cardLevelLoyalti/');
+defined('BASE_URL_ASSETS_ICON_LEVEL_LOYALTI')           || define('BASE_URL_ASSETS_ICON_LEVEL_LOYALTI', BASE_URL_ASSETS_CUSTOM.$_ENV['BASE_URL_ASSETS_ICON_LEVEL_LOYALTI_PATH'] ?: 'iconLevelLoyalti/');
 defined('BASE_URL_ASSETS_PHOTO_BARANG')                 || define('BASE_URL_ASSETS_PHOTO_BARANG', BASE_URL_ASSETS_CUSTOM.$_ENV['BASE_URL_ASSETS_PHOTO_BARANG_PATH'] ?: 'photoBarang/');
 
 defined('OPTION_HOURS')						            || define('OPTION_HOURS', $arrHours);
@@ -184,6 +194,8 @@ defined('PATH_STORAGE')						            || define('PATH_STORAGE', $_ENV['PATH_S
 defined('PATH_STORAGE_FILE')                            || define('PATH_STORAGE_FILE', PATH_STORAGE.$_ENV['PATH_STORAGE_FILE'] ?: PATH_STORAGE.'file_storage/');
 defined('PATH_STORAGE_FILE_LOGO_MERK')                  || define('PATH_STORAGE_FILE_LOGO_MERK', PATH_STORAGE_FILE.$_ENV['PATH_STORAGE_FILE_LOGO_MERK'] ?: PATH_STORAGE_FILE.'logoMerk/');
 defined('PATH_STORAGE_FILE_LOGO_MARKETPLACE')           || define('PATH_STORAGE_FILE_LOGO_MARKETPLACE', PATH_STORAGE_FILE.$_ENV['PATH_STORAGE_FILE_LOGO_MARKETPLACE'] ?: PATH_STORAGE_FILE.'logoMarketplace/');
+defined('PATH_STORAGE_FILE_CARD_LEVEL_LOYALTI')         || define('PATH_STORAGE_FILE_CARD_LEVEL_LOYALTI', PATH_STORAGE_FILE.$_ENV['PATH_STORAGE_FILE_CARD_LEVEL_LOYALTI'] ?: PATH_STORAGE_FILE.'cardLevelLoyalti/');
+defined('PATH_STORAGE_FILE_ICON_LEVEL_LOYALTI')         || define('PATH_STORAGE_FILE_ICON_LEVEL_LOYALTI', PATH_STORAGE_FILE.$_ENV['PATH_STORAGE_FILE_ICON_LEVEL_LOYALTI'] ?: PATH_STORAGE_FILE.'iconLevelLoyalti/');
 defined('PATH_STORAGE_PHOTO')                           || define('PATH_STORAGE_PHOTO', PATH_STORAGE.$_ENV['PATH_STORAGE_PHOTO'] ?: PATH_STORAGE.'photo_storage/');
 defined('PATH_STORAGE_PHOTO_BARANG')                    || define('PATH_STORAGE_PHOTO_BARANG', PATH_STORAGE_PHOTO.$_ENV['PATH_STORAGE_PHOTO_BARANG'] ?: PATH_STORAGE_PHOTO.'barang/');
 
@@ -200,3 +212,11 @@ defined('FIREBASE_PUBLIC_MEASUREMENT_ID')               || define('FIREBASE_PUBL
 defined('FIREBASE_RTDB_URI')                            || define('FIREBASE_RTDB_URI', $_ENV['FIREBASE_RTDB_URI'] ?: 'https://example.com');
 defined('FIREBASE_RTDB_PROJECT_ID')                     || define('FIREBASE_RTDB_PROJECT_ID', $_ENV['FIREBASE_RTDB_PROJECT_ID'] ?: 'default');
 defined('FIREBASE_RTDB_MAINREF_NAME')                   || define('FIREBASE_RTDB_MAINREF_NAME', $_ENV['FIREBASE_RTDB_MAINREF_NAME'] ?: 'default/');
+
+defined('AWS_ACCESS_KEY_ID')					        || define('AWS_ACCESS_KEY_ID', $_ENV['AWS_ACCESS_KEY_ID']);
+defined('AWS_SECRET_ACCESS_KEY')			        	|| define('AWS_SECRET_ACCESS_KEY', $_ENV['AWS_SECRET_ACCESS_KEY']);
+defined('AWS_DEFAULT_REGION')				        	|| define('AWS_DEFAULT_REGION', $_ENV['AWS_DEFAULT_REGION'] ?: 'sgp1');
+defined('AWS_BUCKET')						        	|| define('AWS_BUCKET', $_ENV['AWS_BUCKET'] ?: 'your-bucket-name');
+defined('AWS_ENDPOINT')							        || define('AWS_ENDPOINT', $_ENV['AWS_ENDPOINT'] ?: 'https://s3.amazonaws.com');
+defined('AWS_SUPPRESS_PHP_DEPRECATION_WARNING')         || define('AWS_SUPPRESS_PHP_DEPRECATION_WARNING', true); //supress warning for php 7.4
+defined('AWS_STORAGE_ENABLED')					        || define('AWS_STORAGE_ENABLED', filter_var($_ENV['AWS_STORAGE_ENABLED'] ?? false, FILTER_VALIDATE_BOOLEAN));

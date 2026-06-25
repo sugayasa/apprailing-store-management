@@ -17,14 +17,19 @@ class View extends ResourceController
      * @return mixed
      */
     use ResponseTrait;
-    protected $userData, $currentDateTime, $currentDateDT;
+    protected $userData, $currentDateTime, $currentDateDT, $menuDetail;
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger) {
         parent::initController($request, $response, $logger);
+
+        $accessModel    =   new AccessModel();
+        $alias          =   $this->request->getVar('alias');
+        $menuDetail     =   $accessModel->getMenuDetailByAlias($alias);
 
         try {
             $this->userData         =   $request->userData;
             $this->currentDateTime  =   $request->currentDateTime;
             $this->currentDateDT    =   $request->currentDateDT;
+            $this->menuDetail       =   $menuDetail;
         } catch (\Throwable $th) {
         }
     }
@@ -119,6 +124,51 @@ class View extends ResourceController
         $content    =   view(
             'Menu/pengaturan/variabelSistem',
             [],
+            ['debug' => false]
+        );
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
+    
+    public function customerDataDasarMerk()
+    {
+        $content    =   view(
+            'Menu/Customer/DataDasar/merk',
+            [
+                'menuDetail'    =>  $this->menuDetail,
+                'defaultImage'  =>  BASE_URL_ASSETS_LOGO_MERK . 'default.png'
+            ],
+            ['debug' => false]
+        );
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
+    
+    public function customerDataDasarKategoriProduk()
+    {
+        $content    =   view(
+            'Menu/Customer/DataDasar/kategoriProduk',
+            [
+                'menuDetail'    =>  $this->menuDetail
+            ],
+            ['debug' => false]
+        );
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
+    
+    public function customerDataDasarLevelLoyalti()
+    {
+        $content    =   view(
+            'Menu/Customer/DataDasar/levelLoyalti',
+            [
+                'menuDetail'        =>  $this->menuDetail,
+                'defaultImageCard'  =>  BASE_URL_ASSETS_CARD_LEVEL_LOYALTI . 'default.jpg',
+                'defaultImageIcon'  =>  BASE_URL_ASSETS_ICON_LEVEL_LOYALTI . 'default.png'
+            ],
             ['debug' => false]
         );
         return $this->setResponseFormat('json')->respond([

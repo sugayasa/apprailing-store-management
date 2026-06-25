@@ -60,6 +60,8 @@ $routes->group('access', ['filter' => 'auth:mustBeLoggedIn'], function($routes) 
 $routes->group('assets', [], function($routes) {
     $routes->get('logoMerk/(:any)', 'Assets::logoMerk/$1');
     $routes->get('logoMarketplace/(:any)', 'Assets::logoMarketplace/$1');
+    $routes->get('cardLevelLoyalti/(:any)', 'Assets::cardLevelLoyalti/$1');
+    $routes->get('iconLevelLoyalti/(:any)', 'Assets::iconLevelLoyalti/$1');
     $routes->get('photoBarang/(:any)', 'Assets::photoBarang/$1');
 });
 
@@ -73,6 +75,9 @@ $routes->group('view', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
     $routes->post('pengaturan-level-menu', $functionRoute.'::pengaturanLevelMenu');
     $routes->post('pengaturan-daftar-pengguna', $functionRoute.'::pengaturanDaftarPengguna');
     $routes->post('pengaturan-variabel-sistem', $functionRoute.'::pengaturanVariabelSistem');
+    $routes->post('customer-data-dasar-merk', $functionRoute.'::customerDataDasarMerk');
+    $routes->post('customer-data-dasar-kategori-produk', $functionRoute.'::customerDataDasarKategoriProduk');
+    $routes->post('customer-data-dasar-level-loyalti', $functionRoute.'::customerDataDasarLevelLoyalti');
 });
 
 $routes->group('dashboard', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
@@ -102,6 +107,29 @@ $routes->group('pengaturan', ['filter' => 'auth:mustBeLoggedIn'], function($rout
         $functionRoute =   'Pengaturan\UserAdmin';
         $routes->post('getDataUserAdmin', $functionRoute.'::getDataUserAdmin');
         $routes->post('saveUserAdmin', $functionRoute.'::saveUserAdmin');
+    });
+});
+
+$routes->group('customer', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+    $routes->group('dataDasar', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+        $routes->group('merk', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+            $functionRoute =   'Customer\DataDasar\Merk';
+            $routes->post('getData', $functionRoute.'::getData');
+            $routes->post('uploadLogo', $functionRoute.'::uploadLogo');
+            $routes->post('saveData', $functionRoute.'::saveData');
+        });
+        $routes->group('kategoriProduk', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+            $functionRoute =   'Customer\DataDasar\KategoriProduk';
+            $routes->post('getData', $functionRoute.'::getData');
+            $routes->post('saveData', $functionRoute.'::saveData');
+        });
+        $routes->group('levelLoyalti', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+            $functionRoute =   'Customer\DataDasar\LevelLoyalti';
+            $routes->post('getData', $functionRoute.'::getData');
+            $routes->post('uploadIcon', $functionRoute.'::uploadIcon');
+            $routes->post('uploadCard', $functionRoute.'::uploadCard');
+            $routes->post('saveData', $functionRoute.'::saveData');
+        });
     });
 });
 /*
