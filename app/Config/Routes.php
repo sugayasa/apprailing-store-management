@@ -78,6 +78,11 @@ $routes->group('view', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
     $routes->post('customer-data-dasar-merk', $functionRoute.'::customerDataDasarMerk');
     $routes->post('customer-data-dasar-kategori-produk', $functionRoute.'::customerDataDasarKategoriProduk');
     $routes->post('customer-data-dasar-level-loyalti', $functionRoute.'::customerDataDasarLevelLoyalti');
+    $routes->post('customer-konten-pengenalan-aplikasi', $functionRoute.'::customerKontenPengenalanAplikasi');
+    $routes->post('customer-konten-galeri-proyek', $functionRoute.'::customerKontenGaleriProyek');
+    $routes->post('customer-konten-tutorial-pemasangan', $functionRoute.'::customerKontenTutorialPemasangan');
+    $routes->post('customer-konten-profil-perusahaan', $functionRoute.'::customerKontenProfilPerusahaan');
+    $routes->post('customer-konten-reels', $functionRoute.'::customerKontenReels');
 });
 
 $routes->group('dashboard', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {

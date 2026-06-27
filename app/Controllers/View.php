@@ -34,6 +34,21 @@ class View extends ResourceController
         }
     }
 
+    public function __call($name, $arguments)
+    {
+        $content    =   view(
+            'errors/html/underConstruction',
+            [
+                'menuDetail'    =>  $this->menuDetail ?? null,
+                'methodName'    =>  $name,
+            ],
+            ['debug' => false]
+        );
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
+
     public function index()
     {
         return $this->failForbidden('[E-AUTH-000] Forbidden Access');

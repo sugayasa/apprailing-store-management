@@ -261,7 +261,7 @@
 		}
 
 		if(showWarning){
-			toastMessage("success", "Cache aplikasi telah dibersihkan", 2000);
+			toastMessage("success", "Cache aplikasi telah dibersihkan");
 		}
 	}
 
