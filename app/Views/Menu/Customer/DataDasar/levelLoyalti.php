@@ -20,7 +20,7 @@
     <div class="modal-dialog modal-md">
         <form class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Detail Level Loyalti</h5>
+                <h6 class="modal-title">Detail Level Loyalti</h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">

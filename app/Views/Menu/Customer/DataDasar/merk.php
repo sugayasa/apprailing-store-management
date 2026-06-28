@@ -20,7 +20,7 @@
     <div class="modal-dialog modal-sm">
         <form class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Detail Merk</h5>
+                <h6 class="modal-title">Detail Merk</h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">

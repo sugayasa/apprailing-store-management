@@ -35,5 +35,6 @@
 	<script src="<?=BASE_URL_ASSETS_JS?>app.min.js?<?=date('YmdHis')?>"></script>
 	<script src="<?=BASE_URL_ASSETS_JS?>vendor.min.js?<?=date('YmdHis')?>"></script>
 	<script src="<?=BASE_URL_ASSETS_JS?>uploadfile.min.js?<?=date('YmdHis')?>"></script>
+	<script src="<?=BASE_URL_ASSETS_JS?>sortable.min.js?<?=date('YmdHis')?>"></script>
 	<script src="<?=BASE_URL_ASSETS_JS?>session-controller.js?<?=date('YmdHis')?>"></script>
 </html>

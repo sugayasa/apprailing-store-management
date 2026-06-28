@@ -190,4 +190,19 @@ class View extends ResourceController
             'content'   =>  $content
         ]);
     }
+    
+    public function customerKontenPengenalanAplikasi()
+    {
+        $content    =   view(
+            'Menu/Customer/Konten/pengenalanAplikasi',
+            [
+                'menuDetail'    =>  $this->menuDetail,
+                'defaultImage'  =>  BASE_URL_ASSETS_SLIDE_ONBOARDING . 'defaultBoarding.png'
+            ],
+            ['debug' => false]
+        );
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
 }

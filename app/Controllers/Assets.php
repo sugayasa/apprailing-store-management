@@ -81,6 +81,20 @@ class Assets extends ResourceController
             ->setBody($fileContent);
     }
 
+    public function imageSlideOnboarding($namaFile)
+    {
+        $fullFilePath   =   PATH_STORAGE_PHOTO_SLIDE_ONBOARDING.$namaFile;
+        if (!is_file($fullFilePath) || !file_exists($fullFilePath)) $fullFilePath   =   PATH_STORAGE_PHOTO_SLIDE_ONBOARDING  .'defaultBoarding.png';
+
+        $mimeType       =   mime_content_type($fullFilePath);
+        $fileContent    =   file_get_contents($fullFilePath);
+
+        return $this->response
+            ->setHeader('Content-Type', $mimeType)
+            ->setHeader('Content-Disposition', 'inline; filename="' . $namaFile . '"')
+            ->setBody($fileContent);
+    }
+
     public function photoBarang($namaFile)
     {
         $fullFilePath   =   PATH_STORAGE_PHOTO_BARANG.$namaFile;
