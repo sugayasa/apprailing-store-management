@@ -205,4 +205,23 @@ class View extends ResourceController
             'content'   =>  $content
         ]);
     }
+    
+    public function customerKontenGaleriProyek()
+    {
+
+        $accessModel=   new AccessModel();
+        $dataMerk   =   $accessModel->getDataCustomerMerk();
+        $content    =   view(
+            'Menu/Customer/Konten/galeriProyek',
+            [
+                'menuDetail'    =>  $this->menuDetail,
+                'dataMerk'      =>  encodeDatabaseObjectResultKey($dataMerk, 'ID'),
+                'defaultImage'  =>  BASE_URL_ASSETS_GALERI_PROYEK . 'noimage.jpg'
+            ],
+            ['debug' => false]
+        );
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
 }

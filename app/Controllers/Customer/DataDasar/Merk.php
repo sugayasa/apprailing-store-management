@@ -90,7 +90,6 @@ class Merk extends ResourceController
 
     public function saveData()
     {
-        
         $idMerk     =   $this->request->getVar('idMerk');
         $idMerk     =   $idMerk != "" ? hashidDecode($idMerk) : 0;
         $validation =   $idMerk == 0 ? $this->parametersValidator() : $this->parametersValidator(true, $idMerk);

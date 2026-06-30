@@ -73,7 +73,6 @@ class KategoriProduk extends ResourceController
 
     public function saveData()
     {
-        
         $idKategoriProduk   =   $this->request->getVar('idKategoriProduk');
         $idKategoriProduk   =   $idKategoriProduk != "" ? hashidDecode($idKategoriProduk) : 0;
         $validation         =   $idKategoriProduk == 0 ? $this->parametersValidator() : $this->parametersValidator(true, $idKategoriProduk);

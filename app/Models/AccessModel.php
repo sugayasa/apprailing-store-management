@@ -147,6 +147,15 @@ class AccessModel extends Model
         return $this->get()->getResultObject();
     }
 
+    public function getDataCustomerMerk()
+    {
+        $this->select('IDMERK AS ID, NAMAMERK AS VALUE');
+        $this->from(APP_MAIN_DATABASE_CUSTOMER.'.m_merk', true);
+        $this->orderBy('NAMAMERK');
+
+        return $this->get()->getResultObject();
+    }
+
     public function setLastActivityUserAdmin($idUserAdmin, $datetimeActivity)
     {
         $this->set('DATETIMEACTIVITY', $datetimeActivity);

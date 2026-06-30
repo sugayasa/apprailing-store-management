@@ -64,6 +64,7 @@ $routes->group('assets', [], function($routes) {
     $routes->get('iconLevelLoyalti/(:any)', 'Assets::iconLevelLoyalti/$1');
     $routes->get('photoBarang/(:any)', 'Assets::photoBarang/$1');
     $routes->get('imageSlideOnboarding/(:any)', 'Assets::imageSlideOnboarding/$1');
+    $routes->get('imageGaleriProyek/(:any)', 'Assets::imageGaleriProyek/$1');
 });
 
 $routes->group('view', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
@@ -84,6 +85,7 @@ $routes->group('view', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
     $routes->post('customer-konten-tutorial-pemasangan', $functionRoute.'::customerKontenTutorialPemasangan');
     $routes->post('customer-konten-profil-perusahaan', $functionRoute.'::customerKontenProfilPerusahaan');
     $routes->post('customer-konten-reels', $functionRoute.'::customerKontenReels');
+    $routes->post('customer-konten-beritaInformasi', $functionRoute.'::customerKontenBeritaInformasi');
 });
 
 $routes->group('dashboard', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
@@ -143,6 +145,12 @@ $routes->group('customer', ['filter' => 'auth:mustBeLoggedIn'], function($routes
             $routes->post('getData', $functionRoute.'::getData');
             $routes->post('uploadImage', $functionRoute.'::uploadImage');
             $routes->post('saveUrutanSlide', $functionRoute.'::saveUrutanSlide');
+            $routes->post('saveData', $functionRoute.'::saveData');
+        });
+        $routes->group('galeriProyek', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+            $functionRoute =   'Customer\Konten\GaleriProyek';
+            $routes->post('getData', $functionRoute.'::getData');
+            $routes->post('uploadImage', $functionRoute.'::uploadImage');
             $routes->post('saveData', $functionRoute.'::saveData');
         });
     });

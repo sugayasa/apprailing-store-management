@@ -136,7 +136,6 @@ class LevelLoyalti extends ResourceController
 
     public function saveData()
     {
-        
         $idCustomerLoyalti  =   $this->request->getVar('idCustomerLoyalti');
         $idCustomerLoyalti  =   $idCustomerLoyalti != "" ? hashidDecode($idCustomerLoyalti) : 0;
         $validation         =   $idCustomerLoyalti == 0 ? $this->parametersValidator() : $this->parametersValidator(true, $idCustomerLoyalti);

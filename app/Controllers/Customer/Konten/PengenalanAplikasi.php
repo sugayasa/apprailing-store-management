@@ -90,7 +90,7 @@ class PengenalanAplikasi extends ResourceController
 
     public function saveUrutanSlide()
     {
-         $rules     =   [
+        $rules     =   [
             'arrUrutanSlide.*'  =>  ['label' => 'Urutan', 'rules' => 'required|alpha_numeric']
         ];
 
@@ -143,7 +143,6 @@ class PengenalanAplikasi extends ResourceController
 
         if($idSlideBoarding == 0){
             $pengenalanAplikasiModel    =   new PengenalanAplikasiModel();
-
             $urutanTerakhir             =   (int)$pengenalanAplikasiModel->selectMax('URUTAN')->get()->getRow()->URUTAN ?? 0;
             $arrInsertUpdate['URUTAN']  =   $urutanTerakhir + 1;
             $procInsertData             =   $mainOperation->insertDataTable(APP_MAIN_DATABASE_CUSTOMER . '.t_slideboarding', $arrInsertUpdate);

@@ -272,12 +272,14 @@ class Access extends ResourceController
         $dataUserAdminLevelMenu =   encodeDatabaseObjectResultKey($accessModel->getDataUserAdminLevelMenu(), 'ID');
         $dataMerk               =   encodeDatabaseObjectResultKey($accessModel->getDataMerk(), 'ID');
         $dataBarangKategori     =   encodeDatabaseObjectResultKey($accessModel->getDataBarangKategori(), 'ID');
+        $dataCustomerMerk       =   encodeDatabaseObjectResultKey($accessModel->getDataCustomerMerk(), 'ID');
 
         return [
             "dataUserAdminLevel"    =>  $dataUserAdminLevel,
             "dataUserAdminLevelMenu"=>  $dataUserAdminLevelMenu,
             "dataMerk"              =>  $dataMerk,
             "dataBarangKategori"    =>  $dataBarangKategori,
+            "dataCustomerMerk"      =>  $dataCustomerMerk,
             "optionHours"	        =>  OPTION_HOURS,
             "optionMinutes"         =>  OPTION_MINUTES,
             "optionMinuteInterval"	=>  OPTION_MINUTEINTERVAL,
