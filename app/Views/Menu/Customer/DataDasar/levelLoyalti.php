@@ -70,6 +70,12 @@
                     </div>
                     <div class="col-md-6 col-sm-12">
                         <div class="form-group mb-3">
+                            <label class="form-label" for="minPoin">Min. Poin</label>
+                            <input type="text" class="form-control text-end" name="minPoin" id="minPoin" placeholder="0" onkeypress="maskNumberInput(0, 999999999, 'minPoin')">
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group mb-3">
                             <label class="form-label d-block">Status</label>
                             <div class="form-check form-check-inline mt-2">
                                 <input class="form-check-input" type="radio" name="status" id="statusAktif" value="1">

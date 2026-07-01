@@ -146,6 +146,7 @@ class LevelLoyalti extends ResourceController
         $levelLoyalti       =   $this->request->getVar('levelLoyalti');
         $deskripsi          =   $this->request->getVar('deskripsi');
         $minNominalPembelian=   $this->request->getVar('minNominalPembelian');
+        $minPoin            =   $this->request->getVar('minPoin');
         $cardFileName       =   $this->request->getVar('cardFileName');
         $iconFileName       =   $this->request->getVar('iconFileName');
         $status             =   $this->request->getVar('status');
@@ -153,6 +154,7 @@ class LevelLoyalti extends ResourceController
             'LOYALTITIER'               =>  $levelLoyalti,
             'DESKRIPSI'                 =>  $deskripsi,
             'MINIMALNOMINALPEMBELIAN'   =>  $minNominalPembelian,
+            'MINIMALPOIN'               =>  $minPoin,
             'CARDFILE'                  =>  $cardFileName,
             'ICONFILE'                  =>  $iconFileName,
             'STATUS'                    =>  $status
@@ -176,6 +178,7 @@ class LevelLoyalti extends ResourceController
             'levelLoyalti'          =>  ['label' => 'Level Loyalti', 'rules' => 'required|alpha_numeric_space|min_length[3]|max_length[30]'],
             'deskripsi'             =>  ['label' => 'Deskripsi', 'rules' => 'required|alpha_numeric_punct|min_length[1]|max_length[100]'],
             'minNominalPembelian'   =>  ['label' => 'Minimal Nominal Pembelian', 'rules' => 'required|numeric|greater_than_equal_to[0]'],
+            'minPoin'               =>  ['label' => 'Minimal Poin', 'rules' => 'required|numeric|greater_than_equal_to[0]'],
             'cardFileName'          =>  ['label' => 'Logo', 'rules' => 'required|alpha_numeric_punct'],
             'iconFileName'          =>  ['label' => 'Icon', 'rules' => 'required|alpha_numeric_punct'],
             'status'                =>  ['label' => 'Status', 'rules' => 'required|in_list[-1,1]']

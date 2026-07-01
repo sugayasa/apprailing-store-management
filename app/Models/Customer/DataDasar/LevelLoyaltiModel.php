@@ -13,7 +13,7 @@ class LevelLoyaltiModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['IDCUSTOMERLOYALTI', 'LOYALTITIER', 'DESKRIPSI', 'MINIMALNOMINALPEMBELIAN', 'ICONFILE', 'CARDFILE', 'STATUS'];
+    protected $allowedFields    = ['IDCUSTOMERLOYALTI', 'LOYALTITIER', 'DESKRIPSI', 'MINIMALNOMINALPEMBELIAN', 'MINIMALPOIN', 'ICONFILE', 'CARDFILE', 'STATUS'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -47,7 +47,7 @@ class LevelLoyaltiModel extends Model
     
     public function getDataLevelLoyalti()
     {	
-        $this->select("IDCUSTOMERLOYALTI, LOYALTITIER, DESKRIPSI, MINIMALNOMINALPEMBELIAN, ICONFILE, CARDFILE, STATUS");
+        $this->select("IDCUSTOMERLOYALTI, LOYALTITIER, DESKRIPSI, MINIMALNOMINALPEMBELIAN, MINIMALPOIN, ICONFILE, CARDFILE, STATUS");
         $this->orderBy('MINIMALNOMINALPEMBELIAN ASC');
                
         return $this;
