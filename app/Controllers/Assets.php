@@ -28,93 +28,69 @@ class Assets extends ResourceController
     public function logoMerk($namaFile)
     {
         $fullFilePath   =   PATH_STORAGE_FILE_LOGO_MERK.$namaFile;
-        if (!is_file($fullFilePath) || !file_exists($fullFilePath)) $fullFilePath   =   PATH_STORAGE_FILE_LOGO_MERK  .'default.jpg';
+        $isDefault      =   strpos($namaFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_FILE_LOGO_MERK  .'default.jpg';
 
-        $mimeType       =   mime_content_type($fullFilePath);
-        $fileContent    =   file_get_contents($fullFilePath);
-
-        return $this->response
-            ->setHeader('Content-Type', $mimeType)
-            ->setHeader('Content-Disposition', 'inline; filename="' . $namaFile . '"')
-            ->setBody($fileContent);
+        return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
     public function logoMarketplace($namaFile)
     {
         $fullFilePath   =   PATH_STORAGE_FILE_LOGO_MARKETPLACE.$namaFile;
-        if (!is_file($fullFilePath) || !file_exists($fullFilePath)) $fullFilePath   =   PATH_STORAGE_FILE_LOGO_MARKETPLACE  .'default.jpg';
+        $isDefault      =   strpos($namaFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_FILE_LOGO_MARKETPLACE  .'default.jpg';
 
-        $mimeType       =   mime_content_type($fullFilePath);
-        $fileContent    =   file_get_contents($fullFilePath);
-
-        return $this->response
-            ->setHeader('Content-Type', $mimeType)
-            ->setHeader('Content-Disposition', 'inline; filename="' . $namaFile . '"')
-            ->setBody($fileContent);
+        return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
     public function cardLevelLoyalti($namaFile)
     {
         $fullFilePath   =   PATH_STORAGE_FILE_CARD_LEVEL_LOYALTI.$namaFile;
-        if (!is_file($fullFilePath) || !file_exists($fullFilePath)) $fullFilePath   =   PATH_STORAGE_FILE_CARD_LEVEL_LOYALTI  .'default.jpg';
+        $isDefault      =   strpos($namaFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_FILE_CARD_LEVEL_LOYALTI  .'default.jpg';
 
-        $mimeType       =   mime_content_type($fullFilePath);
-        $fileContent    =   file_get_contents($fullFilePath);
-
-        return $this->response
-            ->setHeader('Content-Type', $mimeType)
-            ->setHeader('Content-Disposition', 'inline; filename="' . $namaFile . '"')
-            ->setBody($fileContent);
+        return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
     public function iconLevelLoyalti($namaFile)
     {
         $fullFilePath   =   PATH_STORAGE_FILE_ICON_LEVEL_LOYALTI.$namaFile;
-        if (!is_file($fullFilePath) || !file_exists($fullFilePath)) $fullFilePath   =   PATH_STORAGE_FILE_ICON_LEVEL_LOYALTI  .'default.jpg';
+        $isDefault      =   strpos($namaFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_FILE_ICON_LEVEL_LOYALTI  .'default.png';
 
-        $mimeType       =   mime_content_type($fullFilePath);
-        $fileContent    =   file_get_contents($fullFilePath);
-
-        return $this->response
-            ->setHeader('Content-Type', $mimeType)
-            ->setHeader('Content-Disposition', 'inline; filename="' . $namaFile . '"')
-            ->setBody($fileContent);
+        return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
     public function imageSlideOnboarding($namaFile)
     {
         $fullFilePath   =   PATH_STORAGE_PHOTO_SLIDE_ONBOARDING.$namaFile;
-        if (!is_file($fullFilePath) || !file_exists($fullFilePath)) $fullFilePath   =   PATH_STORAGE_PHOTO_SLIDE_ONBOARDING  .'defaultBoarding.png';
+        $isDefault      =   strpos($namaFile, 'defaultBoarding') !== false;
+        $defaultFilePath=   PATH_STORAGE_PHOTO_SLIDE_ONBOARDING  .'defaultBoarding.png';
 
-        $mimeType       =   mime_content_type($fullFilePath);
-        $fileContent    =   file_get_contents($fullFilePath);
-
-        return $this->response
-            ->setHeader('Content-Type', $mimeType)
-            ->setHeader('Content-Disposition', 'inline; filename="' . $namaFile . '"')
-            ->setBody($fileContent);
+        return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
     public function photoBarang($namaFile)
     {
         $fullFilePath   =   PATH_STORAGE_PHOTO_BARANG.$namaFile;
-        $isFotoDefault  =   strpos($namaFile, 'default') !== false;
-        if (!is_file($fullFilePath) || !file_exists($fullFilePath) || $isFotoDefault !== false) $fullFilePath   =   PATH_STORAGE_PHOTO_BARANG  .'noimage.jpg';
+        $isDefault      =   strpos($namaFile, 'noimage') !== false;
+        $defaultFilePath=   PATH_STORAGE_PHOTO_BARANG  .'noimage.jpg';
 
-        $mimeType       =   mime_content_type($fullFilePath);
-        $fileContent    =   file_get_contents($fullFilePath);
-
-        return $this->response
-            ->setHeader('Content-Type', $mimeType)
-            ->setHeader('Content-Disposition', 'inline; filename="' . $namaFile . '"')
-            ->setBody($fileContent);
+        return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
     public function imageGaleriProyek($namaFile)
     {
         $fullFilePath   =   PATH_STORAGE_PHOTO_GALERI_PROYEK.$namaFile;
-        $isFotoDefault  =   strpos($namaFile, 'default') !== false;
-        if (!is_file($fullFilePath) || !file_exists($fullFilePath) || $isFotoDefault !== false) $fullFilePath   =   PATH_STORAGE_PHOTO_GALERI_PROYEK  .'noimage.jpg';
+        $isDefault      =   strpos($namaFile, 'noimage') !== false;
+        $defaultFilePath=   PATH_STORAGE_PHOTO_GALERI_PROYEK  .'noimage.jpg';
+
+        return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
+    }
+
+    private function setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath)
+    {
+        if (!is_file($fullFilePath) || !file_exists($fullFilePath) || $isDefault !== false) $fullFilePath   =   $defaultFilePath;
 
         $mimeType       =   mime_content_type($fullFilePath);
         $fileContent    =   file_get_contents($fullFilePath);
