@@ -151,8 +151,10 @@ class View extends ResourceController
         $content    =   view(
             'Menu/Customer/DataDasar/merk',
             [
-                'menuDetail'    =>  $this->menuDetail,
-                'defaultImage'  =>  BASE_URL_ASSETS_LOGO_MERK . 'default.png'
+                'menuDetail'                =>  $this->menuDetail,
+                'defaultImage'              =>  BASE_URL_ASSETS_LOGO_MERK . 'default.png',
+                'defaultPdfKatalogThumbnail'=>  BASE_URL_ASSETS_PDF_KATALOG_THUMBNAIL . 'default.png',
+                'defaultPdfKatalogFile'     =>  BASE_URL_ASSETS_PDF_KATALOG_FILE . 'default.pdf'
             ],
             ['debug' => false]
         );

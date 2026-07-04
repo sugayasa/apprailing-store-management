@@ -60,6 +60,23 @@ if(!function_exists('validate_excel')){
     }
 }
 
+if(!function_exists('validate_pdf')){
+    function validate_pdf($file, $maxSize = 1000000)
+    {
+        $allowed = ['application/pdf'];
+
+        if (!in_array($file['type'], $allowed) || $file['size'] > $maxSize) {
+            return throwResponseInternalServerError("Gagal mengunggah berkas. Tipe berkas tidak diizinkan ({$file['type']}) atau ukuran berkas terlalu besar ({$file['size']})");
+        }
+
+        if ($file['error'] > 0) {
+            return throwResponseInternalServerError("Gagal mengunggah berkas. Berkas rusak");
+        }
+
+        return true;
+    }
+}
+
 if(!function_exists('validate_mix_file')){
     function validate_mix_file($file)
     {

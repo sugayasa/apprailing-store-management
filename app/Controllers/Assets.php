@@ -61,6 +61,24 @@ class Assets extends ResourceController
         return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
+    public function pdfKatalogThumbnail($namaFile)
+    {
+        $fullFilePath   =   PATH_STORAGE_FILE_PDF_KATALOG_THUMBNAIL.$namaFile;
+        $isDefault      =   strpos($namaFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_FILE_PDF_KATALOG_THUMBNAIL  .'default.jpg';
+
+        return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
+    }
+
+    public function pdfKatalogFile($namaFile)
+    {
+        $fullFilePath   =   PATH_STORAGE_FILE_PDF_KATALOG_FILE.$namaFile;
+        $isDefault      =   strpos($namaFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_FILE_PDF_KATALOG_FILE  .'default.pdf';
+
+        return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
+    }
+
     public function imageSlideOnboarding($namaFile)
     {
         $fullFilePath   =   PATH_STORAGE_PHOTO_SLIDE_ONBOARDING.$namaFile;

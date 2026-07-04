@@ -47,7 +47,7 @@ class MerkModel extends Model
     
     public function getDataMerk()
     {	
-        $this->select("IDMERK, NAMAMERK, LOGO, STATUS");
+        $this->select("IDMERK, NAMAMERK, LOGO, PDFTHUMBNAIL, PDFFILE, STATUSKATALOG, STATUS");
         $this->orderBy('NAMAMERK ASC');
                
         return $this;

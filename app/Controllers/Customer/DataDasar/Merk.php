@@ -46,21 +46,21 @@ class Merk extends ResourceController
         $totalNumberData=   $baseData->countAllResults(false);
         $pageProperty   =   $mainOperation->generatePageProperty($pageNumber, $dataPerPage, $totalNumberData);
 
-        if($totalNumberData > 0){
-            $listData   =   $baseData->asObject()->findAll($dataPerPage, ($pageNumber - 1) * $dataPerPage);
-            $listData   =   encodeDatabaseObjectResultKey($listData, ['IDMERK']);
+        $dataReturn     =   [
+            "listData"                      =>  [],
+            "pageProperty"                  =>  $pageProperty,
+            "urlAssetLogoMerk"              =>  BASE_URL_ASSETS_LOGO_MERK,
+            "urlAssetPdfKatalogThumbnail"   =>  BASE_URL_ASSETS_PDF_KATALOG_THUMBNAIL,
+            "urlAssetPdfKatalogFile"        =>  BASE_URL_ASSETS_PDF_KATALOG_FILE
+        ];
 
-            return $this->setResponseFormat('json')->respond([
-                "listData"          =>  $listData,
-                "pageProperty"      =>  $pageProperty,
-                "urlAssetLogoMerk"  =>  BASE_URL_ASSETS_LOGO_MERK
-            ]);
+        if($totalNumberData > 0){
+            $listData               =   $baseData->asObject()->findAll($dataPerPage, ($pageNumber - 1) * $dataPerPage);
+            $listData               =   encodeDatabaseObjectResultKey($listData, ['IDMERK']);
+            $dataReturn["listData"] =   $listData;
+
+            return $this->setResponseFormat('json')->respond($dataReturn);
         } else {
-            $dataReturn =   [
-                "listData"          =>  [],
-                "pageProperty"      =>  $pageProperty,
-                "urlAssetLogoMerk"  =>  BASE_URL_ASSETS_LOGO_MERK
-            ];
             return throwResponseNotFound('Tidak ada data yang ditemukan', $dataReturn);
         }
     }
@@ -147,5 +147,111 @@ class Merk extends ResourceController
 
         if(!$this->validate($rules, $messages)) return $this->validator->getErrors();
         return true;
+    }
+	
+	public function uploadPdfKatalogThumbnail(){
+		helper(['fileValidation']);
+		validate_image($_FILES["file"], 1000000);
+
+		$info	    =	getimagesize($_FILES["file"]["tmp_name"]);
+		$width	    =	$info[0];
+		$height	    =	$info[1];
+		$ratio	    =	$width / $height;
+
+		if ($width < 250 || $height < 350) {
+			return throwResponseNotAcceptable("Ukuran gambar minimal 250 x 350 pixel.");
+		}
+
+		if (abs($ratio - (5/7)) > 0.01) {
+			return throwResponseNotAcceptable("Rasio gambar harus 5:7 (lebar : tinggi).");
+		}
+		
+		$storage	=	StorageFactory::make();
+		$dir		=	PATH_STORAGE_FILE_PDF_KATALOG_THUMBNAIL;
+		$extension	=	pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);
+		$filename	=	"PdfKatalogThumbnail"."_".date('YmdHis').".".$extension;
+		$move		=	$storage->upload($_FILES["file"]["tmp_name"], $dir.$filename);
+		
+		if($move){
+            return $this->setResponseFormat('json')
+			->respond([
+				"status"                    =>  200,
+				"urlPdfKatalogThumbnail"    =>  BASE_URL_ASSETS_PDF_KATALOG_THUMBNAIL.$filename,
+				"pdfKatalogThumbnailName"   =>  $filename,
+				"message"                   =>  "Berkas berhasil diunggah"
+			]);
+		} else {
+			return throwResponseInternalServerError("Gagal mengunggah berkas. Silakan coba lagi nanti");
+		}
+	}
+	
+	public function uploadPdfKatalogFile(){
+		helper(['fileValidation']);
+		validate_pdf($_FILES["file"], 10000000);
+		
+		$storage	=	StorageFactory::make();
+		$dir		=	PATH_STORAGE_FILE_PDF_KATALOG_FILE;
+		$extension	=	pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);
+		$filename	=	"PdfKatalogFile"."_".date('YmdHis').".".$extension;
+		$move		=	$storage->upload($_FILES["file"]["tmp_name"], $dir.$filename);
+		
+		if($move){
+            return $this->setResponseFormat('json')
+			->respond([
+				"status"            =>  200,
+				"urlPdfKatalogFile" =>  BASE_URL_ASSETS_PDF_KATALOG_FILE.$filename,
+				"pdfKatalogFileName"=>  $filename,
+				"message"           =>  "Berkas berhasil diunggah"
+			]);
+		} else {
+			return throwResponseInternalServerError("Gagal mengunggah berkas. Silakan coba lagi nanti");
+		}
+	}
+
+    public function saveDataKatalog()
+    {
+        $rules      =   [
+            'idMerk'            =>  ['label' => 'ID Merk', 'rules' => 'required|alpha_numeric'],
+            'pdfThumbnailName'  =>  ['label' => 'Gambar Thumbnail', 'rules' => 'required|alpha_numeric_punct'],
+            'pdfFileName'       =>  ['label' => 'File PDF', 'rules' => 'required|alpha_numeric_punct'],
+            'status'            =>  ['label' => 'Status', 'rules' => 'required|in_list[0,1]']
+        ];
+
+        $messages   =   [
+            'idMerk'        =>  [
+                'required'      =>  'Data kiriman tidak lengkap, silakan periksa kembali',
+                'alpha_numeric' =>  'Data kiriman tidak valid, silakan periksa kembali'
+            ],
+            'pdfThumbnailName'  =>  [
+                'required'  =>  'Gambar thumbnail harus diunggah'
+            ],
+            'pdfFileName'   =>  [
+                'required'  =>  'File PDF harus diunggah'
+            ],
+            'status'        =>  [
+                'required'  =>  'Status katalog harus dipilih',
+                'in_list'   =>  'Status katalog yang dipilih tidak valid'
+            ]
+        ];
+
+        if(!$this->validate($rules, $messages)) return $this->fail($this->validator->getErrors());
+
+        $mainOperation      =   new MainOperation();
+        $idMerk             =   $this->request->getVar('idMerk');
+        $idMerk             =   $idMerk != "" ? hashidDecode($idMerk) : 0;
+        $pdfThumbnailName   =   $this->request->getVar('pdfThumbnailName');
+        $pdfFileName        =   $this->request->getVar('pdfFileName');
+        $status             =   $this->request->getVar('status');
+
+        $arrUpdateKatalog   =   [
+            'PDFTHUMBNAIL'  =>  $pdfThumbnailName,
+            'PDFFILE'       =>  $pdfFileName,
+            'STATUSKATALOG' =>  $status
+        ];
+
+        $procUpdateData     =   $mainOperation->updateDataTable(APP_MAIN_DATABASE_CUSTOMER . '.m_merk', $arrUpdateKatalog, ['IDMERK' => $idMerk]);
+        if(!$procUpdateData['status']) return switchMySQLErrorCode($procUpdateData['errCode']);
+                    
+        return throwResponseOK("Data detail katalog merk telah diperbarui");
     }
 }

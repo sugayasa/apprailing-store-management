@@ -62,6 +62,8 @@ $routes->group('assets', [], function($routes) {
     $routes->get('logoMarketplace/(:any)', 'Assets::logoMarketplace/$1');
     $routes->get('cardLevelLoyalti/(:any)', 'Assets::cardLevelLoyalti/$1');
     $routes->get('iconLevelLoyalti/(:any)', 'Assets::iconLevelLoyalti/$1');
+    $routes->get('pdfKatalog/thumbnail/(:any)', 'Assets::pdfKatalogThumbnail/$1');
+    $routes->get('pdfKatalog/file/(:any)', 'Assets::pdfKatalogFile/$1');
     $routes->get('photoBarang/(:any)', 'Assets::photoBarang/$1');
     $routes->get('imageSlideOnboarding/(:any)', 'Assets::imageSlideOnboarding/$1');
     $routes->get('imageGaleriProyek/(:any)', 'Assets::imageGaleriProyek/$1');
@@ -125,6 +127,9 @@ $routes->group('customer', ['filter' => 'auth:mustBeLoggedIn'], function($routes
             $routes->post('getData', $functionRoute.'::getData');
             $routes->post('uploadLogo', $functionRoute.'::uploadLogo');
             $routes->post('saveData', $functionRoute.'::saveData');
+            $routes->post('uploadPdfKatalogThumbnail', $functionRoute.'::uploadPdfKatalogThumbnail');
+            $routes->post('uploadPdfKatalogFile', $functionRoute.'::uploadPdfKatalogFile');
+            $routes->post('saveDataKatalog', $functionRoute.'::saveDataKatalog');
         });
         $routes->group('kategoriProduk', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
             $functionRoute =   'Customer\DataDasar\KategoriProduk';
