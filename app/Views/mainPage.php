@@ -199,21 +199,17 @@
         </div>
     </div>
 </div>
-<div class="modal loader-modal" id="window-loader" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" role="document">
+<div class="modal loader-modal" id="window-loader" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="z-index: 9999;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content bg-transparent border-0">
-			<div class="modal-body">
-				<div class="d-flex justify-content-center">
-					<div class="spinner-border text-success">
-						<span class="visually-hidden">Memuat...</span>
-					</div>
-				</div><br/>
-				<div class="row">
-					<div class="col-12 text-center">
-						<span>Memuat, harap tunggu..</span>
-					</div>
-				</div>
-			</div>
+            <div class="modal-body">
+                <div class="d-flex flex-column justify-content-center align-items-center text-white" style="mix-blend-mode: difference;">
+                    <div class="spinner-border text-white mb-3" style="--bs-spinner-border-width: 0.2rem;">
+                        <span class="visually-hidden">Memuat...</span>
+                    </div>
+                    <span class="fw-semibold">Memuat, harap tunggu..</span>
+                </div>
+            </div>
         </div>
     </div>
 </div>
