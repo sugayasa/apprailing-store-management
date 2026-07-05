@@ -56,7 +56,7 @@
                     </div>
                     <div class="card-body">
                         <div class="text-center mb-3">
-                            <img class="mb-2 rounded" src="<?=$defaultImage?>" id="imgSlideBanner" style="max-width: 500px; max-height: 450px;"/><br/>
+                            <img class="mb-2 rounded" src="<?=$defaultImage?>" id="imgSlideBanner" style="max-width: 500px; max-height: 209px;"/><br/>
                             <span id="uploadSlideBanner">Upload Gambar Berita</span>
                             <input type="hidden" name="slideBannerFileName" value="">
                         </div>

@@ -210,7 +210,6 @@ class View extends ResourceController
     
     public function customerKontenGaleriProyek()
     {
-
         $accessModel=   new AccessModel();
         $dataMerk   =   $accessModel->getDataCustomerMerk();
         $content    =   view(
@@ -219,6 +218,21 @@ class View extends ResourceController
                 'menuDetail'    =>  $this->menuDetail,
                 'dataMerk'      =>  encodeDatabaseObjectResultKey($dataMerk, 'ID'),
                 'defaultImage'  =>  BASE_URL_ASSETS_GALERI_PROYEK . 'noimage.jpg'
+            ],
+            ['debug' => false]
+        );
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
+    
+    public function customerKontenTutorialPemasangan()
+    {
+        $content    =   view(
+            'Menu/Customer/Konten/tutorialPemasangan',
+            [
+                'menuDetail'    =>  $this->menuDetail,
+                'defaultImage'  =>  BASE_URL_ASSETS_VIDEO_CARA_PASANG . 'noimage.jpg'
             ],
             ['debug' => false]
         );

@@ -4,16 +4,16 @@ namespace App\Models\Customer\Konten;
 
 use CodeIgniter\Model;
 
-class BeritaInformasiModel extends Model
+class TutorialPemasanganModel extends Model
 {
     protected $DBGroup          = 'dbcustomer';
-    protected $table            = 't_slidebanner';
-    protected $primaryKey       = 'IDSLIDEBANNER';
+    protected $table            = 't_videocarapemasangan';
+    protected $primaryKey       = 'IDVIDEOCARAPEMASANGAN';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['IDSLIDEBANNER', 'JUDUL', 'KONTEN', 'IMAGE', 'INPUTUSER', 'INPUTTANGGALWAKTU', 'STATUS'];
+    protected $allowedFields    = ['IDVIDEOCARAPEMASANGAN', 'JUDUL', 'KONTEN', 'IMAGETHUMBNAIL', 'URLVIDEO', 'INPUTUSER', 'INPUTTANGGALWAKTU', 'URUTAN', 'STATUS'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -45,21 +45,22 @@ class BeritaInformasiModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
     
-    public function getDataBeritaInformasi($keyword = null)
+    public function getDataTutorialPemasangan($keyword = null)
     {	
         $this->select(
-            "IDSLIDEBANNER, JUDUL, KONTEN, IMAGE, INPUTUSER,
+            "IDVIDEOCARAPEMASANGAN, JUDUL, KONTEN, IMAGETHUMBNAIL, URLVIDEO, INPUTUSER,
             DATE_FORMAT(INPUTTANGGALWAKTU, '%d-%m-%Y %H:%i') as INPUTTANGGALWAKTUSTR, STATUS"
         );
         if ($keyword) {
             $this->groupStart();
             $this->like('JUDUL', $keyword);
             $this->orLike('KONTEN', $keyword);
+            $this->orLike('URLVIDEO', $keyword);
             $this->orLike('INPUTUSER', $keyword);
             $this->groupEnd();
         }
         $this->orderBy('STATUS DESC');
-        $this->orderBy('INPUTTANGGALWAKTU DESC');
+        $this->orderBy('URUTAN');
                
         return $this;
 	}

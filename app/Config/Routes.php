@@ -68,6 +68,7 @@ $routes->group('assets', [], function($routes) {
     $routes->get('imageSlideOnboarding/(:any)', 'Assets::imageSlideOnboarding/$1');
     $routes->get('imageSlideBanner/(:any)', 'Assets::imageSlideBanner/$1');
     $routes->get('imageGaleriProyek/(:any)', 'Assets::imageGaleriProyek/$1');
+    $routes->get('videoCaraPasang/(:any)', 'Assets::videoCaraPasang/$1');
 });
 
 $routes->group('view', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
@@ -158,6 +159,14 @@ $routes->group('customer', ['filter' => 'auth:mustBeLoggedIn'], function($routes
             $routes->post('getData', $functionRoute.'::getData');
             $routes->post('uploadImage', $functionRoute.'::uploadImage');
             $routes->post('saveData', $functionRoute.'::saveData');
+        });
+        $routes->group('tutorialPemasangan', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+            $functionRoute =   'Customer\Konten\TutorialPemasangan';
+            $routes->post('getData', $functionRoute.'::getData');
+            $routes->post('uploadThumbnailVideo', $functionRoute.'::uploadThumbnailVideo');
+            $routes->post('getDetail', $functionRoute.'::getDetail');
+            $routes->post('saveData', $functionRoute.'::saveData');
+            $routes->post('saveUrutanTutorial', $functionRoute.'::saveUrutanTutorial');
         });
         $routes->group('beritaInformasi', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
             $functionRoute =   'Customer\Konten\BeritaInformasi';

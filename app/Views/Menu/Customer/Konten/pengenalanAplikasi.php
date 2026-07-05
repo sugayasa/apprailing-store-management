@@ -69,20 +69,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <ul class="list-group" id="customerKontenPengenalanAplikasi-sortable">
-                    <li class="list-group-item d-flex align-items-center">
-                        <i class="fa fa-bars me-1"></i> Item One
-                    </li>
-                    <li class="list-group-item d-flex align-items-center">
-                        <i class="fa fa-bars me-1"></i> Item Two
-                    </li>
-                    <li class="list-group-item d-flex align-items-center">
-                        <i class="fa fa-bars me-1"></i> Item Three
-                    </li>
-                    <li class="list-group-item d-flex align-items-center">
-                        <i class="fa fa-bars me-1"></i> Item Four
-                    </li>
-                </ul>
+                <ul class="list-group" id="customerKontenPengenalanAplikasi-sortable"></ul>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-bs-dismiss="modal">Tutup</button>

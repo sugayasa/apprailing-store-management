@@ -97,6 +97,15 @@ class Assets extends ResourceController
         return $this->setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
+    public function videoCaraPasang($nameFile)
+    {
+        $fullFilePath   =   PATH_STORAGE_VIDEO_CARA_PASANG.$nameFile;
+        $isDefault      =   strpos($nameFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_VIDEO_CARA_PASANG  .'thumbnailDefault.png';
+
+        return $this->setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath);
+    }
+
     public function photoBarang($namaFile)
     {
         $fullFilePath   =   PATH_STORAGE_PHOTO_BARANG.$namaFile;
