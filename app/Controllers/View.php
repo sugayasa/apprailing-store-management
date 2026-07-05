@@ -233,7 +233,7 @@ class View extends ResourceController
             'Menu/Customer/Konten/beritaInformasi',
             [
                 'menuDetail'    =>  $this->menuDetail,
-                'defaultImage'  =>  BASE_URL_ASSETS_GALERI_PROYEK . 'noimage.jpg'
+                'defaultImage'  =>  BASE_URL_ASSETS_SLIDE_BANNER . 'noimage.jpg'
             ],
             ['debug' => false]
         );
