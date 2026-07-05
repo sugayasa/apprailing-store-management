@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="<?=BASE_URL_ASSETS_CSS?>app.min.css?<?=date('YmdHis')?>" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="<?=BASE_URL_ASSETS_CSS?>vendor.min.css?<?=date('YmdHis')?>" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="<?=BASE_URL_ASSETS_CSS?>uploadfile.css?<?=date('YmdHis')?>" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="<?=BASE_URL_ASSETS_CSS?>summernote-lite.min.css?<?=date('YmdHis')?>" rel="stylesheet" type="text/css">
 	</head>
     <body id="mainbody">
         <div id="app" class="app app-full-height app-without-header">
@@ -37,5 +38,6 @@
 	<script src="<?=BASE_URL_ASSETS_JS?>jquery.form.min.js?<?=date('YmdHis')?>"></script>
 	<script src="<?=BASE_URL_ASSETS_JS?>uploadfile.min.js?<?=date('YmdHis')?>"></script>
 	<script src="<?=BASE_URL_ASSETS_JS?>sortable.min.js?<?=date('YmdHis')?>"></script>
+	<script src="<?=BASE_URL_ASSETS_JS?>summernote-lite.min.js?<?=date('YmdHis')?>"></script>
 	<script src="<?=BASE_URL_ASSETS_JS?>session-controller.js?<?=date('YmdHis')?>"></script>
 </html>

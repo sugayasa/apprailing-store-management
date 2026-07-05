@@ -226,4 +226,20 @@ class View extends ResourceController
             'content'   =>  $content
         ]);
     }
+    
+    public function customerKontenBeritaInformasi()
+    {
+        $content    =   view(
+            'Menu/Customer/Konten/beritaInformasi',
+            [
+                'menuDetail'    =>  $this->menuDetail,
+                'defaultImage'  =>  BASE_URL_ASSETS_GALERI_PROYEK . 'noimage.jpg'
+            ],
+            ['debug' => false]
+        );
+
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
 }

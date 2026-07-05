@@ -88,6 +88,15 @@ class Assets extends ResourceController
         return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
+    public function imageSlideBanner($nameFile)
+    {
+        $fullFilePath   =   PATH_STORAGE_PHOTO_SLIDE_BANNER.$nameFile;
+        $isDefault      =   strpos($nameFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_PHOTO_SLIDE_BANNER.'default.jpg';
+
+        return $this->setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath);
+    }
+
     public function photoBarang($namaFile)
     {
         $fullFilePath   =   PATH_STORAGE_PHOTO_BARANG.$namaFile;

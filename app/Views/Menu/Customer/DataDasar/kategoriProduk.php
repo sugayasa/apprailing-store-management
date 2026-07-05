@@ -28,18 +28,7 @@
                         <th class="py-2 sticky-top" width="6%"></th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Elegant Design</td>
-                        <td>83 in stock for 3 variants</td>
-                        <td><span class="badge bg-success">Aktif</span></td>
-                        <td class="text-end">
-                            <button class="btn btn-sm btn-icon btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
-                                <i class="fa fa-edit"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
+                <tbody></tbody>
             </table>
         </div>
         <div class="d-md-flex align-items-center p-3 border-top">
