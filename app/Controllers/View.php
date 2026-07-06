@@ -241,6 +241,21 @@ class View extends ResourceController
         ]);
     }
     
+    public function customerKontenFeed()
+    {
+        $content    =   view(
+            'Menu/Customer/Konten/feed',
+            [
+                'menuDetail'    =>  $this->menuDetail
+            ],
+            ['debug' => false]
+        );
+
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
+    
     public function customerKontenBeritaInformasi()
     {
         $content    =   view(

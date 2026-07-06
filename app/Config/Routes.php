@@ -88,7 +88,7 @@ $routes->group('view', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
     $routes->post('customer-konten-galeri-proyek', $functionRoute.'::customerKontenGaleriProyek');
     $routes->post('customer-konten-tutorial-pemasangan', $functionRoute.'::customerKontenTutorialPemasangan');
     $routes->post('customer-konten-profil-perusahaan', $functionRoute.'::customerKontenProfilPerusahaan');
-    $routes->post('customer-konten-reels', $functionRoute.'::customerKontenReels');
+    $routes->post('customer-konten-feed', $functionRoute.'::customerKontenFeed');
     $routes->post('customer-konten-berita-informasi', $functionRoute.'::customerKontenBeritaInformasi');
 });
 
@@ -167,6 +167,11 @@ $routes->group('customer', ['filter' => 'auth:mustBeLoggedIn'], function($routes
             $routes->post('getDetail', $functionRoute.'::getDetail');
             $routes->post('saveData', $functionRoute.'::saveData');
             $routes->post('saveUrutanTutorial', $functionRoute.'::saveUrutanTutorial');
+        });
+        $routes->group('feed', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+            $functionRoute =   'Customer\Konten\Feed';
+            $routes->post('getData', $functionRoute.'::getData');
+            $routes->post('saveData', $functionRoute.'::saveData');
         });
         $routes->group('beritaInformasi', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
             $functionRoute =   'Customer\Konten\BeritaInformasi';
