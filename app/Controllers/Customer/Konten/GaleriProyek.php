@@ -82,6 +82,19 @@ class GaleriProyek extends ResourceController
 	public function uploadImage(){
 		helper(['fileValidation']);
 		validate_image($_FILES["file"], 1000000);
+
+		$info	    =	getimagesize($_FILES["file"]["tmp_name"]);
+		$width	    =	$info[0];
+		$height	    =	$info[1];
+		$ratio	    =	$width / $height;
+
+		if ($width < 600 || $height < 337.5) {
+			return throwResponseNotAcceptable("Ukuran gambar minimal 600 x 337.5 pixel.");
+		}
+
+        if ($width > 1200 || $height > 675) {
+			return throwResponseNotAcceptable("Ukuran gambar maksimal 1200 x 675 pixel.");
+		}
 		
 		$storage	=	StorageFactory::make();
 		$dir		=	PATH_STORAGE_PHOTO_GALERI_PROYEK;

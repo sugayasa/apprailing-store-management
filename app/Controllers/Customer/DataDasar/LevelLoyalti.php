@@ -78,6 +78,10 @@ class LevelLoyalti extends ResourceController
 		if ($width !== $height || $width < 80 || $height < 80) {
 			return throwResponseNotAcceptable("Gambar harus berbentuk persegi (lebar = tinggi) dengan minimal ukuran 80px.");
 		}
+
+        if ($width > 200 || $height > 200) {
+            return throwResponseNotAcceptable("Ukuran gambar maksimal 200px x 200px.");
+        }
 		
 		$storage	=	StorageFactory::make();
 		$dir		=	PATH_STORAGE_FILE_ICON_LEVEL_LOYALTI;
@@ -110,6 +114,11 @@ class LevelLoyalti extends ResourceController
 		if ($width < 600 || $height < 400) {
 			return throwResponseNotAcceptable("Ukuran gambar minimal 600 x 400 pixel.");
 		}
+
+		if ($width > 1200 || $height > 800) {
+			return throwResponseNotAcceptable("Ukuran gambar maksimal 1200 x 800 pixel.");
+		}
+
 
 		if (abs($ratio - 1.5) > 0.01) {
 			return throwResponseNotAcceptable("Rasio gambar harus 3:2 (lebar : tinggi).");

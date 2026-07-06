@@ -68,6 +68,18 @@ class PengenalanAplikasi extends ResourceController
 	public function uploadImage(){
 		helper(['fileValidation']);
 		validate_image($_FILES["file"], 1000000);
+
+		$info	    =	getimagesize($_FILES["file"]["tmp_name"]);
+		$width	    =	$info[0];
+		$height	    =	$info[1];
+
+		if ($width < 250 || $height < 250) {
+			return throwResponseNotAcceptable("Ukuran gambar minimal 250 x 250 pixel.");
+		}
+
+        if ($width > 1000 || $height > 1000) {
+			return throwResponseNotAcceptable("Ukuran gambar maksimal 1000 x 1000 pixel.");
+		}
 		
 		$storage	=	StorageFactory::make();
 		$dir		=	PATH_STORAGE_PHOTO_SLIDE_ONBOARDING;

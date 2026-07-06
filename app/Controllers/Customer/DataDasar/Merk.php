@@ -68,6 +68,14 @@ class Merk extends ResourceController
 	public function uploadLogo(){
 		helper(['fileValidation']);
 		validate_image($_FILES["file"], 1000000);
+
+		$info	    =	getimagesize($_FILES["file"]["tmp_name"]);
+		$width	    =	$info[0];
+		$height	    =	$info[1];
+
+        if ($width > 500 || $height > 500) {
+			return throwResponseNotAcceptable("Ukuran gambar maksimal 500 x 500 pixel.");
+		}
 		
 		$storage	=	StorageFactory::make();
 		$dir		=	PATH_STORAGE_FILE_LOGO_MERK;
@@ -160,6 +168,10 @@ class Merk extends ResourceController
 
 		if ($width < 250 || $height < 350) {
 			return throwResponseNotAcceptable("Ukuran gambar minimal 250 x 350 pixel.");
+		}
+
+        if ($width > 1000 || $height > 1400) {
+			return throwResponseNotAcceptable("Ukuran gambar maksimal 1000 x 1400 pixel.");
 		}
 
 		if (abs($ratio - (5/7)) > 0.01) {

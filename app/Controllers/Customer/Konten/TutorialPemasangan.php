@@ -160,6 +160,10 @@ class TutorialPemasangan extends ResourceController
 			return throwResponseNotAcceptable("Ukuran gambar minimal 600 x 337.5 pixel.");
 		}
 
+        if ($width > 1200 || $height > 675) {
+            return throwResponseNotAcceptable("Ukuran gambar maksimal 1200 x 675 pixel.");
+        }
+
 		if (abs($ratio - (16/9)) > 0.01) {
 			return throwResponseNotAcceptable("Rasio gambar harus 16:9 (lebar : tinggi).");
 		}
