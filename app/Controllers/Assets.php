@@ -97,6 +97,15 @@ class Assets extends ResourceController
         return $this->setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
+    public function videoCompanyProfile($nameFile)
+    {
+        $fullFilePath   =   PATH_STORAGE_VIDEO_COMPANY_PROFILE.$nameFile;
+        $isDefault      =   strpos($nameFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_VIDEO_COMPANY_PROFILE  .'thumbnailDefault.png';
+
+        return $this->setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath);
+    }
+
     public function videoCaraPasang($nameFile)
     {
         $fullFilePath   =   PATH_STORAGE_VIDEO_CARA_PASANG.$nameFile;
@@ -120,6 +129,15 @@ class Assets extends ResourceController
         $fullFilePath   =   PATH_STORAGE_PHOTO_GALERI_PROYEK.$namaFile;
         $isDefault      =   strpos($namaFile, 'noimage') !== false;
         $defaultFilePath=   PATH_STORAGE_PHOTO_GALERI_PROYEK  .'noimage.jpg';
+
+        return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
+    }
+
+    public function customerMerk($namaFile)
+    {
+        $fullFilePath   =   PATH_STORAGE_CUSTOMER_MERK.$namaFile;
+        $isDefault      =   strpos($namaFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_CUSTOMER_MERK  .'default.jpg';
 
         return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
     }

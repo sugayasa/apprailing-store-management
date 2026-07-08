@@ -68,7 +68,9 @@ $routes->group('assets', [], function($routes) {
     $routes->get('imageSlideOnboarding/(:any)', 'Assets::imageSlideOnboarding/$1');
     $routes->get('imageSlideBanner/(:any)', 'Assets::imageSlideBanner/$1');
     $routes->get('imageGaleriProyek/(:any)', 'Assets::imageGaleriProyek/$1');
+    $routes->get('videoCompanyProfile/(:any)', 'Assets::videoCompanyProfile/$1');
     $routes->get('videoCaraPasang/(:any)', 'Assets::videoCaraPasang/$1');
+    $routes->get('customerMerk/(:any)', 'Assets::customerMerk/$1');
 });
 
 $routes->group('view', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {

@@ -100,7 +100,7 @@
     </div>
 </div>
 <script>
-	var logoMerkBaseUrl =   "<?=BASE_URL_ASSETS_LOGO_MERK?>",
+	var logoMerkBaseUrl =   "<?=BASE_URL_ASSETS_CUSTOMER_MERK?>",
         logoMerkDefault =   "<?=$defaultImage?>",
         jsFileUrl       =   "<?=BASE_URL_ASSETS_JS?>menu/customer/dataDasar/merk.js?<?=date("YmdHis")?>";
 	$.getScript(jsFileUrl);

@@ -49,7 +49,7 @@ class Merk extends ResourceController
         $dataReturn     =   [
             "listData"                      =>  [],
             "pageProperty"                  =>  $pageProperty,
-            "urlAssetLogoMerk"              =>  BASE_URL_ASSETS_LOGO_MERK,
+            "urlAssetLogoMerk"              =>  BASE_URL_ASSETS_CUSTOMER_MERK,
             "urlAssetPdfKatalogThumbnail"   =>  BASE_URL_ASSETS_PDF_KATALOG_THUMBNAIL,
             "urlAssetPdfKatalogFile"        =>  BASE_URL_ASSETS_PDF_KATALOG_FILE
         ];
@@ -78,7 +78,7 @@ class Merk extends ResourceController
 		}
 		
 		$storage	=	StorageFactory::make();
-		$dir		=	PATH_STORAGE_FILE_LOGO_MERK;
+		$dir		=	PATH_STORAGE_CUSTOMER_MERK;
 		$extension	=	pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);
 		$filename	=	"LogoMerk"."_".date('YmdHis').".".$extension;
 		$move		=	$storage->upload($_FILES["file"]["tmp_name"], $dir.$filename);
@@ -87,7 +87,7 @@ class Merk extends ResourceController
             return $this->setResponseFormat('json')
 			->respond([
 				"status"    =>  200,
-				"urlLogo"   =>  BASE_URL_ASSETS_LOGO_MERK.$filename,
+				"urlLogo"   =>  BASE_URL_ASSETS_CUSTOMER_MERK.$filename,
 				"fileName"  =>  $filename,
 				"message"   =>  "Berkas berhasil diunggah"
 			]);

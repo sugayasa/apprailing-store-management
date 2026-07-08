@@ -152,7 +152,7 @@ class View extends ResourceController
             'Menu/Customer/DataDasar/merk',
             [
                 'menuDetail'                =>  $this->menuDetail,
-                'defaultImage'              =>  BASE_URL_ASSETS_LOGO_MERK . 'default.png',
+                'defaultImage'              =>  BASE_URL_ASSETS_CUSTOMER_MERK . 'default.jpg',
                 'defaultPdfKatalogThumbnail'=>  BASE_URL_ASSETS_PDF_KATALOG_THUMBNAIL . 'default.png',
                 'defaultPdfKatalogFile'     =>  BASE_URL_ASSETS_PDF_KATALOG_FILE . 'default.pdf'
             ],
@@ -236,6 +236,22 @@ class View extends ResourceController
             ],
             ['debug' => false]
         );
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
+    
+    public function customerKontenProfilPerusahaan()
+    {
+        $content    =   view(
+            'Menu/Customer/Konten/profilPerusahaan',
+            [
+                'menuDetail'    =>  $this->menuDetail,
+                'defaultImage'  =>  BASE_URL_ASSETS_VIDEO_COMPANY_PROFILE . 'defaultThumbnail.jpg'
+            ],
+            ['debug' => false]
+        );
+
         return $this->setResponseFormat('json')->respond([
             'content'   =>  $content
         ]);
