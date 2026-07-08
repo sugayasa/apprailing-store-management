@@ -183,7 +183,7 @@ class View extends ResourceController
             'Menu/Customer/DataDasar/levelLoyalti',
             [
                 'menuDetail'        =>  $this->menuDetail,
-                'defaultImageCard'  =>  BASE_URL_ASSETS_CARD_LEVEL_LOYALTI . 'default.jpg',
+                'defaultImageCard'  =>  BASE_URL_ASSETS_CARD_LEVEL_LOYALTI . 'default.png',
                 'defaultImageIcon'  =>  BASE_URL_ASSETS_ICON_LEVEL_LOYALTI . 'default.png'
             ],
             ['debug' => false]
