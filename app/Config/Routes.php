@@ -170,6 +170,14 @@ $routes->group('customer', ['filter' => 'auth:mustBeLoggedIn'], function($routes
             $routes->post('saveData', $functionRoute.'::saveData');
             $routes->post('saveUrutanTutorial', $functionRoute.'::saveUrutanTutorial');
         });
+        $routes->group('profilPerusahaan', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+            $functionRoute =   'Customer\Konten\ProfilPerusahaan';
+            $routes->post('getData', $functionRoute.'::getData');
+            $routes->post('uploadThumbnailVideo', $functionRoute.'::uploadThumbnailVideo');
+            $routes->post('getDetail', $functionRoute.'::getDetail');
+            $routes->post('saveData', $functionRoute.'::saveData');
+            $routes->post('saveUrutanProfilPerusahaan', $functionRoute.'::saveUrutanProfilPerusahaan');
+        });
         $routes->group('feed', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
             $functionRoute =   'Customer\Konten\Feed';
             $routes->post('getData', $functionRoute.'::getData');

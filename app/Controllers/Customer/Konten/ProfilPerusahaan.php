@@ -8,10 +8,11 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use App\Models\MainOperation;
-use App\Models\Customer\Konten\TutorialPemasanganModel;
+use App\Models\Customer\Konten\ProfilPerusahaanModel;
 use App\Libraries\StorageFactory;
 
-class TutorialPemasangan extends ResourceController
+
+class ProfilPerusahaan extends ResourceController
 {
     /**
      * Return an array of resource objects, themselves in array format
@@ -38,10 +39,10 @@ class TutorialPemasangan extends ResourceController
     public function getData()
     {
         $mainOperation          =   new MainOperation();
-        $tutorialPemasanganModel=   new TutorialPemasanganModel();
+        $profilPerusahaanModel  =   new ProfilPerusahaanModel();
 
-         $rules     =   [
-            'searchKeyword' =>  ['label' => 'Pencarian', 'rules' => 'permit_empty|alpha_numeric_punct']
+        $rules      =   [
+            'searchKeyword' =>  ['label' => 'Nama Merk', 'rules' => 'permit_empty|alpha_numeric_punct']
         ];
 
         $messages   =   [];
@@ -51,13 +52,13 @@ class TutorialPemasangan extends ResourceController
         $pageNumber     =   $this->request->getVar('pageNumber') ? (int)$this->request->getVar('pageNumber') : 1;
         $dataPerPage    =   $this->request->getVar('dataPerPage') ? (int)$this->request->getVar('dataPerPage') : 10;
         $searchKeyword  =   $this->request->getVar('searchKeyword');
-        $baseData       =   $tutorialPemasanganModel->getDataTutorialPemasangan($searchKeyword);
+        $baseData       =   $profilPerusahaanModel->getDataProfilPerusahaan($searchKeyword);
         $totalNumberData=   $baseData->countAllResults(false);
         $pageProperty   =   $mainOperation->generatePageProperty($pageNumber, $dataPerPage, $totalNumberData);
 
         if($totalNumberData > 0){
             $listData   =   $baseData->asObject()->findAll($dataPerPage, ($pageNumber - 1) * $dataPerPage);
-            $listData   =   encodeDatabaseObjectResultKey($listData, ['IDVIDEOCARAPEMASANGAN']);
+            $listData   =   encodeDatabaseObjectResultKey($listData, ['IDVIDEOCOMPANYPROFILE']);
 
             foreach ($listData as $keyData) {
                 $kontenText =   strip_tags($keyData->KONTEN);
@@ -71,7 +72,7 @@ class TutorialPemasangan extends ResourceController
                 $kontenTextSlice=   mb_substr(trim($kontenText), 0, 250);
 
                 $keyData->KONTEN        =   $kontenTextSlice;
-                $keyData->IMAGETHUMBNAIL=   BASE_URL_ASSETS_VIDEO_CARA_PASANG . $keyData->IMAGETHUMBNAIL;
+                $keyData->IMAGETHUMBNAIL=   BASE_URL_ASSETS_VIDEO_COMPANY_PROFILE . $keyData->IMAGETHUMBNAIL;
             }
 
             return $this->setResponseFormat('json')->respond([
@@ -87,14 +88,14 @@ class TutorialPemasangan extends ResourceController
         }
     }
 
-    public function saveUrutanTutorial()
+    public function saveUrutanProfilPerusahaan()
     {
         $rules      =   [
-            'arrUrutanTutorial.*'   =>  ['label' => 'Urutan', 'rules' => 'required|alpha_numeric']
+            'arrUrutanProfil.*' =>  ['label' => 'Urutan', 'rules' => 'required|alpha_numeric']
         ];
 
         $messages   =   [
-            'arrUrutanTutorial.*'   =>  [
+            'arrUrutanProfil.*' =>  [
                 'required'      =>  'Urutan tidak valid',
                 'alpha_numeric' =>  'Urutan tidak valid'
             ]
@@ -102,32 +103,33 @@ class TutorialPemasangan extends ResourceController
 
         if(!$this->validate($rules, $messages)) return $this->fail($this->validator->getErrors());
         
-        $arrUrutanTutorial  =   $this->request->getVar('arrUrutanTutorial');
+        $arrUrutanProfil    =   $this->request->getVar('arrUrutanProfil');
         
-        if(!is_array($arrUrutanTutorial) || count($arrUrutanTutorial) <= 0) return throwResponseNotAcceptable("Data kiriman tidak valid, harap ulangi lagi nanti");
+        if(!is_array($arrUrutanProfil) || count($arrUrutanProfil) <= 0) return throwResponseNotAcceptable("Data kiriman tidak valid, harap ulangi lagi nanti");
         
-        $mainOperation  =   new MainOperation();
-        $urutanTutorial =   1;
-        foreach($arrUrutanTutorial as $idVideoCaraPemasangan){
-            $idVideoCaraPemasangan  =   hashidDecode($idVideoCaraPemasangan);
-            if($idVideoCaraPemasangan && is_numeric($idVideoCaraPemasangan)){
-                $arrUpdateUrutan    =   ['URUTAN' => $urutanTutorial];
-                $mainOperation->updateDataTable(APP_MAIN_DATABASE_CUSTOMER . '.t_videocarapemasangan', $arrUpdateUrutan, ['IDVIDEOCARAPEMASANGAN' => $idVideoCaraPemasangan]);
-                $urutanTutorial++;
+        $mainOperation          =   new MainOperation();
+        $urutanProfilPerusahaan =   1;
+
+        foreach($arrUrutanProfil as $idVideoProfilPerusahaan){
+            $idVideoProfilPerusahaan    =   hashidDecode($idVideoProfilPerusahaan);
+            if($idVideoProfilPerusahaan && is_numeric($idVideoProfilPerusahaan)){
+                $arrUpdateUrutan        =   ['URUTAN' => $urutanProfilPerusahaan];
+                $mainOperation->updateDataTable(APP_MAIN_DATABASE_CUSTOMER . '.t_videocompanyprofile', $arrUpdateUrutan, ['IDVIDEOCOMPANYPROFILE' => $idVideoProfilPerusahaan]);
+                $urutanProfilPerusahaan++;
             }
         }
 
-        return throwResponseOK("Urutan tutorial pemasangan tersimpan");
+        return throwResponseOK("Urutan profil perusahaan tersimpan");
     }
 
     public function getDetail()
     {
         $rules      =   [
-            'idVideoCaraPemasangan' =>  ['label' => 'ID Video Cara Pemasangan', 'rules' => 'required|alpha_numeric']
+            'idVideoProfilPerusahaan'   =>  ['label' => 'ID Video Profil Perusahaan', 'rules' => 'required|alpha_numeric']
         ];
 
         $messages   =   [
-            'idVideoCaraPemasangan' =>  [
+            'idVideoProfilPerusahaan'   =>  [
                 'required'      =>  'Data kiriman tidak lengkap, silakan periksa kembali',
                 'alpha_numeric' =>  'Data kiriman tidak valid, silakan periksa kembali'
             ]
@@ -135,13 +137,13 @@ class TutorialPemasangan extends ResourceController
 
         if(!$this->validate($rules, $messages)) return $this->fail($this->validator->getErrors());
 
-        $tutorialPemasanganModel=   new TutorialPemasanganModel();
-        $idVideoCaraPemasangan  =   hashidDecode($this->request->getVar('idVideoCaraPemasangan'));
-        $detailData             =   $tutorialPemasanganModel->find($idVideoCaraPemasangan);
+        $profilPerusahaanModel  =   new ProfilPerusahaanModel();
+        $idVideoProfilPerusahaan=   hashidDecode($this->request->getVar('idVideoProfilPerusahaan'));
+        $detailData             =   $profilPerusahaanModel->find($idVideoProfilPerusahaan);
         
         if(!$detailData) return throwResponseNotFound('Data tidak ditemukan');
 
-        unset($detailData['IDVIDEOCARAPEMASANGAN']);
+        unset($detailData['IDVIDEOCOMPANYPROFILE']);
         return $this->setResponseFormat('json')->respond([
             "dataDetail" => $detailData
         ]);
@@ -150,11 +152,11 @@ class TutorialPemasangan extends ResourceController
 	public function uploadThumbnailVideo(){
 		helper(['fileValidation']);
 		validate_image($_FILES["file"], 2000000);
-
-		$info	    =	getimagesize($_FILES["file"]["tmp_name"]);
-		$width	    =	$info[0];
-		$height	    =	$info[1];
-		$ratio	    =	$width / $height;
+        
+		$info   =	getimagesize($_FILES["file"]["tmp_name"]);
+		$width  =	$info[0];
+		$height =	$info[1];
+		$ratio  =	$width / $height;
 
 		if ($width < 600 || $height < 337.5) {
 			return throwResponseNotAcceptable("Ukuran gambar minimal 600 x 337.5 pixel.");
@@ -169,16 +171,16 @@ class TutorialPemasangan extends ResourceController
 		}
 		
 		$storage	=	StorageFactory::make();
-		$dir		=	PATH_STORAGE_VIDEO_CARA_PASANG;
+		$dir		=	PATH_STORAGE_VIDEO_COMPANY_PROFILE;
 		$extension	=	pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION);
-		$filename	=	"TutorialPemasanganThumbnail"."_".date('YmdHis').".".$extension;
+		$filename	=	"ProfilPerusahaanThumbnail"."_".date('YmdHis').".".$extension;
 		$move		=	$storage->upload($_FILES["file"]["tmp_name"], $dir.$filename);
 		
 		if($move){
             return $this->setResponseFormat('json')
 			->respond([
 				"status"    =>  200,
-				"urlImage"  =>  BASE_URL_ASSETS_VIDEO_CARA_PASANG.$filename,
+				"urlImage"  =>  BASE_URL_ASSETS_VIDEO_COMPANY_PROFILE.$filename,
 				"fileName"  =>  $filename,
 				"message"   =>  "Berkas berhasil diunggah"
 			]);
@@ -189,9 +191,9 @@ class TutorialPemasangan extends ResourceController
 
     public function saveData()
     {
-        $idVideoCaraPemasangan  =   $this->request->getVar('idVideoCaraPemasangan');
-        $idVideoCaraPemasangan  =   $idVideoCaraPemasangan != "" ? hashidDecode($idVideoCaraPemasangan) : 0;
-        $validation             =   $idVideoCaraPemasangan == 0 ? $this->parametersValidator() : $this->parametersValidator(true, $idVideoCaraPemasangan);
+        $idVideoProfilPerusahaan=   $this->request->getVar('idVideoProfilPerusahaan');
+        $idVideoProfilPerusahaan=   $idVideoProfilPerusahaan != "" ? hashidDecode($idVideoProfilPerusahaan) : 0;
+        $validation             =   $idVideoProfilPerusahaan == 0 ? $this->parametersValidator() : $this->parametersValidator(true, $idVideoProfilPerusahaan);
         
         if($validation !== true) return $this->fail($validation);
         
@@ -211,27 +213,27 @@ class TutorialPemasangan extends ResourceController
             'STATUS'            =>  $status
         ];
 
-        if($idVideoCaraPemasangan == 0){
-            $tutorialPemasanganModel    =   new TutorialPemasanganModel();
-            $lastUrutan                 =   $tutorialPemasanganModel->selectMax('URUTAN')->get()->getRow();
+        if($idVideoProfilPerusahaan == 0){
+            $profilPerusahaanModel      =   new ProfilPerusahaanModel();
+            $lastUrutan                 =   $profilPerusahaanModel->selectMax('URUTAN')->get()->getRow();
             $nextUrutan                 =   ($lastUrutan && $lastUrutan->URUTAN !== null) ? (int)$lastUrutan->URUTAN + 1 : 1;
             $arrInsertUpdate['URUTAN']  =   $nextUrutan;
-            $procInsertData             =   $mainOperation->insertDataTable(APP_MAIN_DATABASE_CUSTOMER . '.t_videocarapemasangan', $arrInsertUpdate);
+            $procInsertData             =   $mainOperation->insertDataTable(APP_MAIN_DATABASE_CUSTOMER . '.t_videocompanyprofile', $arrInsertUpdate);
             if(!$procInsertData['status']) return switchMySQLErrorCode($procInsertData['errCode']);
         } else {
-            $procUpdateData =   $mainOperation->updateDataTable(APP_MAIN_DATABASE_CUSTOMER . '.t_videocarapemasangan', $arrInsertUpdate, ['IDVIDEOCARAPEMASANGAN' => $idVideoCaraPemasangan]);
+            $procUpdateData =   $mainOperation->updateDataTable(APP_MAIN_DATABASE_CUSTOMER . '.t_videocompanyprofile', $arrInsertUpdate, ['IDVIDEOCOMPANYPROFILE' => $idVideoProfilPerusahaan]);
             if(!$procUpdateData['status']) return switchMySQLErrorCode($procUpdateData['errCode']);
         }
                     
-        $responseSuccess =   $idVideoCaraPemasangan == 0 ? 'Data tutorial pemasangan telah disimpan' : 'Data tutorial pemasangan telah diperbarui';
+        $responseSuccess    =   $idVideoProfilPerusahaan == 0 ? 'Data profil perusahaan telah disimpan' : 'Data profil perusahaan telah diperbarui';
         return throwResponseOK($responseSuccess);
     }
 
-    private function parametersValidator($isUpdate = false, $idVideoCaraPemasangan = null)
+    private function parametersValidator($isUpdate = false, $idVideoProfilPerusahaan = null)
     {
         $rules      =   [
             'thumbnailVideoFileName'=>  ['label' => 'Gambar Thumbnail', 'rules' => 'required|alpha_numeric_punct|max_length[50]'],
-            'judul'                 =>  ['label' => 'Judul', 'rules' => 'required|alpha_numeric_space|min_length[3]|max_length[25]'],
+            'judul'                 =>  ['label' => 'Judul', 'rules' => 'required|string|min_length[3]|max_length[50]'],
             'konten'                =>  ['label' => 'Konten', 'rules' => 'required'],
             'urlVideo'              =>  ['label' => 'URL Video', 'rules' => 'required|valid_url|max_length[255]'],
             'status'                =>  ['label' => 'Status', 'rules' => 'required|in_list[-1,1]']
@@ -243,18 +245,18 @@ class TutorialPemasangan extends ResourceController
                 'max_length'    =>  'Gambar thumbnail yang diunggah tidak valid'
             ],
             'status'        =>  [
-                'required'  =>  'Status tutorial harus dipilih',
-                'in_list'   =>  'Status tutorial yang dipilih tidak valid'
+                'required'  =>  'Status profil perusahaan harus dipilih',
+                'in_list'   =>  'Status profil perusahaan yang dipilih tidak valid'
             ]
         ];
 
         if($isUpdate) {
-            $rules['judul']['rules']                            .=  '|is_unique['.APP_MAIN_DATABASE_CUSTOMER_CI_VALIDATION . '.t_videocarapemasangan.JUDUL, IDVIDEOCARAPEMASANGAN, '.$idVideoCaraPemasangan.']';
-            $rules['idVideoCaraPemasangan']['rules']            =   'required|alpha_numeric';
-            $messages['idVideoCaraPemasangan']['required']      =   'Data kiriman tidak lengkap, silakan periksa kembali';
-            $messages['idVideoCaraPemasangan']['alpha_numeric'] =   'Data kiriman tidak lengkap, silakan periksa kembali';
+            $rules['judul']['rules']                                .=  '|is_unique['.APP_MAIN_DATABASE_CUSTOMER_CI_VALIDATION . '.t_videocompanyprofile.JUDUL, IDVIDEOCOMPANYPROFILE, '.$idVideoProfilPerusahaan.']';
+            $rules['idVideoProfilPerusahaan']['rules']              =   'required|alpha_numeric';
+            $messages['idVideoProfilPerusahaan']['required']        =   'Data kiriman tidak lengkap, silakan periksa kembali';
+            $messages['idVideoProfilPerusahaan']['alpha_numeric']   =   'Data kiriman tidak lengkap, silakan periksa kembali';
         } else {
-            $rules['judul']['rules']    .=  '|is_unique['.APP_MAIN_DATABASE_CUSTOMER_CI_VALIDATION . '.t_videocarapemasangan.JUDUL]';
+            $rules['judul']['rules']    .=  '|is_unique['.APP_MAIN_DATABASE_CUSTOMER_CI_VALIDATION . '.t_videocompanyprofile.JUDUL]';
         }
 
         if(!$this->validate($rules, $messages)) return $this->validator->getErrors();
