@@ -67,7 +67,9 @@ class Merk extends ResourceController
 	
 	public function uploadLogo(){
 		helper(['fileValidation']);
-		validate_image($_FILES["file"], 1000000);
+        if (empty($_FILES['file']['tmp_name'])) return throwResponseNotAcceptable("Tidak ada file yang diunggah");
+        $fileValidation =   validate_image($_FILES["file"], 1000000);
+        if($fileValidation !== true) return $fileValidation;
 
 		$info	    =	getimagesize($_FILES["file"]["tmp_name"]);
 		$width	    =	$info[0];
@@ -159,7 +161,10 @@ class Merk extends ResourceController
 	
 	public function uploadPdfKatalogThumbnail(){
 		helper(['fileValidation']);
-		validate_image($_FILES["file"], 1000000);
+        if (empty($_FILES['file']['tmp_name'])) return throwResponseNotAcceptable("Tidak ada file yang diunggah");
+		
+        $fileValidation =   validate_image($_FILES["file"], 1000000);
+        if($fileValidation !== true) return $fileValidation;
 
 		$info	    =	getimagesize($_FILES["file"]["tmp_name"]);
 		$width	    =	$info[0];
@@ -199,7 +204,10 @@ class Merk extends ResourceController
 	
 	public function uploadPdfKatalogFile(){
 		helper(['fileValidation']);
-		validate_pdf($_FILES["file"], 10000000);
+        if (empty($_FILES['file']['tmp_name'])) return throwResponseNotAcceptable("Tidak ada file yang diunggah");
+		
+        $fileValidation =   validate_pdf($_FILES["file"], 10000000);
+        if($fileValidation !== true) return $fileValidation;
 		
 		$storage	=	StorageFactory::make();
 		$dir		=	PATH_STORAGE_FILE_PDF_KATALOG_FILE;

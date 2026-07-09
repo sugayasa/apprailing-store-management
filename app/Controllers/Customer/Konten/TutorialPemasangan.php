@@ -64,7 +64,7 @@ class TutorialPemasangan extends ResourceController
                 $kontenText =   html_entity_decode($kontenText, ENT_QUOTES | ENT_HTML5, 'UTF-8');
                 $kontenText =   trim($kontenText);
 
-                $posKontenText  =   mb_strpos($kontenText, '.');
+                $posKontenText  =   strpos($kontenText, '.');
                 if ($posKontenText !== false) {
                     $kontenText = mb_substr($kontenText, 0, $posKontenText);
                 }
@@ -149,7 +149,10 @@ class TutorialPemasangan extends ResourceController
 	
 	public function uploadThumbnailVideo(){
 		helper(['fileValidation']);
-		validate_image($_FILES["file"], 2000000);
+        if (empty($_FILES['file']['tmp_name'])) return throwResponseNotAcceptable("Tidak ada file yang diunggah");
+
+        $fileValidation =   validate_image($_FILES["file"], 2000000);
+        if($fileValidation !== true) return $fileValidation;
 
 		$info	    =	getimagesize($_FILES["file"]["tmp_name"]);
 		$width	    =	$info[0];

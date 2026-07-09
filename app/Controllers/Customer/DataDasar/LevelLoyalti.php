@@ -69,6 +69,7 @@ class LevelLoyalti extends ResourceController
 	
 	public function uploadIcon(){
 		helper(['fileValidation']);
+        if (empty($_FILES['file']['tmp_name'])) return throwResponseNotAcceptable("Tidak ada file yang diunggah");
 		validate_image($_FILES["file"], 1000000);
 
 		$info	    =	getimagesize($_FILES["file"]["tmp_name"]);
@@ -104,7 +105,10 @@ class LevelLoyalti extends ResourceController
 	
 	public function uploadCard(){
 		helper(['fileValidation']);
-		validate_image($_FILES["file"], 1000000);
+        if (empty($_FILES['file']['tmp_name'])) return throwResponseNotAcceptable("Tidak ada file yang diunggah");
+        
+        $fileValidation =   validate_image($_FILES["file"], 1000000);
+        if($fileValidation !== true) return $fileValidation;
 
 		$info	    =	getimagesize($_FILES["file"]["tmp_name"]);
 		$width	    =	$info[0];

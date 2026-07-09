@@ -126,8 +126,8 @@
     </div>
 </div>
 <script>
-	var baseURLImage=   "<?=BASE_URL_ASSETS_VIDEO_CARA_PASANG?>";
-        defaultImage=   "<?=$defaultImage?>";
+	var baseURLImage=   "<?=BASE_URL_ASSETS_VIDEO_CARA_PASANG?>",
+        defaultImage=   "<?=$defaultImage?>",
         jsFileUrl   =   "<?=BASE_URL_ASSETS_JS?>menu/customer/konten/tutorialPemasangan.js?<?=date("YmdHis")?>";
 	$.getScript(jsFileUrl);
 </script>

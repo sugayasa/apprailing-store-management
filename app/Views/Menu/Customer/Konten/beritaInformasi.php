@@ -99,8 +99,8 @@
     </div>
 </div>
 <script>
-	var baseURLImage=   "<?=BASE_URL_ASSETS_SLIDE_BANNER?>";
-        defaultImage=   "<?=$defaultImage?>";
+	var baseURLImage=   "<?=BASE_URL_ASSETS_SLIDE_BANNER?>",
+        defaultImage=   "<?=$defaultImage?>",
         jsFileUrl   =   "<?=BASE_URL_ASSETS_JS?>menu/customer/konten/beritaInformasi.js?<?=date("YmdHis")?>";
 	$.getScript(jsFileUrl);
 </script>

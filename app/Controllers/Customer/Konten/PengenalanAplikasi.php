@@ -67,7 +67,10 @@ class PengenalanAplikasi extends ResourceController
 	
 	public function uploadImage(){
 		helper(['fileValidation']);
-		validate_image($_FILES["file"], 1000000);
+        if (empty($_FILES['file']['tmp_name'])) return throwResponseNotAcceptable("Tidak ada file yang diunggah");
+
+        $fileValidation =   validate_image($_FILES["file"], 1000000);
+        if($fileValidation !== true) return $fileValidation;
 
 		$info	    =	getimagesize($_FILES["file"]["tmp_name"]);
 		$width	    =	$info[0];
