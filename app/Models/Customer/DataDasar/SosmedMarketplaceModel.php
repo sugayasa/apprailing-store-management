@@ -55,12 +55,12 @@ class SosmedMarketplaceModel extends Model
 
     public function getDataSosmedMarketplaceByIdTipe($idTipeSosmedMarketplace)
     {	
-        $this->db->table('t_sosmedmarketplace');
-        $this->select("IDSOSMEDMARKETPLACE, NAMAAKUN, URL, URUTAN");
-        $this->where('IDTIPESOSMEDMARKETPLACE', $idTipeSosmedMarketplace);
-        $this->orderBy('URUTAN ASC');
+        $builder = $this->db->table('t_sosmedmarketplace');
+        $builder->select("IDSOSMEDMARKETPLACE, NAMAAKUN, URL, URUTAN");
+        $builder->where('IDTIPESOSMEDMARKETPLACE', $idTipeSosmedMarketplace);
+        $builder->orderBy('URUTAN ASC');
                
-        $result =   $this->get()->getResultObject();
+        $result =   $builder->get()->getResultObject();
         if(is_null($result)) return [];
         return $result;
     }
