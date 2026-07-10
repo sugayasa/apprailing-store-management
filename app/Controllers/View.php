@@ -193,6 +193,21 @@ class View extends ResourceController
         ]);
     }
     
+    public function customerDataDasarSosmedMarketplace()
+    {
+        $content    =   view(
+            'Menu/Customer/DataDasar/sosmedMarketplace',
+            [
+                'menuDetail'        =>  $this->menuDetail,
+                'defaultImageIcon'  =>  BASE_URL_ASSETS_CUSTOMER_SOSMED_MARKETPLACE . 'icondefault.png'
+            ],
+            ['debug' => false]
+        );
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
+    
     public function customerKontenPengenalanAplikasi()
     {
         $content    =   view(

@@ -71,6 +71,7 @@ $routes->group('assets', [], function($routes) {
     $routes->get('videoCompanyProfile/(:any)', 'Assets::videoCompanyProfile/$1');
     $routes->get('videoCaraPasang/(:any)', 'Assets::videoCaraPasang/$1');
     $routes->get('customerMerk/(:any)', 'Assets::customerMerk/$1');
+    $routes->get('customerSosmedMarketplace/(:any)', 'Assets::customerSosmedMarketplace/$1');
 });
 
 $routes->group('view', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
@@ -86,6 +87,7 @@ $routes->group('view', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
     $routes->post('customer-data-dasar-merk', $functionRoute.'::customerDataDasarMerk');
     $routes->post('customer-data-dasar-kategori-produk', $functionRoute.'::customerDataDasarKategoriProduk');
     $routes->post('customer-data-dasar-level-loyalti', $functionRoute.'::customerDataDasarLevelLoyalti');
+    $routes->post('customer-data-dasar-sosmed-marketplace', $functionRoute.'::customerDataDasarSosmedMarketplace');
     $routes->post('customer-konten-pengenalan-aplikasi', $functionRoute.'::customerKontenPengenalanAplikasi');
     $routes->post('customer-konten-galeri-proyek', $functionRoute.'::customerKontenGaleriProyek');
     $routes->post('customer-konten-tutorial-pemasangan', $functionRoute.'::customerKontenTutorialPemasangan');
@@ -146,6 +148,15 @@ $routes->group('customer', ['filter' => 'auth:mustBeLoggedIn'], function($routes
             $routes->post('uploadIcon', $functionRoute.'::uploadIcon');
             $routes->post('uploadCard', $functionRoute.'::uploadCard');
             $routes->post('saveData', $functionRoute.'::saveData');
+        });
+        $routes->group('sosmedMarketplace', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+            $functionRoute =   'Customer\DataDasar\SosmedMarketplace';
+            $routes->post('getData', $functionRoute.'::getData');
+            $routes->post('uploadIcon', $functionRoute.'::uploadIcon');
+            $routes->post('saveDataTipe', $functionRoute.'::saveDataTipe');
+            $routes->post('saveUrutanTipe', $functionRoute.'::saveUrutanTipeSosmedMarketplace');
+            $routes->post('saveDataAkun', $functionRoute.'::saveDataAkun');
+            $routes->post('deleteDataAkun', $functionRoute.'::deleteDataAkun');
         });
     });
     $routes->group('konten', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {

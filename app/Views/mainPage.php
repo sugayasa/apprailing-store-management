@@ -186,7 +186,7 @@
 </div>
 <div class="modal fade" id="modal-confirm-action" aria-labelledby="Konfirmasi" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <form class="modal-content" id="modal-confirm-form">
 			<div class="modal-header">
 				<h4 class="modal-title" id="modal-confirm-title">Konfirmasi</h4>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -194,9 +194,9 @@
 			<div class="modal-body" id="modal-confirm-body"></div>
            <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
-                <button class="btn btn-primary" id="confirmBtn" data-idData="" data-function="">Lanjutkan</button>
+                <button class="btn btn-primary" data-idData="" data-function="">Lanjutkan</button>
            </div>
-        </div>
+        </form>
     </div>
 </div>
 <div class="modal loader-modal" id="window-loader" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="z-index: 9999;">

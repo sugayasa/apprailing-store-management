@@ -142,6 +142,15 @@ class Assets extends ResourceController
         return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
+    public function customerSosmedMarketplace($namaFile)
+    {
+        $fullFilePath   =   PATH_STORAGE_CUSTOMER_SOSMED_MARKETPLACE.$namaFile;
+        $isDefault      =   strpos($namaFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_CUSTOMER_SOSMED_MARKETPLACE  .'icondefault.png';
+
+        return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
+    }
+
     private function setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath)
     {
         if (!is_file($fullFilePath) || !file_exists($fullFilePath) || $isDefault !== false) $fullFilePath   =   $defaultFilePath;

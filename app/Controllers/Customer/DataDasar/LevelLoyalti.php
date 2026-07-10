@@ -123,7 +123,6 @@ class LevelLoyalti extends ResourceController
 			return throwResponseNotAcceptable("Ukuran gambar maksimal 1200 x 800 pixel.");
 		}
 
-
 		if (abs($ratio - 1.5) > 0.01) {
 			return throwResponseNotAcceptable("Rasio gambar harus 3:2 (lebar : tinggi).");
 		}
