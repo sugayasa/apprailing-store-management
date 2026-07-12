@@ -36,6 +36,31 @@ class KatalogProduk extends ResourceController
 
     public function getDataKatalogProduk()
     {
+        $rules      =   [
+            'merk'          =>  ['label' => 'Merk', 'rules' => 'permit_empty|alpha_numeric'],
+            'kategori'      =>  ['label' => 'Kategori', 'rules' => 'permit_empty|alpha_numeric'],
+            'keywordCari'   =>  ['label' => 'Keyword Cari', 'rules' => 'permit_empty|string'],
+            'urutBerdasar'  =>  ['label' => 'Urutan Berdasar', 'rules' => 'required|in_list[1,2]'],
+            'jenisUrutan'   =>  ['label' => 'Jenis Urutan', 'rules' => 'required|in_list[ASC,DESC]'],
+        ];
+
+        $messages   =   [
+            'merk'  =>  [
+                'alpha_numeric' =>  'Merk tidak valid'
+            ],
+            'kategori'  =>  [
+                'alpha_numeric' =>  'Kategori tidak valid'
+            ],
+            'urutBerdasar'  =>  [
+                'in_list' =>  'Urutan Berdasar tidak valid'
+            ],
+            'jenisUrutan'   =>  [
+                'in_list' =>  'Jenis Urutan tidak valid'
+            ]
+        ];
+
+        if(!$this->validate($rules, $messages)) return $this->fail($this->validator->getErrors());
+        
         $mainOperation      =   new MainOperation();
         $katalogProdukModel =   new KatalogProdukModel();
 
