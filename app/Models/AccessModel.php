@@ -156,6 +156,15 @@ class AccessModel extends Model
         return $this->get()->getResultObject();
     }
 
+    public function getDataCustomerKategori()
+    {
+        $this->select('IDKATEGORI AS ID, NAMAKATEGORI AS VALUE');
+        $this->from(APP_MAIN_DATABASE_CUSTOMER.'.m_kategori', true);
+        $this->orderBy('NAMAKATEGORI');
+
+        return $this->get()->getResultObject();
+    }
+
     public function setLastActivityUserAdmin($idUserAdmin, $datetimeActivity)
     {
         $this->set('DATETIMEACTIVITY', $datetimeActivity);

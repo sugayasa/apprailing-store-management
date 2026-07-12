@@ -72,6 +72,7 @@ $routes->group('assets', [], function($routes) {
     $routes->get('videoCaraPasang/(:any)', 'Assets::videoCaraPasang/$1');
     $routes->get('customerMerk/(:any)', 'Assets::customerMerk/$1');
     $routes->get('customerSosmedMarketplace/(:any)', 'Assets::customerSosmedMarketplace/$1');
+    $routes->get('customerProduk/(:any)', 'Assets::customerProduk/$1');
 });
 
 $routes->group('view', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
@@ -94,6 +95,7 @@ $routes->group('view', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
     $routes->post('customer-konten-profil-perusahaan', $functionRoute.'::customerKontenProfilPerusahaan');
     $routes->post('customer-konten-feed', $functionRoute.'::customerKontenFeed');
     $routes->post('customer-konten-berita-informasi', $functionRoute.'::customerKontenBeritaInformasi');
+    $routes->post('customer-produk-katalog', $functionRoute.'::customerProdukKatalog');
 });
 
 $routes->group('dashboard', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
@@ -200,6 +202,12 @@ $routes->group('customer', ['filter' => 'auth:mustBeLoggedIn'], function($routes
             $routes->post('uploadImage', $functionRoute.'::uploadImage');
             $routes->post('getDetail', $functionRoute.'::getDetail');
             $routes->post('saveData', $functionRoute.'::saveData');
+        });
+    });
+    $routes->group('produk', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+        $routes->group('katalog', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+            $functionRoute =   'Customer\Produk\Katalog';
+            $routes->post('getData', $functionRoute.'::getData');
         });
     });
 });

@@ -142,7 +142,6 @@ class Index extends BaseController
                 $menuAlias      =   $keyMenu->MENUALIAS;
                 $menuURL        =   $keyMenu->URL;
                 $menuIcon       =   $keyMenu->ICON;
-                $menuName       =   $keyMenu->MENUNAME;
                 $active			=	$lastPageAlias != '' && $lastPageAlias == $menuAlias ? "active" : "";
                 $active			=	$active	== '' && $indexMenu == 0 ? 'active' : '';
 
@@ -189,7 +188,7 @@ class Index extends BaseController
                 }
 			}
 			
-            $menuElement    .=  '</div></div>';
+            $menuElement    .=  $activeGroupMenuChild > 1 || $groupName != $menuName ? '</div></div>' : '';
 			return $menuElement;
 		}
     }

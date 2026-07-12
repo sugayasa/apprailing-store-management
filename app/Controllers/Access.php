@@ -273,6 +273,7 @@ class Access extends ResourceController
         $dataMerk               =   encodeDatabaseObjectResultKey($accessModel->getDataMerk(), 'ID');
         $dataBarangKategori     =   encodeDatabaseObjectResultKey($accessModel->getDataBarangKategori(), 'ID');
         $dataCustomerMerk       =   encodeDatabaseObjectResultKey($accessModel->getDataCustomerMerk(), 'ID');
+        $dataCustomerKategori   =   encodeDatabaseObjectResultKey($accessModel->getDataCustomerKategori(), 'ID');
 
         return [
             "dataUserAdminLevel"    =>  $dataUserAdminLevel,
@@ -280,6 +281,7 @@ class Access extends ResourceController
             "dataMerk"              =>  $dataMerk,
             "dataBarangKategori"    =>  $dataBarangKategori,
             "dataCustomerMerk"      =>  $dataCustomerMerk,
+            "dataCustomerKategori"  =>  $dataCustomerKategori,
             "optionHours"	        =>  OPTION_HOURS,
             "optionMinutes"         =>  OPTION_MINUTES,
             "optionMinuteInterval"	=>  OPTION_MINUTEINTERVAL,

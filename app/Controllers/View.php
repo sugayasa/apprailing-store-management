@@ -302,4 +302,20 @@ class View extends ResourceController
             'content'   =>  $content
         ]);
     }
+    
+    public function customerProdukKatalog()
+    {
+        $content    =   view(
+            'Menu/Customer/Produk/katalog',
+            [
+                'menuDetail'    =>  $this->menuDetail,
+                'defaultImage'  =>  BASE_URL_ASSETS_CUSTOMER_PRODUK . 'noimage.jpg',
+            ],
+            ['debug' => false]
+        );
+
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
 }
