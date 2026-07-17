@@ -168,3 +168,24 @@ if(!function_exists('throwResponseConlflict')){
         ->setStatusCode(ResponseInterface::HTTP_CONFLICT);
     }
 }
+
+if(!function_exists('throwResponseError')){
+    function throwResponseError($statusCode, $message, $arrAdditional = [], $throwableData = null){
+        $throwableData  =   ENVIRONMENT === 'production' ? null : $throwableData;
+        return Services::response()
+        ->setJSON(
+            array_merge(
+                [
+                    "status"    =>  $statusCode,
+                    "error"     =>  $statusCode,
+                    "messages"  =>  [
+                        "error" =>  $message
+                    ],
+                    'throwableData' =>  $throwableData
+                ],
+                $arrAdditional
+            )
+        )
+        ->setStatusCode($statusCode);
+    }
+}

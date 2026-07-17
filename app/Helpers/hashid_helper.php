@@ -80,3 +80,19 @@ if(!function_exists('encodeDatabaseObjectResultKey')){
         }
     }
 }
+
+if(!function_exists('encodeDatabaseArrayResultKey')){
+    function encodeDatabaseArrayResultKey($databaseArrayResult, $keyField, $keyDefault = false){
+        $keyField   =   is_array($keyField) ? $keyField : [$keyField];
+        if(!is_null($databaseArrayResult) && $databaseArrayResult){
+            foreach($databaseArrayResult as &$row){
+                foreach($keyField as $field){
+                    if(isset($row[$field])){
+                        $row[$field]    =   hashidEncode($row[$field], $keyDefault);
+                    }
+                }
+			}
+            return $databaseArrayResult;
+        }
+    }
+}

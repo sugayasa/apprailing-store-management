@@ -137,8 +137,10 @@ class View extends ResourceController
     public function pengaturanVariabelSistem()
     {
         $content    =   view(
-            'Menu/pengaturan/variabelSistem',
-            [],
+            'Menu/Pengaturan/variabelSistem',
+            [
+                'menuDetail'    =>  $this->menuDetail
+            ],
             ['debug' => false]
         );
         return $this->setResponseFormat('json')->respond([

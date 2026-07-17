@@ -161,6 +161,13 @@ defined('APP_PAGE_PROPERTY_DEFAULT_RULES')              || define('APP_PAGE_PROP
                                                             );
 defined('APP_PAGE_PROPERTY_DEFAULT_MESSAGES')           || define('APP_PAGE_PROPERTY_DEFAULT_MESSAGES', []);
 
+defined('API_RICH_GROUP_URL_MAIN')                      || define('API_RICH_GROUP_URL_MAIN', $_ENV['API_RICH_GROUP_URL_MAIN'] ?: 'https://api.example.com/');
+defined('API_RICH_GROUP_URL_DATA_BARANG')               || define('API_RICH_GROUP_URL_DATA_BARANG', $_ENV['API_RICH_GROUP_URL_DATA_BARANG'] ?: 'fetch-data-barang');
+
+defined('HMAC_SECRET_KEY_RICH_GROUP')                   || define('HMAC_SECRET_KEY_RICH_GROUP', $_ENV['HMAC_SECRET_KEY_RICH_GROUP'] ?: 'SUPER-SECRET-STRING-DONT-LEAK');
+defined('HMAC_API_KEY_RICH_GROUP')                      || define('HMAC_API_KEY_RICH_GROUP', $_ENV['HMAC_API_KEY_RICH_GROUP'] ?: 'ROKET-KEY-XYZ123');
+defined('HMAC_MAX_TIME_DIFF_RICH_GROUP')                || define('HMAC_MAX_TIME_DIFF_RICH_GROUP', $_ENV['HMAC_MAX_TIME_DIFF_RICH_GROUP'] ?: 300);
+
 defined('MAX_INACTIVE_SESSION_MINUTES')                 || define('MAX_INACTIVE_SESSION_MINUTES', $_ENV['MAX_INACTIVE_SESSION_MINUTES'] ?: 60);
 defined('LOG_USER_REQUEST')                             || define('LOG_USER_REQUEST', $_ENV['LOG_USER_REQUEST'] ?: false);
 

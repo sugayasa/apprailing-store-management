@@ -126,6 +126,11 @@ $routes->group('pengaturan', ['filter' => 'auth:mustBeLoggedIn'], function($rout
         $routes->post('getDataUserAdmin', $functionRoute.'::getDataUserAdmin');
         $routes->post('saveUserAdmin', $functionRoute.'::saveUserAdmin');
     });
+    $routes->group('variabelSistem', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+        $functionRoute =   'Pengaturan\VariabelSistem';
+        $routes->post('getDataBarangSistemUtama', $functionRoute.'::getDataBarangSistemUtama');
+        $routes->post('syncDataBarangSistemUtama', $functionRoute.'::syncDataBarangSistemUtama');
+    });
 });
 
 $routes->group('customer', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
@@ -208,6 +213,7 @@ $routes->group('customer', ['filter' => 'auth:mustBeLoggedIn'], function($routes
         $routes->group('katalog', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
             $functionRoute =   'Customer\Produk\Katalog';
             $routes->post('getData', $functionRoute.'::getData');
+            $routes->post('uploadFotoProduk', $functionRoute.'::uploadFotoProduk');
         });
     });
 });
