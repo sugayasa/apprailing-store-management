@@ -213,7 +213,10 @@ $routes->group('customer', ['filter' => 'auth:mustBeLoggedIn'], function($routes
         $routes->group('katalog', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
             $functionRoute =   'Customer\Produk\Katalog';
             $routes->post('getData', $functionRoute.'::getData');
+            $routes->post('getDetail', $functionRoute.'::getDetail');
             $routes->post('uploadFotoProduk', $functionRoute.'::uploadFotoProduk');
+            $routes->post('getDataProdukPadanan', $functionRoute.'::getDataProdukPadanan');
+            $routes->post('saveData', $functionRoute.'::saveData');
         });
     });
 });

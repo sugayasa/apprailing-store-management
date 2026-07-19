@@ -141,8 +141,6 @@ class VariabelSistem extends ResourceController
             }
             
             $dataBarang =   array_filter($dataBarang, function($item) use ($searchKeyword) {
-                log_message('debug', 'Filtering item: ' . json_encode($item) . ' with keyword: ' . $searchKeyword);
-                log_message('debug', 'is searchKeyword empty: ' . (empty($searchKeyword) ? 'true' : 'false'));
                 if (empty($searchKeyword)) return true;
                 $searchKeywordLower =   strtolower($searchKeyword);
 
