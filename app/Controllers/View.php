@@ -320,4 +320,19 @@ class View extends ResourceController
             'content'   =>  $content
         ]);
     }
+    
+    public function customerCustomerDaftar()
+    {
+        $content    =   view(
+            'Menu/Customer/Customer/daftarCustomer',
+            [
+                'menuDetail'    =>  $this->menuDetail
+            ],
+            ['debug' => false]
+        );
+
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
 }

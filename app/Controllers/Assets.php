@@ -133,6 +133,15 @@ class Assets extends ResourceController
         return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
+    public function customerAvatar($namaFile)
+    {
+        $fullFilePath   =   PATH_STORAGE_CUSTOMER_AVATAR.$namaFile;
+        $isDefault      =   strpos($namaFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_CUSTOMER_AVATAR  .'default.jpg';
+
+        return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
+    }
+
     public function customerMerk($namaFile)
     {
         $fullFilePath   =   PATH_STORAGE_CUSTOMER_MERK.$namaFile;
@@ -140,6 +149,7 @@ class Assets extends ResourceController
         $defaultFilePath=   PATH_STORAGE_CUSTOMER_MERK  .'default.jpg';
 
         return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
+
     }
 
     public function customerSosmedMarketplace($namaFile)

@@ -70,6 +70,7 @@ $routes->group('assets', [], function($routes) {
     $routes->get('imageGaleriProyek/(:any)', 'Assets::imageGaleriProyek/$1');
     $routes->get('videoCompanyProfile/(:any)', 'Assets::videoCompanyProfile/$1');
     $routes->get('videoCaraPasang/(:any)', 'Assets::videoCaraPasang/$1');
+    $routes->get('customerAvatar/(:any)', 'Assets::customerAvatar/$1');
     $routes->get('customerMerk/(:any)', 'Assets::customerMerk/$1');
     $routes->get('customerSosmedMarketplace/(:any)', 'Assets::customerSosmedMarketplace/$1');
     $routes->get('customerProduk/(:any)', 'Assets::customerProduk/$1');
@@ -96,6 +97,11 @@ $routes->group('view', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
     $routes->post('customer-konten-feed', $functionRoute.'::customerKontenFeed');
     $routes->post('customer-konten-berita-informasi', $functionRoute.'::customerKontenBeritaInformasi');
     $routes->post('customer-produk-katalog', $functionRoute.'::customerProdukKatalog');
+    $routes->post('customer-customer-statistik', $functionRoute.'::customerCustomerStatistik');
+    $routes->post('customer-customer-daftar', $functionRoute.'::customerCustomerDaftar');
+    $routes->post('customer-customer-kritik-saran', $functionRoute.'::customerCustomerKritikSaran');
+    $routes->post('customer-transaksi-statistik', $functionRoute.'::customerTransaksiStatistik');
+    $routes->post('customer-transaksi-daftar', $functionRoute.'::customerTransaksiDaftar');
 });
 
 $routes->group('dashboard', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
@@ -217,6 +223,13 @@ $routes->group('customer', ['filter' => 'auth:mustBeLoggedIn'], function($routes
             $routes->post('uploadFotoProduk', $functionRoute.'::uploadFotoProduk');
             $routes->post('getDataProdukPadanan', $functionRoute.'::getDataProdukPadanan');
             $routes->post('saveData', $functionRoute.'::saveData');
+        });
+    });
+    $routes->group('customer', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+        $routes->group('daftarCustomer', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+            $functionRoute =   'Customer\Customer\DaftarCustomer';
+            $routes->post('getData', $functionRoute.'::getData');
+            $routes->post('getDataTableDetail', $functionRoute.'::getDataTableDetail');
         });
     });
 });
