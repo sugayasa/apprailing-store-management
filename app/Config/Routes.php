@@ -226,6 +226,10 @@ $routes->group('customer', ['filter' => 'auth:mustBeLoggedIn'], function($routes
         });
     });
     $routes->group('customer', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+        $routes->group('statistikCustomer', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+            $functionRoute =   'Customer\Customer\StatistikCustomer';
+            $routes->post('getDataStatistik', $functionRoute.'::getDataStatistik');
+        });
         $routes->group('daftarCustomer', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
             $functionRoute =   'Customer\Customer\DaftarCustomer';
             $routes->post('getData', $functionRoute.'::getData');

@@ -1,3 +1,7 @@
+<link rel="stylesheet" href="<?=BASE_URL_ASSETS_CSS?>uploadfile.css?<?=date('YmdHis')?>" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="<?=BASE_URL_ASSETS_CSS?>summernote-lite.min.css?<?=date('YmdHis')?>" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="<?=BASE_URL_ASSETS_CSS?>bootstrap-datepicker.min.css?<?=date('YmdHis')?>" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="<?=BASE_URL_ASSETS_CSS?>bootstrap-daterangepicker.css?<?=date('YmdHis')?>" rel="stylesheet" type="text/css">
 <script>
 	const interval_id = window.setInterval(function(){}, Number.MAX_SAFE_INTEGER);
 	for (let i = 1; i < interval_id; i++) {
@@ -214,6 +218,11 @@
     </div>
 </div>
 <input type="hidden" id="lastMenuAlias" name="lastMenuAlias" value="">
+<script src="<?=BASE_URL_ASSETS_JS?>uploadfile.min.js?<?=date('YmdHis')?>"></script>
+<script src="<?=BASE_URL_ASSETS_JS?>sortable.min.js?<?=date('YmdHis')?>"></script>
+<script src="<?=BASE_URL_ASSETS_JS?>summernote-lite.min.js?<?=date('YmdHis')?>"></script>
+<script src="<?=BASE_URL_ASSETS_JS?>bootstrap-datepicker.min.js?<?=date('YmdHis')?>"></script>
+<script src="<?=BASE_URL_ASSETS_JS?>bootstrap-daterangepicker.js?<?=date('YmdHis')?>"></script>
 <script>
 	localStorage.setItem('lastApplicationLoadTime', '<?=gmdate("YmdHis")?>');
 	localStorage.setItem('allowNotifList', '<?=json_encode($allowNotifList)?>');

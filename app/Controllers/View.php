@@ -321,6 +321,21 @@ class View extends ResourceController
         ]);
     }
     
+    public function customerCustomerStatistik()
+    {
+        $content    =   view(
+            'Menu/Customer/Customer/statistikCustomer',
+            [
+                'menuDetail'    =>  $this->menuDetail
+            ],
+            ['debug' => false]
+        );
+
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
+    
     public function customerCustomerDaftar()
     {
         $content    =   view(
