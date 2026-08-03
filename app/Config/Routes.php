@@ -67,9 +67,11 @@ $routes->group('assets', [], function($routes) {
     $routes->get('photoBarang/(:any)', 'Assets::photoBarang/$1');
     $routes->get('imageSlideOnboarding/(:any)', 'Assets::imageSlideOnboarding/$1');
     $routes->get('imageSlideBanner/(:any)', 'Assets::imageSlideBanner/$1');
-    $routes->get('imageGaleriProyek/(:any)', 'Assets::imageGaleriProyek/$1');
     $routes->get('videoCompanyProfile/(:any)', 'Assets::videoCompanyProfile/$1');
     $routes->get('videoCaraPasang/(:any)', 'Assets::videoCaraPasang/$1');
+    $routes->get('imageGaleriKlien/logo/(:any)', 'Assets::imageGaleriKlienLogo/$1');
+    $routes->get('imageGaleriKlien/proyek/(:any)', 'Assets::imageGaleriKlienProyek/$1');
+    $routes->get('imageGaleriProyek/(:any)', 'Assets::imageGaleriProyek/$1');
     $routes->get('customerAvatar/(:any)', 'Assets::customerAvatar/$1');
     $routes->get('customerMerk/(:any)', 'Assets::customerMerk/$1');
     $routes->get('customerSosmedMarketplace/(:any)', 'Assets::customerSosmedMarketplace/$1');
@@ -91,6 +93,7 @@ $routes->group('view', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
     $routes->post('customer-data-dasar-level-loyalti', $functionRoute.'::customerDataDasarLevelLoyalti');
     $routes->post('customer-data-dasar-sosmed-marketplace', $functionRoute.'::customerDataDasarSosmedMarketplace');
     $routes->post('customer-konten-pengenalan-aplikasi', $functionRoute.'::customerKontenPengenalanAplikasi');
+    $routes->post('customer-konten-galeri-klien', $functionRoute.'::customerKontenGaleriKlien');
     $routes->post('customer-konten-galeri-proyek', $functionRoute.'::customerKontenGaleriProyek');
     $routes->post('customer-konten-tutorial-pemasangan', $functionRoute.'::customerKontenTutorialPemasangan');
     $routes->post('customer-konten-profil-perusahaan', $functionRoute.'::customerKontenProfilPerusahaan');
@@ -179,6 +182,14 @@ $routes->group('customer', ['filter' => 'auth:mustBeLoggedIn'], function($routes
             $routes->post('uploadImage', $functionRoute.'::uploadImage');
             $routes->post('saveUrutanSlide', $functionRoute.'::saveUrutanSlide');
             $routes->post('saveData', $functionRoute.'::saveData');
+        });
+        $routes->group('galeriKlien', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+            $functionRoute =   'Customer\Konten\GaleriKlien';
+            $routes->post('getData', $functionRoute.'::getData');
+            $routes->post('uploadLogoKlien', $functionRoute.'::uploadLogoKlien');
+            $routes->post('saveDataKlien', $functionRoute.'::saveDataKlien');
+            $routes->post('uploadImageGaleriKlien', $functionRoute.'::uploadImageGaleriKlien');
+            $routes->post('saveDataKlienGaleri', $functionRoute.'::saveDataKlienGaleri');
         });
         $routes->group('galeriProyek', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
             $functionRoute =   'Customer\Konten\GaleriProyek';

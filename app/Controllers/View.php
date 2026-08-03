@@ -225,6 +225,22 @@ class View extends ResourceController
         ]);
     }
     
+    public function customerKontenGaleriKlien()
+    {
+        $content    =   view(
+            'Menu/Customer/Konten/galeriKlien',
+            [
+                'menuDetail'        =>  $this->menuDetail,
+                'defaultImageLogo'  =>  BASE_URL_ASSETS_GALERI_KLIEN_LOGO . 'default.png',
+                'defaultImageGaleri'=>  BASE_URL_ASSETS_GALERI_KLIEN_PROYEK . 'noimage.jpg'
+            ],
+            ['debug' => false]
+        );
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
+    
     public function customerKontenGaleriProyek()
     {
         $accessModel=   new AccessModel();
