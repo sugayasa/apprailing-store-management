@@ -65,13 +65,6 @@ class StatistikCustomer extends ResourceController
         $arrJenisKunjungan      =   ['Total Kunjungan', 'Jumlah Perangkat', 'Jumlah Tamu', 'Jumlah Registrasi', 'Jumlah Customer Terdaftar'];
         $arrJenisKunjunganHex   =   ['#1f6bff', '#c1cbdf', '#ff9500', '#ffcc00', '#9acfa7'];
         $dataKunjungan          =   $statistikCustomerModel->getDataKunjungan($tanggalAwal, $tanggalAkhir);
-        $dataKunjunganRekap     =   [
-            'totalKunjungan'    =>  0,
-            'jumlahPerangkat'   =>  0,
-            'jumlahTamu'        =>  0,
-            'jumlahRegistrasi'  =>  0,
-            'jumlahTeregistrasi'=>  0
-        ];
 
         foreach($arrJenisKunjungan as $index => $jenisKunjungan){
             $dataGrafik =   array_fill(0, count($arrTanggalPeriode), 0);
@@ -81,24 +74,19 @@ class StatistikCustomer extends ResourceController
                 if($tanggalIndex !== false){
                     switch ($jenisKunjungan) {
                         case 'Total Kunjungan':
-                            $dataGrafik[$tanggalIndex]              =   (int)$kunjungan->TOTALKUNJUNGAN;
-                            $dataKunjunganRekap['totalKunjungan']   +=  (int)$kunjungan->TOTALKUNJUNGAN;
+                            $dataGrafik[$tanggalIndex]  =   (int)$kunjungan->TOTALKUNJUNGAN;
                             break;
                         case 'Jumlah Perangkat':
-                            $dataGrafik[$tanggalIndex]              =   (int)$kunjungan->JUMLAHPERANGKAT;
-                            $dataKunjunganRekap['jumlahPerangkat']  +=  (int)$kunjungan->JUMLAHPERANGKAT;
+                            $dataGrafik[$tanggalIndex]  =   (int)$kunjungan->JUMLAHPERANGKAT;
                             break;
                         case 'Jumlah Tamu':
-                            $dataGrafik[$tanggalIndex]              =   (int)$kunjungan->JUMLAHTAMU;
-                            $dataKunjunganRekap['jumlahTamu']       +=  (int)$kunjungan->JUMLAHTAMU;
+                            $dataGrafik[$tanggalIndex]  =   (int)$kunjungan->JUMLAHTAMU;
                             break;
                         case 'Jumlah Registrasi':
-                            $dataGrafik[$tanggalIndex]              =   (int)$kunjungan->JUMLAHREGISTRASI;
-                            $dataKunjunganRekap['jumlahRegistrasi'] +=  (int)$kunjungan->JUMLAHREGISTRASI;
+                            $dataGrafik[$tanggalIndex]  =   (int)$kunjungan->JUMLAHREGISTRASI;
                             break;
                         case 'Jumlah Customer Terdaftar':
-                            $dataGrafik[$tanggalIndex]              =   (int)$kunjungan->JUMLAHCUSTOMERTERDAFTAR;
-                            $dataKunjunganRekap['jumlahTeregistrasi']+=  (int)$kunjungan->JUMLAHCUSTOMERTERDAFTAR;
+                            $dataGrafik[$tanggalIndex]  =   (int)$kunjungan->JUMLAHCUSTOMERTERDAFTAR;
                             break;
                     }
                 }
@@ -119,13 +107,67 @@ class StatistikCustomer extends ResourceController
                 'tension'                   =>  0.4
             ];
         }
+            
+        $dataKunjunganRekapDB   =   $statistikCustomerModel->getDataKunjunganRekap($tanggalAwal, $tanggalAkhir);
+        $dataKunjunganRekap     =   [
+            'totalKunjungan'    =>  (int)$dataKunjunganRekapDB['TOTALKUNJUNGAN'],
+            'jumlahPerangkat'   =>  (int)$dataKunjunganRekapDB['JUMLAHPERANGKAT'],
+            'jumlahTamu'        =>  (int)$dataKunjunganRekapDB['JUMLAHTAMU'],
+            'jumlahRegistrasi'  =>  (int)$dataKunjunganRekapDB['JUMLAHREGISTRASI'],
+            'jumlahTeregistrasi'=>  (int)$dataKunjunganRekapDB['JUMLAHCUSTOMERTERDAFTAR']
+        ];
+
+        $dataStatistikBeritaDB      =   $statistikCustomerModel->getDataStatistikBerita($tanggalAwal, $tanggalAkhir);
+        $dataStatistikGaleriKlienDB =   $statistikCustomerModel->getDataStatistikGaleriKlien($tanggalAwal, $tanggalAkhir);
+        $dataStatistikGaleriProyekDB=   $statistikCustomerModel->getDataStatistikGaleriProyek($tanggalAwal, $tanggalAkhir);
+        $dataStatistikFeedDB        =   $statistikCustomerModel->getDataStatistikFeed($tanggalAwal, $tanggalAkhir);
+
+        $dataStatistikBerita =   [
+            'jumlahDilihat'     =>  array_sum(array_column($dataStatistikBeritaDB, 'JUMLAHDILIHAT')),
+            'jumlahBerita'      =>  count($dataStatistikBeritaDB),
+            'baseUrlImageBerita'=>  BASE_URL_ASSETS_SLIDE_BANNER,
+            'dataBerita'        =>  $dataStatistikBeritaDB
+        ];
+        
+        $dataStatistikGaleriKlien   =   [
+            'jumlahDilihat'     =>  array_sum(array_column($dataStatistikGaleriKlienDB, 'JUMLAHDILIHAT')),
+            'jumlahUser'        =>  array_sum(array_column($dataStatistikGaleriKlienDB, 'JUMLAHUSER')),
+            'jumlahGaleriKlien' =>  count($dataStatistikGaleriKlienDB),
+            'baseUrlGaleriKlien'=>  BASE_URL_ASSETS_GALERI_KLIEN_PROYEK,
+            'dataGaleriKlien'   =>  array_map(function($item) {
+                                        $item->IMAGE    =   json_decode($item->IMAGE)[0] ?? 'noimage.jpg';
+                                        return (array)$item;
+                                    }, $dataStatistikGaleriKlienDB)
+        ];
+        
+        $dataStatistikGaleriProyek  =   [
+            'jumlahDilihat'         =>  array_sum(array_column($dataStatistikGaleriProyekDB, 'JUMLAHDILIHAT')),
+            'jumlahUser'            =>  array_sum(array_column($dataStatistikGaleriProyekDB, 'JUMLAHUSER')),
+            'jumlahGaleriProyek'    =>  count($dataStatistikGaleriProyekDB),
+            'baseUrlGaleriProyek'   =>  BASE_URL_ASSETS_GALERI_PROYEK,
+            'dataGaleriProyek'      =>  array_map(function($item) {
+                                            $item->IMAGE    =   json_decode($item->IMAGE)[0] ?? 'noimage.jpg';
+                                            return (array)$item;
+                                        }, $dataStatistikGaleriProyekDB)
+        ];
+        
+        $dataStatistikFeed  =   [
+            'jumlahDilihat' =>  array_sum(array_column($dataStatistikFeedDB, 'JUMLAHDILIHAT')),
+            'jumlahUser'    =>  array_sum(array_column($dataStatistikFeedDB, 'JUMLAHUSER')),
+            'jumlahFeed'    =>  count($dataStatistikFeedDB),
+            'dataFeed'      =>  $dataStatistikFeedDB
+        ];
 
         return $this->setResponseFormat('json')
                     ->respond([
-                        "jumlahHariPeriode"     =>  $jumlahHariPeriode,
-                        "arrTanggalPeriode"     =>  $arrTanggalPeriode,
-                        "dataGrafikKunjungan"   =>  $dataGrafikKunjungan,
-                        "dataKunjunganRekap"    =>  $dataKunjunganRekap
+                        "jumlahHariPeriode"         =>  $jumlahHariPeriode,
+                        "arrTanggalPeriode"         =>  $arrTanggalPeriode,
+                        "dataGrafikKunjungan"       =>  $dataGrafikKunjungan,
+                        "dataKunjunganRekap"        =>  $dataKunjunganRekap,
+                        "dataStatistikBerita"       =>  $dataStatistikBerita,
+                        "dataStatistikGaleriKlien"  =>  $dataStatistikGaleriKlien,
+                        "dataStatistikGaleriProyek" =>  $dataStatistikGaleriProyek,
+                        "dataStatistikFeed"         =>  $dataStatistikFeed
                     ]);
     }
 }

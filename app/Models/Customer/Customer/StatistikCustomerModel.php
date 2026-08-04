@@ -49,12 +49,113 @@ class StatistikCustomerModel extends Model
     {
         $this->select(
             "COUNT(IDSTATSKUNJUNGAN) AS TOTALKUNJUNGAN, COUNT(DISTINCT HARDWAREID) AS JUMLAHPERANGKAT,
-            SUM(IF(IDCUSTOMER = 0, 1, 0)) AS JUMLAHTAMU, SUM(IF(ISPROSESDAFTAR = 1, 1, 0)) AS JUMLAHREGISTRASI,
-            SUM(IF(IDCUSTOMER > 0, 1, 0)) AS JUMLAHCUSTOMERTERDAFTAR, DATE_FORMAT(TANGGAL, '%d %b') AS TANGGALBULAN"
+            COUNT(DISTINCT CASE WHEN IDCUSTOMER = 0 THEN HARDWAREID END) AS JUMLAHTAMU,
+            SUM(IF(ISPROSESDAFTAR = 1, 1, 0)) AS JUMLAHREGISTRASI, SUM(IF(IDCUSTOMER > 0, 1, 0)) AS JUMLAHCUSTOMERTERDAFTAR,
+            DATE_FORMAT(TANGGAL, '%d %b') AS TANGGALBULAN"
         );
         $this->where('TANGGAL >= ', $tanggalAwal);
         $this->where('TANGGAL <= ', $tanggalAkhir);
         $this->groupBy('TANGGAL');
+
+        $result =   $this->get()->getResultObject();
+        if(is_null($result)) return [];
+        return $result;
+    }
+    
+    public function getDataKunjunganRekap($tanggalAwal, $tanggalAkhir)
+    {
+        $this->select(
+            "COUNT(IDSTATSKUNJUNGAN) AS TOTALKUNJUNGAN, COUNT(DISTINCT HARDWAREID) AS JUMLAHPERANGKAT,
+            COUNT(DISTINCT CASE WHEN IDCUSTOMER = 0 THEN HARDWAREID END) AS JUMLAHTAMU,
+            SUM(IF(ISPROSESDAFTAR = 1, 1, 0)) AS JUMLAHREGISTRASI, SUM(IF(IDCUSTOMER > 0, 1, 0)) AS JUMLAHCUSTOMERTERDAFTAR"
+        );
+        $this->where('TANGGAL >= ', $tanggalAwal);
+        $this->where('TANGGAL <= ', $tanggalAkhir);
+        $this->limit(1);
+
+        $result =   $this->first();
+        if(is_null($result)) return [
+            'TOTALKUNJUNGAN'            =>  0,
+            'JUMLAHPERANGKAT'           =>  0,
+            'JUMLAHTAMU'                =>  0,
+            'JUMLAHREGISTRASI'          =>  0,
+            'JUMLAHCUSTOMERTERDAFTAR'   =>  0
+        ];
+        return $result;
+    }
+
+    public function getDataStatistikBerita($tanggalAwal, $tanggalAkhir)
+    {
+        $this->select(
+            "B.IMAGE, B.JUDUL, B.KONTEN, COUNT(A.IDSTATSKONTEN) AS JUMLAHDILIHAT"
+        );
+        $this->from('stats_konten AS A', true);
+        $this->join('t_slidebanner AS B', 'A.IDPRIMARYKONTEN = B.IDSLIDEBANNER', 'left');
+        $this->where('A.IDTIPEKONTEN', 900);
+        $this->where('DATE(A.TANGGALWAKTU) >= ', $tanggalAwal);
+        $this->where('DATE(A.TANGGALWAKTU) <= ', $tanggalAkhir);
+        $this->groupBy('A.IDPRIMARYKONTEN');
+        $this->orderBy('JUMLAHDILIHAT', 'DESC');
+
+        $result =   $this->get()->getResultObject();
+        if(is_null($result)) return [];
+        return $result;
+    }
+
+    public function getDataStatistikGaleriKlien($tanggalAwal, $tanggalAkhir)
+    {
+        $this->select(
+            "B.IMAGE, D.NAMAMERK, C.NAMAKLIEN, B.DESKRIPSI, COUNT(A.IDSTATSKONTEN) AS JUMLAHDILIHAT,
+            COUNT(DISTINCT A.HARDWAREID) AS JUMLAHUSER"
+        );
+        $this->from('stats_konten AS A', true);
+        $this->join('t_galeriklien AS B', 'A.IDPRIMARYKONTEN = B.IDGALERIKLIEN', 'left');
+        $this->join('m_klien AS C', 'B.IDKLIEN = C.IDKLIEN', 'left');
+        $this->join('m_merk AS D', 'B.IDMERKUTAMA = D.IDMERK', 'left');
+        $this->where('A.IDTIPEKONTEN', 901);
+        $this->where('DATE(A.TANGGALWAKTU) >= ', $tanggalAwal);
+        $this->where('DATE(A.TANGGALWAKTU) <= ', $tanggalAkhir);
+        $this->groupBy('A.IDPRIMARYKONTEN');
+        $this->orderBy('JUMLAHDILIHAT', 'DESC');
+
+        $result =   $this->get()->getResultObject();
+        if(is_null($result)) return [];
+        return $result;
+    }
+
+    public function getDataStatistikGaleriProyek($tanggalAwal, $tanggalAkhir)
+    {
+        $this->select(
+            "B.IMAGE, C.NAMAMERK, B.NAMAKLIEN, B.ALAMATPROYEK, COUNT(A.IDSTATSKONTEN) AS JUMLAHDILIHAT,
+            COUNT(DISTINCT A.HARDWAREID) AS JUMLAHUSER"
+        );
+        $this->from('stats_konten AS A', true);
+        $this->join('t_galeriproyek AS B', 'A.IDPRIMARYKONTEN = B.IDGALERIPROYEK', 'left');
+        $this->join('m_merk AS C', 'B.IDMERKUTAMA = C.IDMERK', 'left');
+        $this->where('A.IDTIPEKONTEN', 902);
+        $this->where('DATE(A.TANGGALWAKTU) >= ', $tanggalAwal);
+        $this->where('DATE(A.TANGGALWAKTU) <= ', $tanggalAkhir);
+        $this->groupBy('A.IDPRIMARYKONTEN');
+        $this->orderBy('JUMLAHDILIHAT', 'DESC');
+
+        $result =   $this->get()->getResultObject();
+        if(is_null($result)) return [];
+        return $result;
+    }
+
+    public function getDataStatistikFeed($tanggalAwal, $tanggalAkhir)
+    {
+        $this->select(
+            "B.JUDUL, B.DESKRIPSI, B.URLFEED, COUNT(A.IDSTATSKONTEN) AS JUMLAHDILIHAT,
+            COUNT(DISTINCT A.HARDWAREID) AS JUMLAHUSER"
+        );
+        $this->from('stats_konten AS A', true);
+        $this->join('t_feed AS B', 'A.IDPRIMARYKONTEN = B.IDFEED', 'left');
+        $this->where('A.IDTIPEKONTEN', 903);
+        $this->where('DATE(A.TANGGALWAKTU) >= ', $tanggalAwal);
+        $this->where('DATE(A.TANGGALWAKTU) <= ', $tanggalAkhir);
+        $this->groupBy('A.IDPRIMARYKONTEN');
+        $this->orderBy('JUMLAHDILIHAT', 'DESC');
 
         $result =   $this->get()->getResultObject();
         if(is_null($result)) return [];
