@@ -1,6 +1,6 @@
 <?php
-    $menuName           =   $menuDetail['MENUNAME'];
-    $menuDescription    =   $menuDetail['DESCRIPTION'];
+    $menuName           =   $menuDetail['MENUNAME'] ?? '';
+    $menuDescription    =   $menuDetail['DESCRIPTION'] ?? '';
 ?>
 
 <div id="containerMenuCustomerStatistikCustomer">

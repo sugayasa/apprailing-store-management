@@ -1,6 +1,6 @@
 <?php
-    $menuName           =   $menuDetail['MENUNAME'];
-    $menuDescription    =   $menuDetail['DESCRIPTION'];
+    $menuName           =   $menuDetail['MENUNAME'] ?? '';
+    $menuDescription    =   $menuDetail['DESCRIPTION'] ?? '';
 ?>
 <div id="containerMenuCustomerDataDasarLevelLoyalti" class="pos">
     <h1 id="customerDataDasarLevelLoyalti-header" class="page-header d-flex flex-column flex-md-row align-items-md-center">
@@ -27,12 +27,12 @@
                 <div class="row">
                     <div class="col-md-6 col-sm-12">
                         <div class="text-center mb-3">
-                            <img class="mb-2 rounded" src="<?=$defaultImageCard?>" id="cardLevelLoyaltiImg" style="max-width: 200px; max-height: 120px;"/><br/>
+                            <img class="mb-2 rounded" src="<?=$defaultImageCard ?? 'default.png'?>" id="cardLevelLoyaltiImg" style="max-width: 200px; max-height: 120px;"/><br/>
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12">
                         <div class="text-center mb-3">
-                            <img class="mb-2 img-fluid rounded-circle" src="<?=$defaultImageIcon?>" id="iconLevelLoyaltiImg" style="max-width: 80px; max-height: 80px;"/><br/>
+                            <img class="mb-2 img-fluid rounded-circle" src="<?=$defaultImageIcon ?? 'default.png'?>" id="iconLevelLoyaltiImg" style="max-width: 80px; max-height: 80px;"/><br/>
                         </div>
                     </div>
                 </div>
@@ -101,9 +101,9 @@
 </div>
 <script>
 	var levelLoyaltiCardBaseUrl =   "<?=BASE_URL_ASSETS_CARD_LEVEL_LOYALTI?>",
-        levelLoyaltiCardDefault =   "<?=$defaultImageCard?>",
+        levelLoyaltiCardDefault =   "<?=$defaultImageCard ?? 'default.png'?>",
         levelLoyaltiIconBaseUrl =   "<?=BASE_URL_ASSETS_ICON_LEVEL_LOYALTI?>",
-        levelLoyaltiIconDefault =   "<?=$defaultImageIcon?>",
+        levelLoyaltiIconDefault =   "<?=$defaultImageIcon ?? 'default.png'?>",
         jsFileUrl               =   "<?=BASE_URL_ASSETS_JS?>menu/customer/dataDasar/levelLoyalti.js?<?=date("YmdHis")?>";
 	$.getScript(jsFileUrl);
 </script>

@@ -1,6 +1,6 @@
 <?php
-    $menuName           =   $menuDetail['MENUNAME'];
-    $menuDescription    =   $menuDetail['DESCRIPTION'];
+    $menuName           =   $menuDetail['MENUNAME'] ?? '';
+    $menuDescription    =   $menuDetail['DESCRIPTION'] ?? '';
 ?>
 
 <div id="containerMenuCustomerKontenPengenalanAplikasi" class="pos">
@@ -32,7 +32,7 @@
             </div>
             <div class="modal-body">
                 <div class="text-center mb-3">
-                    <img class="mb-2" src="<?=$defaultImage?>" id="onboardingImg" style="max-width: 200px; max-height: 120px;"/><br/>
+                    <img class="mb-2" src="<?=$defaultImage ?? 'defaultBoarding.png'?>" id="onboardingImg" style="max-width: 200px; max-height: 120px;"/><br/>
                     <span id="uploadOnboardingImg">Upload Image Onboarding</span>
                 </div>
                 <hr>
@@ -80,7 +80,7 @@
 </div>
 <script>
     var imageOnboardingBaseUrl  =   "<?=BASE_URL_ASSETS_SLIDE_ONBOARDING?>",
-        imageOnboardingDefault  =   "<?=$defaultImage?>",
+        imageOnboardingDefault  =   "<?=$defaultImage ?? 'defaultBoarding.png'?>",
         jsFileUrl               =   "<?=BASE_URL_ASSETS_JS?>menu/customer/konten/pengenalanAplikasi.js?<?=date("YmdHis")?>";
     $.getScript(jsFileUrl);
 </script>

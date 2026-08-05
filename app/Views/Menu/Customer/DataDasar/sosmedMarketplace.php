@@ -1,6 +1,6 @@
 <?php
-    $menuName           =   $menuDetail['MENUNAME'];
-    $menuDescription    =   $menuDetail['DESCRIPTION'];
+    $menuName           =   $menuDetail['MENUNAME'] ?? '';
+    $menuDescription    =   $menuDetail['DESCRIPTION'] ?? '';
 ?>
 <div id="containerMenuCustomerDataDasarSosmedMarketplace" class="pos">
     <h1 id="customerDataDasarSosmedMarketplace-header" class="page-header d-flex flex-column flex-md-row align-items-md-center">
@@ -26,7 +26,7 @@
             </div>
             <div class="modal-body">
                 <div class="text-center mb-3">
-                    <img class="mb-2" src="<?=$defaultImageIcon?>" id="iconSosmedMarketplaceImg" style="max-width: 200px; max-height: 120px;"/><br/>
+                    <img class="mb-2" src="<?=$defaultImageIcon ?? 'icondefault.png'?>" id="iconSosmedMarketplaceImg" style="max-width: 200px; max-height: 120px;"/><br/>
                     <span id="uploadIconSosmedMarketplace">Upload Logo Sosmed / Marketplace</span>
                 </div>
                 <hr>
@@ -82,7 +82,7 @@
             <div class="modal-body">
                 <div class="d-flex align-items-center">
                     <span class="rounded-circle d-inline-flex align-items-center justify-content-center me-2 flex-shrink-0" style="width: 28px; height: 28px; background-color: #2D2D2D;">
-                        <img id="iconTipeSosmedMarketplaceImg" src="<?= $defaultImageIcon ?>" class="img-fluid" style="max-height: 14px;">
+                        <img id="iconTipeSosmedMarketplaceImg" src="<?= $defaultImageIcon ?? 'icondefault.png' ?>" class="img-fluid" style="max-height: 14px;">
                     </span>
                     <h5 class="card-title mb-0" id="namaSosmedMarketplace">-</h5>
                 </div>
@@ -107,7 +107,7 @@
 </div>
 <script>
 	var iconBaseUrl     =   "<?=BASE_URL_ASSETS_CUSTOMER_SOSMED_MARKETPLACE?>",
-        defaultImageIcon=   "<?=$defaultImageIcon?>",
+        defaultImageIcon=   "<?=$defaultImageIcon ?? 'icondefault.png'?>",
         jsFileUrl       =   "<?=BASE_URL_ASSETS_JS?>menu/customer/dataDasar/sosmedMarketplace.js?<?=date("YmdHis")?>";
 	$.getScript(jsFileUrl);
 </script>

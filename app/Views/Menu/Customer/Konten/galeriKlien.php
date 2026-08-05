@@ -1,6 +1,6 @@
 <?php
-    $menuName           =   $menuDetail['MENUNAME'];
-    $menuDescription    =   $menuDetail['DESCRIPTION'];
+    $menuName           =   $menuDetail['MENUNAME'] ?? '';
+    $menuDescription    =   $menuDetail['DESCRIPTION'] ?? '';
 ?>
 
 <div id="containerMenuCustomerKontenGaleriKlien">
@@ -26,7 +26,7 @@
             </div>
             <div class="modal-body">
                 <div class="text-center mb-3">
-                    <img class="mb-2" src="<?=$defaultImageLogo?>" id="galeriKlienLogo" style="max-width: 200px; max-height: 120px;"/><br/>
+                    <img class="mb-2" src="<?=$defaultImageLogo ?? 'default.png'?>" id="galeriKlienLogo" style="max-width: 200px; max-height: 120px;"/><br/>
                     <span id="uploadGaleriKlienLogo">Upload Logo Klien</span>
                 </div>
                 <hr>
@@ -70,7 +70,7 @@
             </div>
             <div class="modal-body">
                 <div class="text-center mb-3">
-                    <img class="mb-2" src="<?=$defaultImageGaleri?>" id="galeriKlienImage" style="max-width: 200px; max-height: 120px;"/><br/>
+                    <img class="mb-2" src="<?=$defaultImageGaleri ?? 'noimage.jpg'?>" id="galeriKlienImage" style="max-width: 200px; max-height: 120px;"/><br/>
                     <span id="uploadGaleriKlienImage">Upload Gambar Galeri</span>
                 </div>
                 <hr>

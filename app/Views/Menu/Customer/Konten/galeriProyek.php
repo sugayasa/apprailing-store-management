@@ -1,10 +1,10 @@
 <?php
-    $menuName           =   $menuDetail['MENUNAME'];
-    $menuDescription    =   $menuDetail['DESCRIPTION'];
+    $menuName           =   $menuDetail['MENUNAME'] ?? '';
+    $menuDescription    =   $menuDetail['DESCRIPTION'] ?? '';
     $listFilterMerk     =   '<input type="radio" class="btn-check" name="customerKontenGaleriProyek-filterMerk" id="filterSemua" value="" checked>';
     $listFilterMerk     .=  '<label class="btn  btn-outline-dark fw-semibold" for="filterSemua">Semua</label>';
 
-    if(!is_null($dataMerk) && count($dataMerk) > 0){
+    if(isset($dataMerk) && !is_null($dataMerk) && count($dataMerk) > 0){
         foreach($dataMerk as $keyMerk){
             $listFilterMerk .=  '<input type="radio" class="btn-check" name="customerKontenGaleriProyek-filterMerk" id="filter'.$keyMerk->ID.'" value="'.$keyMerk->ID.'">';
             $listFilterMerk .=  '<label class="btn  btn-outline-dark fw-semibold" for="filter'.$keyMerk->ID.'">'.$keyMerk->VALUE.'</label>';
@@ -42,7 +42,7 @@
             </div>
             <div class="modal-body">
                 <div class="text-center mb-3">
-                    <img class="mb-2" src="<?=$defaultImage?>" id="galeriProyekImg" style="max-width: 200px; max-height: 120px;"/><br/>
+                    <img class="mb-2" src="<?=$defaultImage ?? 'noimage.jpg'?>" id="galeriProyekImg" style="max-width: 200px; max-height: 120px;"/><br/>
                     <span id="uploadGaleriProyekImg">Upload Image Galeri</span>
                 </div>
                 <hr>
@@ -106,7 +106,7 @@
 </style>
 <script>
     var imageGaleriProyekBaseUrl    =   "<?=BASE_URL_ASSETS_GALERI_PROYEK?>",
-        imageGaleriProyekDefault    =   "<?=$defaultImage?>",
+        imageGaleriProyekDefault    =   "<?=$defaultImage ?? 'noimage.jpg'?>",
         jsFileUrl                   =   "<?=BASE_URL_ASSETS_JS?>menu/customer/konten/galeriProyek.js?<?=date("YmdHis")?>";
     $.getScript(jsFileUrl);
 </script>

@@ -1,6 +1,6 @@
 <?php
-    $menuName           =   $menuDetail['MENUNAME'];
-    $menuDescription    =   $menuDetail['DESCRIPTION'];
+    $menuName           =   $menuDetail['MENUNAME'] ?? '';
+    $menuDescription    =   $menuDetail['DESCRIPTION'] ?? '';
 ?>
 <div id="containerMenuPengaturanVariabelSistem" class="pos">
     <h1 id="pengaturanVariabelSistem-header" class="page-header d-flex flex-column flex-md-row align-items-md-center">

@@ -1,6 +1,6 @@
 <?php
-    $menuName           =   $menuDetail['MENUNAME'];
-    $menuDescription    =   $menuDetail['DESCRIPTION'];
+    $menuName           =   $menuDetail['MENUNAME'] ?? '';
+    $menuDescription    =   $menuDetail['DESCRIPTION'] ?? '';
 ?>
 
 <div id="containerMenuCustomerKontenTutorialPemasangan" class="pos">
@@ -62,7 +62,7 @@
                     </div>
                     <div class="card-body">
                         <div class="text-center mb-3">
-                            <img class="mb-2 rounded" src="<?=$defaultImage?>" id="imgThumbnailVideo" style="max-width: 500px; max-height: 209px;"/><br/>
+                            <img class="mb-2 rounded" src="<?=$defaultImage ?? 'noimage.jpg'?>" id="imgThumbnailVideo" style="max-width: 500px; max-height: 209px;"/><br/>
                             <span id="uploadThumbnailVideo">Upload Thumbnail Video</span>
                             <input type="hidden" name="thumbnailVideoFileName" value="">
                         </div>
@@ -127,7 +127,7 @@
 </div>
 <script>
 	var baseURLImage=   "<?=BASE_URL_ASSETS_VIDEO_CARA_PASANG?>",
-        defaultImage=   "<?=$defaultImage?>",
+        defaultImage=   "<?=$defaultImage ?? 'noimage.jpg'?>",
         jsFileUrl   =   "<?=BASE_URL_ASSETS_JS?>menu/customer/konten/tutorialPemasangan.js?<?=date("YmdHis")?>";
 	$.getScript(jsFileUrl);
 </script>

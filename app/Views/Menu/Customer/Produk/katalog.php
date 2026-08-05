@@ -1,6 +1,6 @@
 <?php
-    $menuName           =   $menuDetail['MENUNAME'];
-    $menuDescription    =   $menuDetail['DESCRIPTION'];
+    $menuName           =   $menuDetail['MENUNAME'] ?? '';
+    $menuDescription    =   $menuDetail['DESCRIPTION'] ?? '';
 ?>
 <div id="containerMenuCustomerProdukKatalog" class="pos">
     <h1 id="customerProdukKatalog-header" class="page-header d-flex flex-column flex-md-row align-items-md-center">
@@ -189,7 +189,7 @@
 </div>
 <script>
 	var imageProdukBaseUrl  =   "<?=BASE_URL_ASSETS_CUSTOMER_PRODUK?>",
-        imageProdukDefault  =   "<?=$defaultImage?>",
+        imageProdukDefault  =   "<?=$defaultImage ?? 'noimage.jpg'?>",
         jsFileUrl           =   "<?=BASE_URL_ASSETS_JS?>menu/customer/produk/katalog.js?<?=date("YmdHis")?>";
 	$.getScript(jsFileUrl);
 </script>

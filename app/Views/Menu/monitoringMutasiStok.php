@@ -4,7 +4,10 @@
     <div class="pos-content">
         <div class="pos-content-container p-0">
             <div class="row gx-3">
-                <?php foreach($arrRegional AS $dataRegional) { ?>
+                <?php
+                if(isset($arrRegional) && is_array($arrRegional) && count($arrRegional) > 0) {
+                    foreach($arrRegional AS $dataRegional) {
+                ?>
                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 pb-3">
                     <div class="card h-100">
                         <div class="card-header">
@@ -13,7 +16,10 @@
                         <div class="card-body overflow-auto cardRegionalMonitoringMutasi" data-idRegional="<?= $dataRegional['IDKOTA'] ?>" style="height: 650px; max-height: 650px;"></div>
                     </div>
                 </div>
-                <?php } ?>
+                <?php
+                    }
+                }
+                ?>
             </div>
         </div>
     </div>

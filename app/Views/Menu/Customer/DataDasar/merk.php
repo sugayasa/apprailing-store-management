@@ -1,6 +1,6 @@
 <?php
-    $menuName           =   $menuDetail['MENUNAME'];
-    $menuDescription    =   $menuDetail['DESCRIPTION'];
+    $menuName           =   $menuDetail['MENUNAME'] ?? '';
+    $menuDescription    =   $menuDetail['DESCRIPTION'] ?? '';
 ?>
 <div id="containerMenuCustomerDataDasarMerk" class="pos">
     <h1 id="customerDataDasarMerk-header" class="page-header d-flex flex-column flex-md-row align-items-md-center">
@@ -25,7 +25,7 @@
             </div>
             <div class="modal-body">
                 <div class="text-center mb-3">
-                    <img class="mb-2" src="<?=$defaultImage?>" id="logoMerkImg" style="max-width: 200px; max-height: 120px;"/><br/>
+                    <img class="mb-2" src="<?=$defaultImage ?? 'default.jpg'?>" id="logoMerkImg" style="max-width: 200px; max-height: 120px;"/><br/>
                     <span id="uploadLogoMerk">Upload Logo Merk</span>
                 </div>
                 <hr>
@@ -77,13 +77,13 @@
                         </div>
                         <hr>
                         <div class="text-center">
-                            <img class="mb-2" src="<?=$defaultPdfKatalogThumbnail?>" id="pdfThumbnail" style="max-width: 300px; max-height: 420px;"/><br/>
+                            <img class="mb-2" src="<?=$defaultPdfKatalogThumbnail ?? 'default.png'?>" id="pdfThumbnail" style="max-width: 300px; max-height: 420px;"/><br/>
                             <span id="uploadPdfThumbnail">Upload Thumbnail PDF</span>
                         </div>
                     </div>
                     <div class="col-lg-7 col-sm-12 border-start-lg border-dark">
                         <div class="text-center">
-                            <iframe class="mb-2" src="<?=$defaultPdfKatalogFile?>" id="pdfFile" style="max-width: 430px; max-height: 500px; width: 100%; height: 500px; border: 1px solid #dee2e6;"></iframe><br/>
+                            <iframe class="mb-2" src="<?=$defaultPdfKatalogFile ?? 'default.pdf'?>" id="pdfFile" style="max-width: 430px; max-height: 500px; width: 100%; height: 500px; border: 1px solid #dee2e6;"></iframe><br/>
                             <span id="uploadPdfFile">Upload File PDF</span>
                         </div>
                     </div>
@@ -101,7 +101,7 @@
 </div>
 <script>
 	var logoMerkBaseUrl =   "<?=BASE_URL_ASSETS_CUSTOMER_MERK?>",
-        logoMerkDefault =   "<?=$defaultImage?>",
+        logoMerkDefault =   "<?=$defaultImage ?? 'default.jpg'?>",
         jsFileUrl       =   "<?=BASE_URL_ASSETS_JS?>menu/customer/dataDasar/merk.js?<?=date("YmdHis")?>";
 	$.getScript(jsFileUrl);
 </script>
