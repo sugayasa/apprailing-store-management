@@ -144,7 +144,7 @@
                             <table class="table table-hover mb-0 w-100" style="table-layout: fixed; word-wrap: break-word; word-break: break-word;">
                                 <thead>
                                     <tr class="table-dark">
-                                        <th class="py-2 sticky-top sticky-col-left" width="18%">Detail Transaksi</th>
+                                        <th class="py-2 sticky-top sticky-col-left" width="22%">Detail Transaksi</th>
                                         <th class="py-2 sticky-top" width="15%">Detail Pengiriman</th>
                                         <th class="py-2 sticky-top">Detail Alamat</th>
                                         <th class="py-2 sticky-top" width="15%">Catatan</th>

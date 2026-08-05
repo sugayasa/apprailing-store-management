@@ -246,6 +246,10 @@ $routes->group('customer', ['filter' => 'auth:mustBeLoggedIn'], function($routes
             $routes->post('getData', $functionRoute.'::getData');
             $routes->post('getDataTableDetail', $functionRoute.'::getDataTableDetail');
         });
+        $routes->group('kritikSaran', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+            $functionRoute =   'Customer\Customer\KritikSaran';
+            $routes->post('getData', $functionRoute.'::getData');
+        });
     });
 });
 /*

@@ -366,4 +366,22 @@ class View extends ResourceController
             'content'   =>  $content
         ]);
     }
+
+    public function customerCustomerKritikSaran()
+    {
+        $modelKritikSaran       =   new \App\Models\Customer\Customer\KritikSaranModel();
+        $statistikKritikSaran   =   $modelKritikSaran->getStatistikKritikSaran();
+        $content                =   view(
+            'Menu/Customer/Customer/kritikSaran',
+            [
+                'menuDetail'            =>  $this->menuDetail,
+                'statistikKritikSaran'  =>  $statistikKritikSaran
+            ],
+            ['debug' => false]
+        );
+
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
 }
