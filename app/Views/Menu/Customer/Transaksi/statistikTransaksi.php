@@ -34,8 +34,8 @@
                         <div class="card-header">
                             <h6 class="card-title mb-0">Rekap Per Merk</h6>
                         </div>
-                        <div class="card-body">
-                            <div id="customerTransaksiStatistik-rekapitulasiPerMerk"></div>
+                        <div class="card-body d-flex flex-column overflow-hidden">
+                            <div class="overflow-auto flex-fill" id="customerTransaksiStatistik-rekapitulasiPerMerk"></div>
                         </div>
                     </div>
                 </div>
