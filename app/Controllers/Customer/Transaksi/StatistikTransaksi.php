@@ -175,7 +175,7 @@ class StatistikTransaksi extends ResourceController
                         "rekapRegionalMargin"   =>  $rekapRegionalMargin,
                         "dataProdukBestSeller"  =>  $dataProdukBestSeller,
                         "dataRiwayatTransaksi"  =>  $dataRiwayatTransaksi,
-                        "urlAssetLogoMerk"      =>  BASE_URL_ASSETS_LOGO_MERK,
+                        "urlAssetLogoMerk"      =>  BASE_URL_ASSETS_CUSTOMER_MERK,
                         "urlAssetCustomerProduk"=>  BASE_URL_ASSETS_CUSTOMER_PRODUK
                     ]);
     }
