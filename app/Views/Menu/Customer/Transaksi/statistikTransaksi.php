@@ -34,7 +34,7 @@
                         <div class="card-header">
                             <h6 class="card-title mb-0">Rekap Per Merk</h6>
                         </div>
-                        <div class="card-body d-flex flex-column overflow-hidden">
+                        <div class="card-body d-flex flex-column overflow-hidden" style="max-height: 400px;">
                             <div class="overflow-auto flex-fill" id="customerTransaksiStatistik-rekapitulasiPerMerk"></div>
                         </div>
                     </div>
@@ -44,15 +44,15 @@
                         <div class="card-header">
                             <h6 class="card-title mb-0">Rekap Per Regional</h6>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body d-flex flex-column overflow-hidden" style="max-height: 400px;">
                             <div class="mb-2">
                                 <h5 class="mb-1" id="customerTransaksiStatistik-totalTransaksiNominal">-</h5>
                             </div>
                             <div class="progress mb-2" style="height: 10px;" id="customerTransaksiStatistik-progressBarRegional">
                                 <div class="progress-bar bg-gray" style="width: 100%"></div>
                             </div>
-                            <div class="fs-15px" id="customerTransaksiStatistik-rekapitulasiPerRegional"></div>
-                            <div class="fs-12px text-end">
+                            <div class="overflow-auto flex-fill fs-15px" id="customerTransaksiStatistik-rekapitulasiPerRegional"></div>
+                            <div class="fs-12px text-end mt-2">
                                 <span class="fs-10px">* Transaksi yang dihitung hanya yang tidak dibatalkan</span>
                             </div>
                         </div>
