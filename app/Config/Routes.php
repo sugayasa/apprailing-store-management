@@ -251,6 +251,12 @@ $routes->group('customer', ['filter' => 'auth:mustBeLoggedIn'], function($routes
             $routes->post('getData', $functionRoute.'::getData');
         });
     });
+    $routes->group('transaksi', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+        $routes->group('statistikTransaksi', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+            $functionRoute =   'Customer\Transaksi\StatistikTransaksi';
+            $routes->post('getDataStatistik', $functionRoute.'::getDataStatistik');
+        });
+    });
 });
 /*
  * --------------------------------------------------------------------

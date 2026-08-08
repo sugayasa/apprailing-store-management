@@ -384,4 +384,19 @@ class View extends ResourceController
             'content'   =>  $content
         ]);
     }
+
+    public function customerTransaksiStatistik()
+    {
+        $content    =   view(
+            'Menu/Customer/Transaksi/statistikTransaksi',
+            [
+                'menuDetail'    =>  $this->menuDetail
+            ],
+            ['debug' => false]
+        );
+
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
 }

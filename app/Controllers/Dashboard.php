@@ -188,7 +188,7 @@ class Dashboard extends ResourceController
 
             foreach($dataStatistikRegional as &$statistikRegional){
                 $totalNominal                   =   intval($statistikRegional['TOTALNOMINAL']);
-                $persentase                     =   $totalSalesOrderNominal > 0  ? ($totalNominal / $totalSalesOrderNominal) * 100 : 1;
+                $persentase                     =   $totalSalesOrderNominal > 0  ? ($totalNominal / $totalSalesOrderNominal) * 100 : 0;
                 $statistikRegional['PERSENTASE']=   number_format($persentase, 2, '.', '');
             }
         }

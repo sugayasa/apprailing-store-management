@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
-use App\Libraries\FirebaseRTDB;
 
 class MainOperation extends Model
 {
@@ -244,6 +243,18 @@ class MainOperation extends Model
         $this->orderBy('MEDIAMARKETING', 'ASC');
 
         $result =   $this->get()->getResultObject();
+        if(is_null($result)) return [];
+        return $result;
+    }
+
+    public function getDataDetailRegionalCustomer()
+    {	
+        $db     =   \Config\Database::connect('dbcustomer');
+        $builder=   $db->table('m_regional');
+        $builder->select("IDREGIONAL, NAMAREGIONAL");
+        $builder->orderBy('NAMAREGIONAL', 'ASC');
+
+        $result =   $builder->get()->getResultObject();
         if(is_null($result)) return [];
         return $result;
     }

@@ -7,7 +7,6 @@ use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use App\Models\MainOperation;
 use App\Models\Customer\Customer\StatistikCustomerModel;
 
 class StatistikCustomer extends ResourceController

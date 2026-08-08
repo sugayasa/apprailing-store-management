@@ -28,7 +28,7 @@
 				</button>
 			</div>
 			
-			<a href="index.html" class="brand-logo">
+			<a href="#" class="brand-logo">
 				<img src="<?=BASE_URL_ASSETS_IMG?>logo-wide.png" class="invert-dark" alt="" height="20">
 			</a>
 		</div>
