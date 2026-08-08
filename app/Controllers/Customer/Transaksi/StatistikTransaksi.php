@@ -172,7 +172,7 @@ class StatistikTransaksi extends ResourceController
                         "dataGrafikTransaksi"   =>  $dataGrafikTransaksi,
                         "dataRekapPerMerk"      =>  $dataRekapPerMerk,
                         "dataRekapPerRegional"  =>  $dataRekapPerRegional,
-                        "rekapRegionalMargin"   =>  $rekapRegionalMargin,
+                        "rekapRegionalMargin"   =>  $rekapRegionalMargin <= 0 ? 1 : $rekapRegionalMargin,
                         "dataProdukBestSeller"  =>  $dataProdukBestSeller,
                         "dataRiwayatTransaksi"  =>  $dataRiwayatTransaksi,
                         "urlAssetLogoMerk"      =>  BASE_URL_ASSETS_CUSTOMER_MERK,
