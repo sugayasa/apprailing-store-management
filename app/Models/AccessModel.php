@@ -130,6 +130,15 @@ class AccessModel extends Model
         return $this->get()->getResultObject();
     }
 
+    public function getDataCustomerRegional()
+    {
+        $this->select('IDREGIONAL AS ID, NAMAREGIONAL AS VALUE');
+        $this->from(APP_MAIN_DATABASE_CUSTOMER.'.m_regional', true);
+        $this->orderBy('NAMAREGIONAL');
+
+        return $this->get()->getResultObject();
+    }
+
     public function getDataMerk()
     {
         $this->select('IDMERK AS ID, NAMAMERK AS VALUE');

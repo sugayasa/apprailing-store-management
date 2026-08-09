@@ -399,4 +399,19 @@ class View extends ResourceController
             'content'   =>  $content
         ]);
     }
+    
+    public function customerTransaksiDaftar()
+    {
+        $content    =   view(
+            'Menu/Customer/Transaksi/daftarTransaksi',
+            [
+                'menuDetail'    =>  $this->menuDetail
+            ],
+            ['debug'    =>  false]
+        );
+
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
 }

@@ -272,6 +272,7 @@ class Access extends ResourceController
         $dataUserAdminLevelMenu =   encodeDatabaseObjectResultKey($accessModel->getDataUserAdminLevelMenu(), 'ID');
         $dataMerk               =   encodeDatabaseObjectResultKey($accessModel->getDataMerk(), 'ID');
         $dataBarangKategori     =   encodeDatabaseObjectResultKey($accessModel->getDataBarangKategori(), 'ID');
+        $dataCustomerRegional   =   encodeDatabaseObjectResultKey($accessModel->getDataCustomerRegional(), 'ID');
         $dataCustomerMerk       =   encodeDatabaseObjectResultKey($accessModel->getDataCustomerMerk(), 'ID');
         $dataCustomerKategori   =   encodeDatabaseObjectResultKey($accessModel->getDataCustomerKategori(), 'ID');
 
@@ -280,6 +281,7 @@ class Access extends ResourceController
             "dataUserAdminLevelMenu"=>  $dataUserAdminLevelMenu,
             "dataMerk"              =>  $dataMerk,
             "dataBarangKategori"    =>  $dataBarangKategori,
+            "dataCustomerRegional"  =>  $dataCustomerRegional,
             "dataCustomerMerk"      =>  $dataCustomerMerk,
             "dataCustomerKategori"  =>  $dataCustomerKategori,
             "optionHours"	        =>  OPTION_HOURS,
@@ -292,7 +294,6 @@ class Access extends ResourceController
 
     public function getDataOptionByKey($keyName, $optionName = false, $keyword = false)
     {
-        $accessModel    =   new AccessModel();
         $optionName     =   $optionName != false ? $optionName : 'randomOption';
         $dataOption     =   [];
         $arrEncodeKey   =   ['ID'];
