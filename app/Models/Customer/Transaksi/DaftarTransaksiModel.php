@@ -78,4 +78,46 @@ class DaftarTransaksiModel extends Model
         $this->orderBy("A.INPUTTANGGALWAKTU", "DESC");   
         return $this;
     }
+
+    public function getDetailTransaksi($idTransaksiRekap)
+    {
+        $this->select(
+            "B.AVATAR, B.NAMA, B.KODEUNIK AS KODECUSTOMER, B.EMAIL, B.NOMORHP, C.LOYALTITIER, C.ICONFILE AS ICONFILELOYALTI,
+            A.NOMORTRANSAKSI, F.STATUSTRANSAKSI, F.COLORCLASSBS, DATE_FORMAT(A.INPUTTANGGALWAKTU, '%d %M %Y %H:%i:%s') AS INPUTTANGGALWAKTUSTR,
+            D.NAMAREGIONAL, E.NAMAKANALPEMBAYARAN, A.CATATAN, G.NAMAEKSPEDISI, IFNULL(A.NOMORRESIEKSPEDISI, '-') AS NOMORRESIEKSPEDISI,
+            A.ALAMATNAMA, A.PENERIMANAMA, A.PENERIMANOMORTELEPON, A.ALAMATKIRIM, A.TOTALBARANG, A.TOTALNOMINALBARANG, A.TOTALNOMINALONGKIR,
+            A.TOTALNOMINALDISKON,A.TOTALNOMINALBAYAR"
+        );
+        $this->from('t_transaksirekap AS A', true);
+        $this->join('m_customer AS B', 'A.IDCUSTOMER = B.IDCUSTOMER', 'left');
+        $this->join('m_customerloyalti AS C', 'B.IDCUSTOMERLOYALTI = C.IDCUSTOMERLOYALTI', 'LEFT');
+        $this->join('m_regional AS D', 'A.IDREGIONAL = D.IDREGIONAL', 'left');
+        $this->join('m_kanalpembayaran AS E', 'A.IDKANALPEMBAYARAN = E.IDKANALPEMBAYARAN', 'left');
+        $this->join('m_statustransaksi AS F', 'A.IDSTATUSTRANSAKSI = F.IDSTATUSTRANSAKSI', 'left');
+        $this->join('m_ekspedisi AS G', 'A.IDEKSPEDISI = G.IDEKSPEDISI', 'left');
+        $this->where('A.IDTRANSAKSIREKAP', $idTransaksiRekap);
+        $this->limit(1);
+
+        $result =   $this->first();
+
+        if(is_null($result)) return false;
+        return $result;
+    }
+
+    public function getDaftarProduk($idTransaksiRekap)
+    {
+        $this->select(
+            "C.NAMAMERK, D.NAMAKATEGORI, B.NAMAPRODUK, B.ARRIMAGE, A.KETERANGAN, A.JUMLAH, A.NOMINALSATUAN, A.NOMINALTOTAL"
+        );
+        $this->from('t_transaksibarang AS A', true);
+        $this->join('t_produk AS B', 'A.IDPRODUK = B.IDPRODUK', 'LEFT');
+        $this->join('m_merk AS C', 'B.IDMERK = C.IDMERK', 'LEFT');
+        $this->join('m_kategori AS D', 'B.IDKATEGORI = D.IDKATEGORI', 'LEFT');
+        $this->where('A.IDTRANSAKSIREKAP', $idTransaksiRekap);
+
+        $result     =   $this->get()->getResultObject();
+
+        if(is_null($result)) return false;
+        return $result;
+    }
 }

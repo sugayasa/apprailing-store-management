@@ -67,6 +67,7 @@ class DaftarTransaksi extends ResourceController
 
         if($totalNumberData > 0){
             $listData   =   $baseData->asObject()->findAll($dataPerPage, ($pageNumber - 1) * $dataPerPage);
+            $listData   =   encodeDatabaseObjectResultKey($listData, ['IDTRANSAKSIREKAP']);
 
             return $this->setResponseFormat('json')->respond([
                 "listData"          =>  $listData,
@@ -79,5 +80,33 @@ class DaftarTransaksi extends ResourceController
             ];
             return throwResponseNotFound('Tidak ada data yang ditemukan', $dataReturn);
         }
+    }
+
+    public function getDetail()
+    {
+        $rules      =   [
+            'idTransaksiRekap'  =>  ['label' => 'ID Transaksi', 'rules' => 'permit_empty|alpha_numeric']
+        ];
+
+        $messages   =   [
+            'idTransaksiRekap'  =>  [
+                'alpha_numeric' =>  'Transaksi yang dipilih tidak valid, muat ulang halaman ini dan coba lagi'
+            ]
+        ];
+
+        if(!$this->validate($rules, $messages)) return $this->fail($this->validator->getErrors());
+
+        $daftarTransaksiModel   =   new DaftarTransaksiModel();
+        $idTransaksiRekap       =   $this->request->getVar('idTransaksiRekap');
+        $idTransaksiRekap       =   $idTransaksiRekap != "" ? hashidDecode($idTransaksiRekap) : 0;
+        $detailData             =   $daftarTransaksiModel->getDetailTransaksi($idTransaksiRekap);
+
+        if(!$detailData) return throwResponseNotFound('Detail transaksi yang dipilih tidak ditemukan');
+        $daftarProduk           =   $daftarTransaksiModel->getDaftarProduk($idTransaksiRekap);
+
+        return $this->setResponseFormat('json')->respond([
+            "detailData"    =>  $detailData,
+            "daftarProduk"  =>  $daftarProduk
+        ]);
     }
 }

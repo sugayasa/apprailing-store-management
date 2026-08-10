@@ -259,6 +259,7 @@ $routes->group('customer', ['filter' => 'auth:mustBeLoggedIn'], function($routes
         $routes->group('daftarTransaksi', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
             $functionRoute =   'Customer\Transaksi\DaftarTransaksi';
             $routes->post('getData', $functionRoute.'::getData');
+            $routes->post('getDetail', $functionRoute.'::getDetail');
         });
     });
 });
