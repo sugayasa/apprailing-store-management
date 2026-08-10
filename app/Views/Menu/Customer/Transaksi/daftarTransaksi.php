@@ -151,9 +151,8 @@
                                     <td class="text-end">Rp. <span id="detailTransaksi-ongkosKirim">0</span></td>
                                 </tr>
                                 <tr>
-                                    <td>Diskon</td>
-                                    <td class="text-body text-end text-opacity-50">(-)</td>
-                                    <td class="text-end">Rp. <span id="detailTransaksi-diskon">0</span></td>
+                                    <td colspan="2">Diskon</td>
+                                    <td class="text-end">[-] Rp. <span id="detailTransaksi-diskon">0</span></td>
                                 </tr>
                                 <tr>
                                     <td colspan="3">
