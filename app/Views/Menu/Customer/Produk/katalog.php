@@ -17,19 +17,29 @@
         <div class="card mb-3" id="customerProdukKatalog-filter">
             <div class="card-body pb-2">
                 <div class="row">
-                    <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
+                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4">
                         <div class="form-group mb-3">
                             <label class="form-label" for="customerProdukKatalog-optionMerk">Merk</label>
                             <select class="form-select" id="customerProdukKatalog-optionMerk" name="customerProdukKatalog-optionMerk" option-all="Semua Merk"></select>
                         </div>
                     </div>
-                    <div class="col-xl-3 col-lg-4 col-md-3 col-sm-6">
+                    <div class="col-xl-2 col-lg-3 col-md-3 col-sm-4">
                         <div class="form-group mb-3">
                             <label class="form-label" for="customerProdukKatalog-optionKategori">Kategori</label>
                             <select class="form-select" id="customerProdukKatalog-optionKategori" name="customerProdukKatalog-optionKategori" option-all="Semua Kategori"></select>
                         </div>
                     </div>
-                    <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4">
+                        <div class="form-group mb-3">
+                            <label class="form-label" for="customerProdukKatalog-optionStatus">Status</label>
+                            <select class="form-select" id="customerProdukKatalog-optionStatus" name="customerProdukKatalog-optionStatus">
+                                <option value="" selected>Semua Status</option>
+                                <option value="1">Aktif</option>
+                                <option value="-1">Non Aktif</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-5 col-md-4 col-sm-12">
                         <div class="form-group mb-3">
                             <label class="form-label" for="customerProdukKatalog-keywordCariProduk">Cari Produk</label>
                             <input type="text" class="form-control" id="customerProdukKatalog-keywordCariProduk" name="customerProdukKatalog-keywordCariProduk" placeholder="Ketik dan tekan ENTER untuk mencari...">

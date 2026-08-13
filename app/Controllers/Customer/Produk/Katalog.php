@@ -41,6 +41,7 @@ class Katalog extends ResourceController
         $rules      =   [
             'merk'          =>  ['label' => 'Merk', 'rules' => 'permit_empty|alpha_numeric'],
             'kategori'      =>  ['label' => 'Kategori', 'rules' => 'permit_empty|alpha_numeric'],
+            'status'        =>  ['label' => 'Status', 'rules' => 'permit_empty|in_list[-1,1]'],
             'keywordCari'   =>  ['label' => 'Keyword Cari', 'rules' => 'permit_empty|string'],
             'urutBerdasar'  =>  ['label' => 'Urutan Berdasar', 'rules' => 'required|in_list[1,2,3]'],
             'jenisUrutan'   =>  ['label' => 'Jenis Urutan', 'rules' => 'required|in_list[ASC,DESC]'],
@@ -49,6 +50,9 @@ class Katalog extends ResourceController
         $messages   =   [
             'merk'  =>  [
                 'alpha_numeric' =>  'Merk tidak valid'
+            ],
+            'status'  =>  [
+                'in_list' =>  'Status yang dipilih tidak valid'
             ],
             'kategori'  =>  [
                 'alpha_numeric' =>  'Kategori tidak valid'
@@ -71,11 +75,12 @@ class Katalog extends ResourceController
         $kategori       =   $this->request->getVar('kategori');
         $kategori       =   $kategori != "" ? hashidDecode($kategori) : 0;
         $keywordCari    =   $this->request->getVar('keywordCari');
+        $status         =   $this->request->getVar('status');
         $urutBerdasar   =   $this->request->getVar('urutBerdasar');
         $jenisUrutan    =   $this->request->getVar('jenisUrutan');
         $pageNumber     =   $this->request->getVar('pageNumber') ? (int)$this->request->getVar('pageNumber') : 1;
         $dataPerPage    =   $this->request->getVar('dataPerPage') ? (int)$this->request->getVar('dataPerPage') : 8;
-        $baseData       =   $katalogModel->getDataProduk($merk, $kategori, $keywordCari, $urutBerdasar, $jenisUrutan);
+        $baseData       =   $katalogModel->getDataProduk($merk, $kategori, $status, $keywordCari, $urutBerdasar, $jenisUrutan);
         $totalNumberData=   $baseData->countAllResults(false);
         $pageProperty   =   $mainOperation->generatePageProperty($pageNumber, $dataPerPage, $totalNumberData);
 

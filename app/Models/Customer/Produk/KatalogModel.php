@@ -45,11 +45,11 @@ class KatalogModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
     
-    public function getDataProduk($merk, $kategori, $keywordCari, $urutBerdasar, $jenisUrutan)
+    public function getDataProduk($merk, $kategori, $status, $keywordCari, $urutBerdasar, $jenisUrutan)
     {	
         $this->select(
             "A.IDPRODUK, A.ARRIMAGE, B.NAMAMERK, IFNULL(C.NAMAKATEGORI, '-') AS NAMAKATEGORI, A.NAMAPRODUK,
-            A.DESKRIPSI, A.HARGAJUAL, A.TOTALTERJUAL"
+            A.DESKRIPSI, A.HARGAJUAL, A.TOTALTERJUAL, A.STATUS"
         );
         $this->from('t_produk AS A', true);
         $this->join('m_merk AS B', 'A.IDMERK = B.IDMERK', 'LEFT');
@@ -57,6 +57,7 @@ class KatalogModel extends Model
 
         if(isset($merk) && $merk != '' && $merk != 0) $this->where('A.IDMERK', $merk);
         if(isset($kategori) && $kategori != '' && $kategori != 0) $this->where('A.IDKATEGORI', $kategori);
+        if(isset($status) && $status != '') $this->where('A.STATUS', $status);
         if(isset($keywordCari) && !is_null($keywordCari)){
             $this->groupStart();
             $this->like('B.NAMAMERK', $keywordCari, 'both')
