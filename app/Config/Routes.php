@@ -123,11 +123,11 @@ $routes->group('monitoringMutasiStok', ['filter' => 'auth:mustBeLoggedIn'], func
 });
 
 $routes->group('pengaturan', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
-    $routes->group('levelMenu', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
-        $functionRoute =   'Pengaturan\LevelMenu';
-        $routes->post('getDataLevel', $functionRoute.'::getDataLevel');
-        $routes->post('getMenuLevelAdmin', $functionRoute.'::getMenuLevelAdmin');
-        $routes->post('addLevelAdmin', $functionRoute.'::addLevelAdmin');
+    $routes->group('userLevelMenu', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+        $functionRoute =   'Pengaturan\UserLevelMenu';
+        $routes->post('getDataLevelUser', $functionRoute.'::getDataLevelUser');
+        $routes->post('getDetailMenuLevelUser', $functionRoute.'::getDetailMenuLevelUser');
+        $routes->post('saveLevelUser', $functionRoute.'::saveLevelUser');
         $routes->post('saveLevelMenu', $functionRoute.'::saveLevelMenu');
     });
     $routes->group('userAdmin', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {

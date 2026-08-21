@@ -113,8 +113,10 @@ class View extends ResourceController
     public function pengaturanLevelMenu()
     {
         $content    =   view(
-            'Menu/pengaturan/levelMenu',
-            [],
+            'Menu/Pengaturan/userLevelMenu',
+            [
+                'menuDetail'    =>  $this->menuDetail
+            ],
             ['debug' => false]
         );
         return $this->setResponseFormat('json')->respond([

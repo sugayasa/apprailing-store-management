@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Settings;
+namespace App\Controllers\Pengaturan;
 
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
@@ -8,8 +8,7 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use App\Models\MainOperation;
-use App\Models\Settings\UserLevelMenuModel;
-use Google\Service\AlertCenter\User;
+use App\Models\Pengaturan\UserLevelMenuModel;
 
 class UserLevelMenu extends ResourceController
 {
@@ -35,26 +34,24 @@ class UserLevelMenu extends ResourceController
         return $this->failForbidden('[E-AUTH-000] Forbidden Access');
     }
 
-    public function getDataLevel()
+    public function getDataLevelUser()
     {
         $userLevelMenuModel =   new UserLevelMenuModel();
-        $searchKeyword      =   $this->request->getVar('searchKeyword');
-        $dataUserLevel      =	$userLevelMenuModel->getDataUserLevel($searchKeyword);
+        $dataUserLevel      =	$userLevelMenuModel->getDataLevelUser();
 
         if($dataUserLevel){
             $result =   encodeDatabaseObjectResultKey($dataUserLevel, 'IDUSERADMINLEVEL');
             return $this->setResponseFormat('json')
                         ->respond([
-                            "dataLevelUser"    =>  $result
+                            "listData"  =>  $result
                         ]);
         } else {
-            return throwResponseNotFound('No data found based on the applied filter');
+            return throwResponseNotFound('Tidak ada data yang ditemukan');
         }
     }
 
-    public function getMenuLevelAdmin()
+    public function getDetailMenuLevelUser()
     {
-        helper(['form']);
         $rules  =   [
             'idUserLevel' =>    ['label' => 'Id user level', 'rules' => 'required|alpha_numeric']
         ];
@@ -71,95 +68,91 @@ class UserLevelMenu extends ResourceController
         $userLevelMenuModel =   new UserLevelMenuModel();
         $idUserLevel        =   $this->request->getVar('idUserLevel');
         $idUserLevel        =   hashidDecode($idUserLevel);
-        $dataMenuLevel      =	$userLevelMenuModel->getMenuLevelAdmin($idUserLevel);
+        $dataMenuLevel      =	$userLevelMenuModel->getDetailMenuLevelUser($idUserLevel);
 
         if($dataMenuLevel){
-            $dataMenuLevel  =   encodeDatabaseObjectResultKey($dataMenuLevel, 'IDMENUADMIN');
-            $dataMenuLevel  =   encodeDatabaseObjectResultKey($dataMenuLevel, 'IDMENULEVELADMIN');
+            $dataMenuLevel  =   encodeDatabaseObjectResultKey($dataMenuLevel, ['IDMENUADMIN', 'IDMENULEVELADMIN']);
             return $this->setResponseFormat('json')
                         ->respond([
-                            "dataMenuLevel"    =>  $dataMenuLevel
+                            "listData"    =>  $dataMenuLevel
                         ]);
         } else {
-            return throwResponseNotFound('No data found based on level user selected');
+            return throwResponseNotFound('Tidak ada detail menu level user yang ditemukan');
         }
     }
 
-    public function addLevelAdmin()
+    public function saveLevelUser()
     {
-        helper(['form']);
-        $rules      =   [
-            'userLevelName' =>  ['label' => 'Level Name', 'rules' => 'required|regex_match[/^[a-zA-Z0-9~!#$%&*_\-\+=|:., ]+$/]|min_length[5]|max_length[50]'],
-            'description'   =>  ['label' => 'Description', 'rules' => 'required|regex_match[/^[a-zA-Z0-9~!#$%&*_\-\+=|:., ]+$/]|max_length[255]']
+        $idLevelUser    =   $this->request->getVar('idLevelUser');
+        $idLevelUser    =   $idLevelUser != "" ? hashidDecode($idLevelUser) : 0;
+        $rules          =   [
+            'namaLevel' =>  ['label' => 'Nama Level User', 'rules' => 'required|string|min_length[3]|max_length[50]'],
+            'deskripsi' =>  ['label' => 'Deskripsi', 'rules' => 'permit_empty|string|max_length[255]']
         ];
 
-        if(!$this->validate($rules)) return $this->fail($this->validator->getErrors());
+        $messages       =   [
+            'namaLevel' =>  [],
+            'deskripsi' =>  []
+        ];
 
-        $userLevelMenuModel =   new UserLevelMenuModel();
-        $userLevelName      =   $this->request->getVar('userLevelName');
-        $description        =   $this->request->getVar('description');
-        $isLevelAdminExist  =	$userLevelMenuModel->isLevelAdminExist($userLevelName);
-
-        if(!$isLevelAdminExist){
-            $arrInsertData   =   [
-                'LEVELNAME'     =>  $userLevelName,
-                'DESCRIPTION'   =>  $description,
-                'ISSUPERADMIN'  =>  0
-            ];
-
-            $mainOperation          =   new MainOperation();
-            $procInsertLevelUser    =   $mainOperation->insertDataTable('m_useradminlevel', $arrInsertData);
-
-            if(!$procInsertLevelUser['status']) return switchMySQLErrorCode($procInsertLevelUser['errCode']);
-            return throwResponseOK(
-                'New user level has been successfully added',
-                ['idUserLevel'    =>  hashidEncode($procInsertLevelUser['insertID'])]
-            );
+        if($idLevelUser != 0){
+            $rules['namaLevel']['rules'].=  '|is_unique[m_useradminlevel.LEVELNAME, IDUSERADMINLEVEL, '.$idLevelUser.']';
         } else {
-            return throwResponseForbidden('Admin user level with name `'.$userLevelName.'` already exists, please use another name.');
+            $rules['namaLevel']['rules'].=  '|is_unique[m_useradminlevel.LEVELNAME]';
         }
+
+        if(!$this->validate($rules, $messages)) return $this->fail($this->validator->getErrors());
+        
+        $mainOperation  =   new MainOperation();
+        $namaLevel      =   $this->request->getVar('namaLevel');
+        $deskripsi      =   $this->request->getVar('deskripsi');
+        $arrInsertUpdate=   [
+            'LEVELNAME'     =>  $namaLevel,
+            'DESCRIPTION'   =>  $deskripsi,
+            'ISSUPERADMIN'  =>  0
+        ];
+
+        if($idLevelUser == 0){
+            $procInsertData =   $mainOperation->insertDataTable('m_useradminlevel', $arrInsertUpdate);
+            if(!$procInsertData['status']) return switchMySQLErrorCode($procInsertData['errCode']);
+        } else {
+            $procUpdateData =   $mainOperation->updateDataTable('m_useradminlevel', $arrInsertUpdate, ['IDUSERADMINLEVEL' => $idLevelUser]);
+            if(!$procUpdateData['status']) return switchMySQLErrorCode($procUpdateData['errCode']);
+        }
+                    
+        $responseSuccess =   $idLevelUser == 0 ? 'Level user baru telah disimpan' : 'Level user telah diperbarui';
+        return throwResponseOK($responseSuccess);
     }
 
     public function saveLevelMenu()
     {
-        helper(['form']);
         $rules      =   [
             'idUserLevel'   =>  ['label' => 'Id user level', 'rules' => 'required|alpha_numeric'],
-            'userLevelName' =>  ['label' => 'Level Name', 'rules' => 'required|regex_match[/^[a-zA-Z0-9~!#$%&*_\-\+=|:., ]+$/]|min_length[5]|max_length[50]'],
-            'description'   =>  ['label' => 'Description', 'rules' => 'required|regex_match[/^[a-zA-Z0-9~!#$%&*_\-\+=|:., ]+$/]|max_length[255]'],
-            'userLevelMenu' =>  ['label' => 'User level menu', 'rules' => 'required|is_array'],
+            'userLevelMenu' =>  ['label' => 'data menu level pengguna', 'rules' => 'required|is_array'],
         ];
 
         $messages   =   [
             'idUserLevel'   => [
-                'required'      => 'Invalid data sent',
-                'alpha_numeric' => 'Invalid data sent'
+                'required'      => 'Data kiriman tidak valid',
+                'alpha_numeric' => 'Data kiriman tidak valid'
             ],
             'userLevelMenu' => [
-                'required'  => 'Invalid data sent',
-                'is_array'  => 'Invalid data sent'
+                'required'  => 'Data kiriman tidak valid',
+                'is_array'  => 'Data kiriman tidak valid'
             ]
         ];
 
         if(!$this->validate($rules, $messages)) return $this->fail($this->validator->getErrors());
 
-        $mainOperation      =   new MainOperation();
-        $idUserLevel        =   $this->request->getVar('idUserLevel');
-        $userLevelName      =   $this->request->getVar('userLevelName');
-        $description        =   $this->request->getVar('description');
-        $idUserLevel        =   hashidDecode($idUserLevel);
-        $userLevelMenu      =   $this->request->getVar('userLevelMenu');
-        $arrUpdateLevelUser =   [
-            'LEVELNAME'     =>  $userLevelName,
-            'DESCRIPTION'   =>  $description
-        ];
-
-        $mainOperation->updateDataTable('m_useradminlevel', $arrUpdateLevelUser, ['IDUSERADMINLEVEL' => $idUserLevel]);
+        $mainOperation  =   new MainOperation();
+        $idUserLevel    =   $this->request->getVar('idUserLevel');
+        $idUserLevel    =   hashidDecode($idUserLevel);
+        $userLevelMenu  =   $this->request->getVar('userLevelMenu');
 
         foreach($userLevelMenu as $keyUserLevelMenu) {
-            $idMenuAdmin            =   isset($keyUserLevelMenu->idMenuAdmin) && $keyUserLevelMenu->idMenuAdmin != '' ? hashidDecode($keyUserLevelMenu->idMenuAdmin) : 0;
-            $idMenuLevelAdmin       =   isset($keyUserLevelMenu->idMenuLevelAdmin) && $keyUserLevelMenu->idMenuLevelAdmin != '' ? hashidDecode($keyUserLevelMenu->idMenuLevelAdmin) : 0;
-            $isMenuOpen             =   isset($keyUserLevelMenu->isMenuOpen) && $keyUserLevelMenu->isMenuOpen != '' ? $keyUserLevelMenu->isMenuOpen : 0;
+            $idMenuAdmin        =   isset($keyUserLevelMenu->idMenuAdmin) && $keyUserLevelMenu->idMenuAdmin != '' ? hashidDecode($keyUserLevelMenu->idMenuAdmin) : 0;
+            $idMenuLevelAdmin   =   isset($keyUserLevelMenu->idMenuLevelAdmin) && $keyUserLevelMenu->idMenuLevelAdmin != '' ? hashidDecode($keyUserLevelMenu->idMenuLevelAdmin) : 0;
+            $isMenuOpen         =   isset($keyUserLevelMenu->isMenuOpen) && $keyUserLevelMenu->isMenuOpen != '' ? $keyUserLevelMenu->isMenuOpen : 0;
 
             if($isMenuOpen){
                 $arrInsertUpdateMenuLevel   =   [
@@ -174,13 +167,12 @@ class UserLevelMenu extends ResourceController
                 if($idMenuLevelAdmin != 0) $mainOperation->updateDataTable('m_menuleveladmin', $arrInsertUpdateMenuLevel, ['IDMENULEVELADMIN' => $idMenuLevelAdmin]);
                 else $mainOperation->insertDataTable('m_menuleveladmin', $arrInsertUpdateMenuLevel);
             } else {
-                if($idMenuLevelAdmin != 0) $mainOperation->deleteDataTable('m_menuleveladmin', 'IDMENULEVELADMIN', $idMenuLevelAdmin);
+                if($idMenuLevelAdmin != 0) $mainOperation->deleteDataTable('m_menuleveladmin', ['IDMENULEVELADMIN' => $idMenuLevelAdmin]);
             }
         }
 
         return throwResponseOK(
-            'User level detail & menu access has been successfully updated',
-            ['idUserLevel' => hashidEncode($idUserLevel)]
+            'Menu level pengguna telah diperbarui'
         );
     }
 }
