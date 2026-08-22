@@ -127,7 +127,7 @@ class View extends ResourceController
     public function pengaturanDaftarPengguna()
     {
         $content    =   view(
-            'Menu/pengaturan/daftarPengguna',
+            'Menu/Pengaturan/daftarPengguna',
             [
                 'menuDetail'    =>  $this->menuDetail
             ],
