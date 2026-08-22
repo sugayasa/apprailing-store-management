@@ -3,7 +3,7 @@
     $menuDescription    =   $menuDetail['DESCRIPTION'] ?? '';
 ?>
 
-<div id="containerMenuPengaturanDaftarPengguna" class="pos">
+<div id="containerMenuPengaturanDaftarPengguna">
     <h1 id="pengaturanDaftarPengguna-header" class="page-header d-flex flex-column flex-md-row align-items-md-center">
         <span class="mb-2 mb-md-0"><?=$menuName?> <small><?=$menuDescription?></small></span>
         <button id="btnAddPengguna" type="button" class="btn btn-primary ms-md-auto mt-md-0 mt-2">
