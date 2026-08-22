@@ -130,10 +130,10 @@ $routes->group('pengaturan', ['filter' => 'auth:mustBeLoggedIn'], function($rout
         $routes->post('saveLevelUser', $functionRoute.'::saveLevelUser');
         $routes->post('saveLevelMenu', $functionRoute.'::saveLevelMenu');
     });
-    $routes->group('userAdmin', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
-        $functionRoute =   'Pengaturan\UserAdmin';
-        $routes->post('getDataUserAdmin', $functionRoute.'::getDataUserAdmin');
-        $routes->post('saveUserAdmin', $functionRoute.'::saveUserAdmin');
+    $routes->group('daftarPengguna', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+        $functionRoute =   'Pengaturan\DaftarPengguna';
+        $routes->post('getData', $functionRoute.'::getData');
+        $routes->post('saveData', $functionRoute.'::saveData');
     });
     $routes->group('variabelSistem', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
         $functionRoute =   'Pengaturan\VariabelSistem';

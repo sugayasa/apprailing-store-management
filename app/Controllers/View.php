@@ -128,7 +128,9 @@ class View extends ResourceController
     {
         $content    =   view(
             'Menu/pengaturan/daftarPengguna',
-            [],
+            [
+                'menuDetail'    =>  $this->menuDetail
+            ],
             ['debug' => false]
         );
         return $this->setResponseFormat('json')->respond([
