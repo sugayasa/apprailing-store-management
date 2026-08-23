@@ -11,8 +11,7 @@ use CodeIgniter\HTTP\Exceptions\HTTPException;
 use App\Libraries\HmacHandler;
 use App\Libraries\CacheDB;
 use App\Models\MainOperation;
-// use App\Models\Pengaturan\VariabelSistemModel;
-// use App\Libraries\StorageFactory;
+use App\Models\Pengaturan\VariabelSistemModel;
 
 class VariabelSistem extends ResourceController
 {
@@ -36,6 +35,111 @@ class VariabelSistem extends ResourceController
     public function index()
     {
         return $this->failForbidden('[E-AUTH-000] Forbidden Access');
+    }
+
+    public function getRowPengaturanSistem()
+    {
+        $rules      =   [
+            'searchKeyword' =>  ['label' => 'Kata Kunci Pencarian', 'rules' => 'permit_empty|string']
+        ];
+
+        $messages   =   [];
+
+        if(!$this->validate($rules, $messages)) return $this->fail($this->validator->getErrors());
+
+        $variabelSistemModel=   new VariabelSistemModel();
+        $searchKeyword      =   $this->request->getVar('searchKeyword');
+        $dataPengaturan     =   $variabelSistemModel->getDataPengaturanSistem($searchKeyword);
+        $rowPengaturan      =   '';
+
+        if(empty($dataPengaturan) || is_null($dataPengaturan)) return throwResponseNotFound("Tidak ada data pengaturan yang ditemukan");
+
+        foreach ($dataPengaturan as $keyPengaturan) {
+            $idPengaturan   =   $keyPengaturan->IDPENGATURANSISTEM;
+            $elemInput      =   '';
+
+            switch($idPengaturan){
+                case 1   :
+                    $elemInput  =   $this->generateComboBoxAPIOngkirProvider($keyPengaturan->DATA);
+                    break;
+                case 2   :
+                default :
+                    $elemInput  =   '<input type="text" class="pengaturan-sistem-input form-control" value="' . $keyPengaturan->DATA . '">';
+                    break;
+            }
+
+            $rowPengaturan  .=  '<tr data-id-pengaturan="' . hashidEncode($idPengaturan) . '">';
+            $rowPengaturan  .=  '<td width="75%">';
+            $rowPengaturan  .=  $keyPengaturan->NAMA . '<br><small class="text-muted">' . $keyPengaturan->DESKRIPSI . '</small>';
+            $rowPengaturan  .=  '</td>';
+            $rowPengaturan  .=  '<td>' . $elemInput . '</td>';
+            $rowPengaturan  .=  '</tr>';
+        }
+
+        return $this->setResponseFormat('json')->respond([
+            "rowPengaturan" =>  $rowPengaturan
+        ]);
+    }
+
+    private function generateComboBoxAPIOngkirProvider($selectedValue)
+    {
+        $variabelSistemModel=   new VariabelSistemModel();
+        $dataProvider       =   $variabelSistemModel->getDataPengaturanSistemAPIOngkirProvider();
+        $comboBox           =   '<select class="pengaturan-sistem-input form-select">';
+
+        foreach ($dataProvider as $key => $value) {
+            $selected   =   ($value->IDAPIPROVIDER === $selectedValue) ? ' selected' : '';
+            $comboBox   .=   '<option value="' . hashidEncode($value->IDAPIPROVIDER) . '"' . $selected . '>' . $value->NAMAPROVIDER . '</option>';
+        }
+        $comboBox       .=  '</select>';
+
+        return $comboBox;
+    }
+
+    public function simpanPengaturanSistem()
+    {
+        $rules      =   [
+            'dataPengaturan'                    => 'required',
+            'dataPengaturan.*.idPengaturan'     => 'required|alpha_numeric',
+            'dataPengaturan.*.valuePengaturan'  => 'permit_empty|string'
+        ];
+
+        $messages   =   [
+            'dataPengaturan'    =>  [
+                'required'  =>  'Data kiriman tidak valid'
+            ],
+            'dataPengaturan.*.idPengaturan' =>  [
+                'alpha_numeric' =>  'Data kiriman tidak valid'
+            ]
+        ];
+
+        if(!$this->validate($rules, $messages)) return $this->fail($this->validator->getErrors());
+
+        $mainOperation  =   new MainOperation();
+        $dataPengaturan =   $this->request->getVar('dataPengaturan');
+        $totalUpdate    =   0;
+
+        foreach($dataPengaturan as $keyPengaturan){
+            $idPengaturan   =   hashidDecode($keyPengaturan->idPengaturan) ?? null;
+            $valuePengaturan=   $keyPengaturan->valuePengaturan ?? null;
+            
+            switch ($idPengaturan) {
+                case 1  :   $valuePengaturan    =   hashidDecode($valuePengaturan); break;
+                case 2  :   
+                default :   $valuePengaturan    =   $valuePengaturan; break;
+            }
+
+            $procUpdate  =   $mainOperation->updateDataTable(
+                'a_pengaturansistem',
+                ['DATA' => $valuePengaturan],
+                ['IDPENGATURANSISTEM' => $idPengaturan]
+            );
+
+            if($procUpdate['status']) $totalUpdate++;
+        }
+
+        if($totalUpdate > 0) return throwResponseOK($totalUpdate." Data pengaturan sistem berhasil diperbarui");
+        else return throwResponseNotAcceptable("[E-UPDATE-000] Tidak ada data pengaturan sistem yang diperbarui");
     }
 
     public function syncDataBarangSistemUtama()
@@ -86,13 +190,6 @@ class VariabelSistem extends ResourceController
                 default:
                     return $this->fail('[E-SYNC-' . $statusCode . '] HTTP Error: ' . $e->getMessage(), $statusCode);
             }
-
-        } catch (\CodeIgniter\HTTP\Exceptions\ConnectionException $e) {
-            return throwResponseError(
-                504,
-                '[E-SYNC-504] Gateway Timeout: Tidak dapat terhubung ke server utama. ' . $e->getMessage()
-            );
-
         } catch (\Throwable $e) {
             return throwResponseError(
                 500,

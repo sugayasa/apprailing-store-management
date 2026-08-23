@@ -143,7 +143,7 @@ class View extends ResourceController
         $content    =   view(
             'Menu/Pengaturan/variabelSistem',
             [
-                'menuDetail'    =>  $this->menuDetail
+                'menuDetail'    =>  $this->menuDetail,
             ],
             ['debug' => false]
         );

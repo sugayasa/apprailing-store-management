@@ -6,13 +6,13 @@ use CodeIgniter\Model;
 
 class VariabelSistemModel extends Model
 {
-    protected $table            = 'variabelsistems';
-    protected $primaryKey       = 'id';
+    protected $table            = 'a_pengaturansistem';
+    protected $primaryKey       = 'IDPENGATURANSISTEM';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['IDPENGATURANSISTEM', 'NAMA', 'DESKRIPSI', 'DATA', 'URUTAN'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -43,4 +43,30 @@ class VariabelSistemModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getDataPengaturanSistem($searchKeyword = null)
+    {
+        $this->select('IDPENGATURANSISTEM, NAMA, DESKRIPSI, DATA');
+        $this->from('a_pengaturansistem', true);
+        if(!is_null($searchKeyword) && $searchKeyword !== ''){
+            $this->groupStart();
+            $this->like('NAMA', $searchKeyword);
+            $this->orLike('DESKRIPSI', $searchKeyword);
+            $this->orLike('DATA', $searchKeyword);
+            $this->groupEnd();
+        }
+        $this->orderBy('URUTAN, IDPENGATURANSISTEM');
+
+        return $this->get()->getResultObject();
+    }
+
+    public function getDataPengaturanSistemAPIOngkirProvider()
+    {
+        $this->select('IDAPIPROVIDER, NAMAPROVIDER');
+        $this->from('a_apiprovider', true);
+        $this->where('TIPEPROVIDER', 'Ongkos Kirim');
+        $this->orderBy('NAMAPROVIDER');
+
+        return $this->get()->getResultObject();
+    }
 }

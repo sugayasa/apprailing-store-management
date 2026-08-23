@@ -137,6 +137,8 @@ $routes->group('pengaturan', ['filter' => 'auth:mustBeLoggedIn'], function($rout
     });
     $routes->group('variabelSistem', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
         $functionRoute =   'Pengaturan\VariabelSistem';
+        $routes->post('getRowPengaturanSistem', $functionRoute.'::getRowPengaturanSistem');
+        $routes->post('simpanPengaturanSistem', $functionRoute.'::simpanPengaturanSistem');
         $routes->post('getDataBarangSistemUtama', $functionRoute.'::getDataBarangSistemUtama');
         $routes->post('syncDataBarangSistemUtama', $functionRoute.'::syncDataBarangSistemUtama');
     });
