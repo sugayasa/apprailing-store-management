@@ -141,6 +141,8 @@ $routes->group('pengaturan', ['filter' => 'auth:mustBeLoggedIn'], function($rout
         $routes->post('simpanPengaturanSistem', $functionRoute.'::simpanPengaturanSistem');
         $routes->post('getDataBarangSistemUtama', $functionRoute.'::getDataBarangSistemUtama');
         $routes->post('syncDataBarangSistemUtama', $functionRoute.'::syncDataBarangSistemUtama');
+        $routes->post('getDataWilayahOngkir', $functionRoute.'::getDataWilayahOngkir');
+        $routes->post('syncDataWilayahOngkir', $functionRoute.'::syncDataWilayahOngkir');
     });
 });
 

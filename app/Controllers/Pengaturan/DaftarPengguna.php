@@ -36,16 +36,16 @@ class DaftarPengguna extends ResourceController
 
     public function getData()
     {
-        $mainOperation      =   new MainOperation();
-        $daftarPenggunaModel=   new DaftarPenggunaModel();
-
-         $rules     =   [
+        $rules     =   [
             'searchKeyword' =>  ['label' => 'Nama Merk', 'rules' => 'permit_empty|alpha_numeric_punct']
         ];
 
         $messages   =   [];
 
         if(!$this->validate(array_merge($rules, APP_PAGE_PROPERTY_DEFAULT_RULES), array_merge($messages, APP_PAGE_PROPERTY_DEFAULT_MESSAGES))) return $this->fail($this->validator->getErrors());
+
+        $mainOperation      =   new MainOperation();
+        $daftarPenggunaModel=   new DaftarPenggunaModel();
 
         $pageNumber     =   $this->request->getVar('pageNumber') ? (int)$this->request->getVar('pageNumber') : 1;
         $dataPerPage    =   $this->request->getVar('dataPerPage') ? (int)$this->request->getVar('dataPerPage') : 20;

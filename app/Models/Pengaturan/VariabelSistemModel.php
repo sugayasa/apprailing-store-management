@@ -69,4 +69,90 @@ class VariabelSistemModel extends Model
 
         return $this->get()->getResultObject();
     }
+    
+    public function getDataWilayahOngkir($keywordProvinsi = null, $keywordKotaKabupaten = null, $keyword = null)
+    {	
+        $db     =   db_connect('dbcustomer');
+        $builder=   $db->table('m_wilayahkecamatan AS A', true);
+
+        $builder->select(
+            "C.NAMAPROVINSI, C.KODEAPIPROVINSI, B.NAMAKOTAKABUPATEN, B.KODEAPIKOTAKABUPATEN,
+            A.NAMAKECAMATAN, A.KODEAPIKECAMATAN"
+        );
+        $builder->join('m_wilayahkotakabupaten AS B', 'A.IDWILAYAHKOTAKABUPATEN = B.IDWILAYAHKOTAKABUPATEN', 'LEFT');
+        $builder->join('m_wilayahprovinsi AS C', 'B.IDWILAYAHPROVINSI = C.IDWILAYAHPROVINSI', 'LEFT');
+
+        if ($keywordProvinsi) {
+            $builder->groupStart();
+            $builder->like('C.NAMAPROVINSI', $keywordProvinsi);
+            $builder->orLike('C.KODEAPIPROVINSI', $keywordProvinsi);
+            $builder->groupEnd();
+        }
+
+        if ($keywordKotaKabupaten) {
+            $builder->groupStart();
+            $builder->like('B.NAMAKOTAKABUPATEN', $keywordKotaKabupaten);
+            $builder->orLike('B.KODEAPIKOTAKABUPATEN', $keywordKotaKabupaten);
+            $builder->groupEnd();
+        }
+
+        if ($keyword) {
+            $builder->groupStart();
+            $builder->like('C.NAMAPROVINSI', $keyword);
+            $builder->orLike('C.KODEAPIPROVINSI', $keyword);
+            $builder->orLike('B.NAMAKOTAKABUPATEN', $keyword);
+            $builder->orLike('B.KODEAPIKOTAKABUPATEN', $keyword);
+            $builder->orLike('A.NAMAKECAMATAN', $keyword);
+            $builder->orLike('A.KODEAPIKECAMATAN', $keyword);
+            $builder->groupEnd();
+        }
+        
+        $builder->orderBy('C.NAMAPROVINSI ASC, B.NAMAKOTAKABUPATEN ASC, A.NAMAKECAMATAN ASC');
+               
+        return $builder;
+    }
+    
+    public function getBaseURLAPIByProvider($idAPIOngkirProvider)
+    {	
+        $this->select("BASEURLAPI");
+        $this->from('a_apiprovider', true);
+        $this->where('IDAPIPROVIDER', $idAPIOngkirProvider);
+        $this->limit(1);
+
+        $result =   $this->first();
+
+        if(is_null($result)) return null;
+        return $result['BASEURLAPI'];
+    }
+
+    public function getIdWilayahProvinsiByName($namaProvinsi)
+    {	
+        $db     =   db_connect('dbcustomer');
+        $builder=   $db->table('m_wilayahprovinsi');
+
+        $builder->select('IDWILAYAHPROVINSI');
+        $builder->where('NAMAPROVINSI', $namaProvinsi);
+        $builder->limit(1);
+
+        $result =   $builder->get()->getRowArray();
+
+        if (empty($result)) return null;
+        return $result['IDWILAYAHPROVINSI'];
+    }
+
+    public function getIdWilayahKotaKabupatenByName($idWilayahProvinsi, $namaKotaKabupaten)
+    {	
+        $db     =   db_connect('dbcustomer');
+        $builder=   $db->table('m_wilayahkotakabupaten');
+
+        $builder->select('IDWILAYAHKOTAKABUPATEN');
+        $builder->where('IDWILAYAHPROVINSI', $idWilayahProvinsi);
+        $builder->where('NAMAKOTAKABUPATEN', $namaKotaKabupaten);
+        $builder->limit(1);
+
+        $result =   $builder->get()->getRowArray();
+
+        if (empty($result)) return null;
+        return $result['IDWILAYAHKOTAKABUPATEN'];
+    }
 }

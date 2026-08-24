@@ -281,4 +281,336 @@ class VariabelSistem extends ResourceController
             );
         }
     }
+
+    public function getDataWilayahOngkir()
+    {
+        $rules      =   [
+            'pageNumber'            =>  ['label' => 'Page Number', 'rules' => 'required|integer'],
+            'dataPerPage'           =>  ['label' => 'Data Per Page', 'rules' => 'required|integer'],
+            'keywordProvinsi'       =>  ['label' => 'Keyword Pencarian Provinsi', 'rules' => 'permit_empty|string'],
+            'keywordKotaKabupaten'  =>  ['label' => 'Keyword Pencarian Kota/Kabupaten', 'rules' => 'permit_empty|string'],
+            'keyword'               =>  ['label' => 'Keyword Pencarian', 'rules' => 'permit_empty|string'],
+        ];
+
+        $messages   =   [
+            'pageNumber'    =>  [
+                'required'  =>  'Data kiriman tidak valid',
+                'integer'   =>  'Data kiriman tidak valid'
+            ],
+            'dataPerPage'   =>  [
+                'required'  =>  'Data kiriman tidak valid',
+                'integer'   =>  'Data kiriman tidak valid'
+            ],
+            'keywordProvinsi'   =>  [
+                'string'    =>  'Keyword pencarian provinsi harus berupa teks'
+            ],
+            'keywordKotaKabupaten'  =>  [
+                'string'    =>  'Keyword pencarian kota/kabupaten harus berupa teks'
+            ],
+            'keyword' =>  [
+                'string'    =>  'Keyword pencarian harus berupa teks'
+            ]
+        ];
+
+        if(!$this->validate($rules, $messages)) return $this->fail($this->validator->getErrors());
+
+        $mainOperation      =   new MainOperation();
+        $variabelSistemModel=   new VariabelSistemModel();
+
+        $pageNumber             =   $this->request->getVar('pageNumber') ? (int)$this->request->getVar('pageNumber') : 1;
+        $dataPerPage            =   $this->request->getVar('dataPerPage') ? (int)$this->request->getVar('dataPerPage') : 8;
+        $keywordProvinsi        =   $this->request->getVar('keywordProvinsi') ? $this->request->getVar('keywordProvinsi') : '';
+        $keywordKotaKabupaten   =   $this->request->getVar('keywordKotaKabupaten') ? $this->request->getVar('keywordKotaKabupaten') : '';
+        $keyword                =   $this->request->getVar('keyword') ? $this->request->getVar('keyword') : '';
+
+        $baseData       =   $variabelSistemModel->getDataWilayahOngkir($keywordProvinsi, $keywordKotaKabupaten, $keyword);
+        $totalNumberData=   $baseData->countAllResults(false);
+        $pageProperty   =   $mainOperation->generatePageProperty($pageNumber, $dataPerPage, $totalNumberData);
+
+        if($totalNumberData > 0){
+            $listData   =   $baseData->get($dataPerPage, ($pageNumber - 1) * $dataPerPage)->getResultObject();
+
+            return $this->setResponseFormat('json')->respond([
+                "listData"      =>  $listData,
+                "pageProperty"  =>  $pageProperty
+            ]);
+        } else {
+            $dataReturn =   [
+                "listData"      =>  [],
+                "pageProperty"  =>  $pageProperty
+            ];
+            return throwResponseNotFound('Tidak ada data yang ditemukan', $dataReturn);
+        }
+    }
+
+    public function syncDataWilayahOngkir()
+    {
+        $variabelSistemModel    =   new VariabelSistemModel();
+        $dataPengaturan         =   $variabelSistemModel->getDataPengaturanSistem();
+        $idAPIOngkirProvider    =   null;
+        $apiOngkirProviderKey   =   null;
+
+        foreach ($dataPengaturan as $keyPengaturan) {
+            switch ($keyPengaturan->IDPENGATURANSISTEM) {
+                case 1  :   $idAPIOngkirProvider    =   $keyPengaturan->DATA; break;
+                case 2  :   $apiOngkirProviderKey   =   trim($keyPengaturan->DATA); break;
+                default :   break;
+            }
+        }
+
+        if (empty($idAPIOngkirProvider)) {
+            return throwResponseNotAcceptable('[E-SYNC-101] API Ongkir Provider belum ditentukan pada menu Variabel Sistem');
+        }
+
+        if (empty($apiOngkirProviderKey)) {
+            return throwResponseNotAcceptable('[E-SYNC-102] API key Ongkir belum diatur pada menu Variabel Sistem');
+        }
+        
+        $baseURLAPI =   $variabelSistemModel->getBaseURLAPIByProvider($idAPIOngkirProvider);
+
+        if (empty($baseURLAPI) || is_null($baseURLAPI)) {
+            return throwResponseNotAcceptable('[E-SYNC-103] Data URL API Ongkir tidak ditemukan untuk provider yang ditetapkan');
+        }
+
+        switch ($idAPIOngkirProvider) {
+            case 30 :   
+            default :   return $this->getDataWilayahOngkirFromAPICoId($baseURLAPI, $apiOngkirProviderKey); break;
+        }
+    }
+
+    private function getDataWilayahOngkirFromAPICoId($baseURLAPI, $apiOngkirProviderKey)
+    {
+        try {
+            $client     =   \Config\Services::curlrequest();
+            $response   =   $client->request('GET', $baseURLAPI . '/courier/v1/locations/provinces', [
+                'headers'           =>  ['x-api-co-id' => $apiOngkirProviderKey],
+                'timeout'           =>  5,
+                'connect_timeout'   =>  10,
+            ]);
+
+            $responseData   =   json_decode($response->getBody(), true);
+
+            if (!($responseData['is_success'] ?? false)) {
+                return throwResponseNotAcceptable(
+                    '[E-SYNC-201] Gagal mengambil data provinsi: ' . ($responseData['message'] ?? 'Unknown Error')
+                );
+            }
+
+            $dataProvinsi   =   $responseData['data'] ?? [];
+
+            if (empty($dataProvinsi)) return throwResponseNotFound('[E-SYNC-404] Tidak ada data provinsi yang dikembalikan oleh provider');
+
+            $mainOperation          =   new MainOperation();
+            $variabelSistemModel    =   new VariabelSistemModel();
+            $totalInsertProvinsi    =   0;
+            $totalUpdateProvinsi    =   0;
+            $totalInsertKota        =   0;
+            $totalUpdateKota        =   0;
+            $totalInsertKecamatan   =   0;
+            $totalUpdateKecamatan   =   0;
+
+            foreach ($dataProvinsi as $keyProvinsi) {
+                $namaProvinsi   =   trim($keyProvinsi['name'] ?? '');
+                $kodeProvinsi   =   trim($keyProvinsi['code'] ?? '');
+
+                if (empty($namaProvinsi)) continue;
+
+                $isProvinsiExist    =   $mainOperation->isDataExist(
+                    'm_wilayahprovinsi',
+                    ['NAMAPROVINSI' => $namaProvinsi],
+                    'dbcustomer'
+                );
+
+                $idWilayahProvinsi  =   null;
+
+                if (!$isProvinsiExist) {
+                    $procInsert =   $mainOperation->insertDataTable(
+                        'm_wilayahprovinsi',
+                        [
+                            'NAMAPROVINSI'      =>  $namaProvinsi,
+                            'KODEAPIPROVINSI'   =>  $kodeProvinsi,
+                        ],
+                        'dbcustomer'
+                    );
+
+                    if ($procInsert['status']) {
+                        $totalInsertProvinsi++;
+                        $idWilayahProvinsi  =   $procInsert['insertID'] ?? null;
+                    }
+                } else {
+                    $procUpdate =   $mainOperation->updateDataTable(
+                        'm_wilayahprovinsi',
+                        ['KODEAPIPROVINSI' => $kodeProvinsi],
+                        ['NAMAPROVINSI' => $namaProvinsi],
+                        'dbcustomer'
+                    );
+
+                    if ($procUpdate['status']) $totalUpdateProvinsi++;
+
+                    $idWilayahProvinsi  =   $variabelSistemModel->getIdWilayahProvinsiByName($namaProvinsi);
+                }
+
+                if (empty($idWilayahProvinsi) || empty($kodeProvinsi)) continue;
+
+                try {
+                    $responseKota   =   $client->request('GET', $baseURLAPI . '/courier/v1/locations/cities', [
+                        'headers'           =>  ['x-api-co-id' => $apiOngkirProviderKey],
+                        'query'             =>  ['province' => $kodeProvinsi],
+                        'timeout'           =>  5,
+                        'connect_timeout'   =>  10,
+                    ]);
+
+                    $responseKotaData    =   json_decode($responseKota->getBody(), true);
+
+                    if (!($responseKotaData['is_success'] ?? false)) {
+                        log_message('error', '[E-SYNC] Gagal mengambil data kota untuk provinsi ' . $namaProvinsi . ': ' . ($responseKotaData['message'] ?? 'Unknown Error'));
+                        continue;
+                    }
+
+                    $dataKota   =   $responseKotaData['data'] ?? [];
+
+                    foreach ($dataKota as $keyKota) {
+                        $namaKota   =   trim($keyKota['name'] ?? '');
+                        $kodeKota   =   trim($keyKota['code'] ?? '');
+
+                        if (empty($namaKota)) continue;
+                        if (substr($namaKota, 0, 4) !== 'Kota' && substr($namaKota, 0, 9) !== 'Kabupaten') {
+                            $namaKota   =   'Kabupaten ' . $namaKota;
+                        }
+
+                        $isKotaExist    =   $mainOperation->isDataExist(
+                            'm_wilayahkotakabupaten',
+                            [
+                                'IDWILAYAHPROVINSI' =>  $idWilayahProvinsi,
+                                'NAMAKOTAKABUPATEN' =>  $namaKota,
+                            ],
+                            'dbcustomer'
+                        );
+
+                        $idWilayahKotaKabupaten  =   null;
+
+                        if (!$isKotaExist) {
+                            $procInsertKota =   $mainOperation->insertDataTable(
+                                'm_wilayahkotakabupaten',
+                                [
+                                    'IDWILAYAHPROVINSI'     =>  $idWilayahProvinsi,
+                                    'NAMAKOTAKABUPATEN'     =>  $namaKota,
+                                    'KODEAPIKOTAKABUPATEN'  =>  $kodeKota,
+                                ],
+                                'dbcustomer'
+                            );
+
+                            if ($procInsertKota['status']) {
+                                $totalInsertKota++;
+                                $idWilayahKotaKabupaten  =   $procInsertKota['insertID'] ?? null;
+                            }
+                        } else {
+                            $procUpdateKota =   $mainOperation->updateDataTable(
+                                'm_wilayahkotakabupaten',
+                                ['KODEAPIKOTAKABUPATEN' => $kodeKota],
+                                [
+                                    'IDWILAYAHPROVINSI' =>  $idWilayahProvinsi,
+                                    'NAMAKOTAKABUPATEN' =>  $namaKota,
+                                ],
+                                'dbcustomer'
+                            );
+
+                            if ($procUpdateKota['status']) $totalUpdateKota++;
+
+                            $idWilayahKotaKabupaten  =   $variabelSistemModel->getIdWilayahKotaKabupatenByName($idWilayahProvinsi, $namaKota);
+                        }
+
+                        if (empty($idWilayahKotaKabupaten) || empty($kodeKota)) continue;
+
+                        try {
+                            $responseKecamatan   =   $client->request('GET', $baseURLAPI . '/courier/v1/locations/districts', [
+                                'headers'           =>  ['x-api-co-id' => $apiOngkirProviderKey],
+                                'query'             =>  ['city' => $kodeKota],
+                                'timeout'           =>  5,
+                                'connect_timeout'   =>  10,
+                            ]);
+
+                            $responseKecamatanData  =   json_decode($responseKecamatan->getBody(), true);
+
+                            if (!($responseKecamatanData['is_success'] ?? false)) {
+                                log_message('error', '[E-SYNC] Gagal mengambil data kecamatan untuk kota ' . $namaKota . ': ' . ($responseKecamatanData['message'] ?? 'Unknown Error'));
+                                continue;
+                            }
+
+                            $dataKecamatan  =   $responseKecamatanData['data'] ?? [];
+
+                            foreach ($dataKecamatan as $keyKecamatan) {
+                                $namaKecamatan   =   trim($keyKecamatan['name'] ?? '');
+                                $kodeKecamatan   =   trim($keyKecamatan['code'] ?? '');
+
+                                if (empty($namaKecamatan)) continue;
+
+                                $isKecamatanExist   =   $mainOperation->isDataExist(
+                                    'm_wilayahkecamatan',
+                                    [
+                                        'IDWILAYAHKOTAKABUPATEN' =>  $idWilayahKotaKabupaten,
+                                        'NAMAKECAMATAN'          =>  $namaKecamatan,
+                                    ],
+                                    'dbcustomer'
+                                );
+
+                                if (!$isKecamatanExist) {
+                                    $procInsertKecamatan    =   $mainOperation->insertDataTable(
+                                        'm_wilayahkecamatan',
+                                        [
+                                            'IDWILAYAHKOTAKABUPATEN' =>  $idWilayahKotaKabupaten,
+                                            'NAMAKECAMATAN'          =>  $namaKecamatan,
+                                            'KODEAPIKECAMATAN'       =>  $kodeKecamatan,
+                                        ],
+                                        'dbcustomer'
+                                    );
+
+                                    if ($procInsertKecamatan['status']) $totalInsertKecamatan++;
+                                } else {
+                                    $procUpdateKecamatan    =   $mainOperation->updateDataTable(
+                                        'm_wilayahkecamatan',
+                                        ['KODEAPIKECAMATAN' => $kodeKecamatan],
+                                        [
+                                            'IDWILAYAHKOTAKABUPATEN' =>  $idWilayahKotaKabupaten,
+                                            'NAMAKECAMATAN'          =>  $namaKecamatan,
+                                        ],
+                                        'dbcustomer'
+                                    );
+
+                                    if ($procUpdateKecamatan['status']) $totalUpdateKecamatan++;
+                                }
+                            }
+                        } catch (\Throwable $e) {
+                            log_message('error', '[E-SYNC] Gagal mengambil data kecamatan untuk kota ' . $namaKota . ': ' . $e->getMessage());
+                        }
+                    }
+                } catch (\Throwable $e) {
+                    log_message('error', '[E-SYNC] Gagal mengambil data kota untuk provinsi ' . $namaProvinsi . ': ' . $e->getMessage());
+                }
+            }
+
+            return throwResponseOK(
+                "[S-SYNC-200] Sinkronisasi data wilayah ongkir berhasil dilakukan ({$totalInsertProvinsi} provinsi baru, {$totalUpdateProvinsi} provinsi diperbarui, {$totalInsertKota} kota baru, {$totalUpdateKota} kota diperbarui, {$totalInsertKecamatan} kecamatan baru, {$totalUpdateKecamatan} kecamatan diperbarui)"
+            );
+
+        } catch (HTTPException $e) {
+            $statusCode =   $e->getCode();
+
+            switch ($statusCode) {
+                case 401:
+                    return $this->failUnauthorized('[E-SYNC-401] API key Ongkir tidak valid: ' . $e->getMessage());
+                case 403:
+                    return $this->failForbidden('[E-SYNC-403] Forbidden: ' . $e->getMessage());
+                case 500:
+                    return $this->failServerError('[E-SYNC-500] Server Error: ' . $e->getMessage());
+                default:
+                    return $this->fail('[E-SYNC-' . $statusCode . '] HTTP Error: ' . $e->getMessage(), $statusCode);
+            }
+        } catch (\Throwable $e) {
+            return throwResponseError(
+                500,
+                '[E-SYNC-999] Unexpected Error: ' . $e->getMessage()
+            );
+        }
+    }
 }

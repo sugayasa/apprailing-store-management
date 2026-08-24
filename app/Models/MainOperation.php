@@ -64,9 +64,9 @@ class MainOperation extends Model
 		return array("data"=>[], "datastart"=>0, "dataend"=>0, "datatotal"=>0, "pagetotal"=>0);
 	}
 
-    public function insertDataTable($tableName, $arrInsert)
+    public function insertDataTable($tableName, $arrInsert, $dbGroup = 'default')
     {
-        $db     =   \Config\Database::connect();
+        $db     =   \Config\Database::connect($dbGroup);
         try {
             $table  =   $db->table($tableName);
             foreach($arrInsert as $field => $value){
@@ -127,9 +127,9 @@ class MainOperation extends Model
         }
     }
 
-    public function updateDataTable($tableName, $arrUpdate, $arrWhere)
+    public function updateDataTable($tableName, $arrUpdate, $arrWhere, $dbGroup = 'default')
     {
-        $db     =   \Config\Database::connect();
+        $db     =   \Config\Database::connect($dbGroup);
         try {
             $table  =   $db->table($tableName);
             foreach($arrUpdate as $field => $value){
@@ -181,9 +181,9 @@ class MainOperation extends Model
         }
     }
 
-    public function isDataExist($tableName, $arrField)
+    public function isDataExist($tableName, $arrField, $dbGroup = 'default')
     {
-        $db   =   \Config\Database::connect();
+        $db   =   \Config\Database::connect($dbGroup);
         $table=   $db->table($tableName);
         foreach($arrField as $field => $value){
             if(is_array($value)){

@@ -18,7 +18,7 @@
                     <a class="nav-link" data-bs-toggle="pill" href="#pills-barang-sistem-utama" aria-selected="true" role="tab">Data Barang Sistem Utama</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" data-bs-toggle="pill" href="#pills-api-ongkir" aria-selected="false" role="tab">API Ongkir</a>
+                    <a class="nav-link" data-bs-toggle="pill" href="#pills-wilayah-ongkir" aria-selected="false" role="tab">Wilayah Ongkir</a>
                 </li>
             </ul>
         </div>
@@ -79,6 +79,56 @@
                 <div class="card-footer bg-white d-md-flex align-items-center justify-content-between">
                     <div class="me-md-auto text-md-left text-center mb-2 mb-md-0" id="dataBarangSistemUtama-paginationInfo"></div>
                     <div class="btn-group btn-group-md" id="dataBarangSistemUtama-paginationControl"></div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="pills-wilayah-ongkir" role="tabpanel">
+            <div class="card pengaturanVariabelSistem-tabContent d-flex flex-column">
+                <div class="card-header bg-white">
+                    <div class="alert alert-info p-2 mb-0 d-flex align-items-center">
+                        <strong class="me-1">Informasi |</strong> Data wilayah ongkir berdasarkan pengaturan provider API ongkos kirim. Lakukan sinkronisasi data wilayah ongkir secara berkala agar data wilayah ongkir yang ditampilkan selalu up to date.
+                        <button id="btnSyncDataWilayahOngkir" type="button" class="btn btn-primary ms-md-auto mt-md-0 mt-2">
+                            <i class="fa fa-download ms-auto"></i> Sinkronisasi Data
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0 d-flex flex-column overflow-hidden">
+                    <div class="row p-3 mb-3 border-bottom">
+                        <div class="col-lg-3 col-6 mb-2 mb-lg-0">
+                            <div class="input-group">
+                                <span class="input-group-text">Provinsi</span>
+                                <input type="text" class="form-control" placeholder="" id="dataWilayahOngkir-searchKeywordProvinsi">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-6 mb-2 mb-lg-0">
+                            <div class="input-group">
+                                <span class="input-group-text">Kota / Kab</span>
+                                <input type="text" class="form-control" placeholder="" id="dataWilayahOngkir-searchKeywordKotaKabupaten">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-12">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fa fa-search"></i></span>
+                                <input type="text" class="form-control" placeholder="Ketik sesuatu dan tekan ENTER untuk mencari.." id="dataWilayahOngkir-searchKeyword">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive table-sticky-header px-3 pb-3 flex-fill">
+                        <table id="dataWilayahOngkir-table" class="table table-hover mb-0 w-100" style="table-layout: fixed; word-wrap: break-word; word-break: break-word;">
+                            <thead>
+                                <tr class="table-dark">
+                                    <th class="py-2 sticky-top" width="15%">Propinsi</th>
+                                    <th class="py-2 sticky-top" width="25%">Kota / Kabupaten</th>
+                                    <th class="py-2 sticky-top" width="60%">Kecamatan</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer bg-white d-md-flex align-items-center justify-content-between">
+                    <div class="me-md-auto text-md-left text-center mb-2 mb-md-0" id="dataWilayahOngkir-paginationInfo"></div>
+                    <div class="btn-group btn-group-md" id="dataWilayahOngkir-paginationControl"></div>
                 </div>
             </div>
         </div>
