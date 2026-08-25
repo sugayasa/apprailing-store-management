@@ -110,6 +110,20 @@ class View extends ResourceController
         ]);
     }
     
+    public function utilitasCekOngkosKirim()
+    {
+        $content    =   view(
+            'Menu/Utilitas/cekOngkosKirim',
+            [
+                'menuDetail'    =>  $this->menuDetail
+            ],
+            ['debug' => false]
+        );
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
+
     public function pengaturanLevelMenu()
     {
         $content    =   view(

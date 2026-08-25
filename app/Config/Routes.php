@@ -85,6 +85,7 @@ $routes->group('view', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
     $routes->post('daftar-harga', $functionRoute.'::daftarHarga');
     $routes->post('stok-barang', $functionRoute.'::stokBarang');
     $routes->post('monitoring-mutasi-stok', $functionRoute.'::monitoringMutasiStok');
+    $routes->post('utilitas-cek-ongkos-kirim', $functionRoute.'::utilitasCekOngkosKirim');
     $routes->post('pengaturan-level-menu', $functionRoute.'::pengaturanLevelMenu');
     $routes->post('pengaturan-daftar-pengguna', $functionRoute.'::pengaturanDaftarPengguna');
     $routes->post('pengaturan-variabel-sistem', $functionRoute.'::pengaturanVariabelSistem');
@@ -122,6 +123,12 @@ $routes->group('monitoringMutasiStok', ['filter' => 'auth:mustBeLoggedIn'], func
     $routes->post('getDataMonitoringMutasiStok', $functionRoute.'::getDataMonitoringMutasiStok');
 });
 
+$routes->group('utilitas', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+    $routes->group('cekOngkosKirim', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+        $functionRoute =   'Utilitas\CekOngkosKirim';
+        $routes->post('cekOngkosKirim', $functionRoute.'::cekOngkosKirim');
+    });
+});
 $routes->group('pengaturan', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
     $routes->group('userLevelMenu', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
         $functionRoute =   'Pengaturan\UserLevelMenu';
