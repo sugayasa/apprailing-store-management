@@ -285,22 +285,12 @@ class VariabelSistem extends ResourceController
     public function getDataWilayahOngkir()
     {
         $rules      =   [
-            'pageNumber'            =>  ['label' => 'Page Number', 'rules' => 'required|integer'],
-            'dataPerPage'           =>  ['label' => 'Data Per Page', 'rules' => 'required|integer'],
             'keywordProvinsi'       =>  ['label' => 'Keyword Pencarian Provinsi', 'rules' => 'permit_empty|string'],
             'keywordKotaKabupaten'  =>  ['label' => 'Keyword Pencarian Kota/Kabupaten', 'rules' => 'permit_empty|string'],
             'keyword'               =>  ['label' => 'Keyword Pencarian', 'rules' => 'permit_empty|string'],
         ];
 
         $messages   =   [
-            'pageNumber'    =>  [
-                'required'  =>  'Data kiriman tidak valid',
-                'integer'   =>  'Data kiriman tidak valid'
-            ],
-            'dataPerPage'   =>  [
-                'required'  =>  'Data kiriman tidak valid',
-                'integer'   =>  'Data kiriman tidak valid'
-            ],
             'keywordProvinsi'   =>  [
                 'string'    =>  'Keyword pencarian provinsi harus berupa teks'
             ],
@@ -312,13 +302,13 @@ class VariabelSistem extends ResourceController
             ]
         ];
 
-        if(!$this->validate($rules, $messages)) return $this->fail($this->validator->getErrors());
+        if(!$this->validate(array_merge($rules, APP_PAGE_PROPERTY_DEFAULT_RULES), array_merge($messages, APP_PAGE_PROPERTY_DEFAULT_MESSAGES))) return $this->fail($this->validator->getErrors());
 
         $mainOperation      =   new MainOperation();
         $variabelSistemModel=   new VariabelSistemModel();
 
         $pageNumber             =   $this->request->getVar('pageNumber') ? (int)$this->request->getVar('pageNumber') : 1;
-        $dataPerPage            =   $this->request->getVar('dataPerPage') ? (int)$this->request->getVar('dataPerPage') : 8;
+        $dataPerPage            =   $this->request->getVar('dataPerPage') ? (int)$this->request->getVar('dataPerPage') : 25;
         $keywordProvinsi        =   $this->request->getVar('keywordProvinsi') ? $this->request->getVar('keywordProvinsi') : '';
         $keywordKotaKabupaten   =   $this->request->getVar('keywordKotaKabupaten') ? $this->request->getVar('keywordKotaKabupaten') : '';
         $keyword                =   $this->request->getVar('keyword') ? $this->request->getVar('keyword') : '';
@@ -366,7 +356,8 @@ class VariabelSistem extends ResourceController
             return throwResponseNotAcceptable('[E-SYNC-102] API key Ongkir belum diatur pada menu Variabel Sistem');
         }
         
-        $baseURLAPI =   $variabelSistemModel->getBaseURLAPIByProvider($idAPIOngkirProvider);
+        $mainOperation  =   new MainOperation();
+        $baseURLAPI     =   $mainOperation->getBaseURLAPIByProvider($idAPIOngkirProvider);
 
         if (empty($baseURLAPI) || is_null($baseURLAPI)) {
             return throwResponseNotAcceptable('[E-SYNC-103] Data URL API Ongkir tidak ditemukan untuk provider yang ditetapkan');
@@ -598,13 +589,13 @@ class VariabelSistem extends ResourceController
 
             switch ($statusCode) {
                 case 401:
-                    return $this->failUnauthorized('[E-SYNC-401] API key Ongkir tidak valid: ' . $e->getMessage());
+                    return throwResponseNotAcceptable('[E-SYNC-401] API key Ongkir tidak valid: ' . $e->getMessage());
                 case 403:
-                    return $this->failForbidden('[E-SYNC-403] Forbidden: ' . $e->getMessage());
+                    return throwResponseNotAcceptable('[E-SYNC-403] Forbidden: ' . $e->getMessage());
                 case 500:
-                    return $this->failServerError('[E-SYNC-500] Server Error: ' . $e->getMessage());
+                    return throwResponseNotAcceptable('[E-SYNC-500] Server Error: ' . $e->getMessage());
                 default:
-                    return $this->fail('[E-SYNC-' . $statusCode . '] HTTP Error: ' . $e->getMessage(), $statusCode);
+                    return throwResponseNotAcceptable('[E-SYNC-' . $statusCode . '] HTTP Error: ' . $e->getMessage(), $statusCode);
             }
         } catch (\Throwable $e) {
             return throwResponseError(

@@ -181,4 +181,31 @@ class AccessModel extends Model
         $this->where('IDUSERADMIN', $idUserAdmin);
         $this->update();
     }
+
+    public function getDataWilayahProvinsi()
+    {	
+        $db     =   db_connect('dbcustomer');
+        $builder=   $db->table('m_wilayahprovinsi');
+
+        $builder->select('IDWILAYAHPROVINSI AS ID, NAMAPROVINSI AS VALUE');
+        return $builder->get()->getResultObject();
+    }
+
+    public function getDataWilayahKotaKabupaten()
+    {	
+        $db     =   db_connect('dbcustomer');
+        $builder=   $db->table('m_wilayahkotakabupaten');
+
+        $builder->select('IDWILAYAHKOTAKABUPATEN AS ID, IDWILAYAHPROVINSI AS PARENTVALUE, NAMAKOTAKABUPATEN AS VALUE');
+        return $builder->get()->getResultObject();
+    }
+
+    public function getDataWilayahKecamatan()
+    {	
+        $db     =   db_connect('dbcustomer');
+        $builder=   $db->table('m_wilayahkecamatan');
+
+        $builder->select('IDWILAYAHKECAMATAN AS ID, IDWILAYAHKOTAKABUPATEN AS PARENTVALUE, NAMAKECAMATAN AS VALUE');
+        return $builder->get()->getResultObject();
+    }
 }

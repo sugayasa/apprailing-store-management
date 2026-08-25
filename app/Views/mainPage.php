@@ -1,7 +1,15 @@
+<?php
+	$platformElem	=   $platformElem ?? [];
+	$userAdminData	=   $userAdminData ?? [];
+	$menuElement	=   $menuElement ?? '';
+	$allowNotifList	=   $allowNotifList ?? [];
+?>
 <link rel="stylesheet" href="<?=BASE_URL_ASSETS_CSS?>uploadfile.css?<?=date('YmdHis')?>" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="<?=BASE_URL_ASSETS_CSS?>summernote-lite.min.css?<?=date('YmdHis')?>" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="<?=BASE_URL_ASSETS_CSS?>bootstrap-datepicker.min.css?<?=date('YmdHis')?>" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="<?=BASE_URL_ASSETS_CSS?>bootstrap-daterangepicker.css?<?=date('YmdHis')?>" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="<?=BASE_URL_ASSETS_CSS?>select2.min.css?<?=date('YmdHis')?>" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="<?=BASE_URL_ASSETS_CSS?>select2-bootstrap-5-theme.min.css?<?=date('YmdHis')?>" rel="stylesheet" type="text/css">
 <script>
 	const interval_id = window.setInterval(function(){}, Number.MAX_SAFE_INTEGER);
 	for (let i = 1; i < interval_id; i++) {
@@ -223,6 +231,7 @@
 <script src="<?=BASE_URL_ASSETS_JS?>summernote-lite.min.js?<?=date('YmdHis')?>"></script>
 <script src="<?=BASE_URL_ASSETS_JS?>bootstrap-datepicker.min.js?<?=date('YmdHis')?>"></script>
 <script src="<?=BASE_URL_ASSETS_JS?>bootstrap-daterangepicker.js?<?=date('YmdHis')?>"></script>
+<script src="<?=BASE_URL_ASSETS_JS?>select2.min.js?<?=date("YmdHis")?>"></script>
 <script>
 	localStorage.setItem('lastApplicationLoadTime', '<?=gmdate("YmdHis")?>');
 	localStorage.setItem('allowNotifList', '<?=json_encode($allowNotifList)?>');

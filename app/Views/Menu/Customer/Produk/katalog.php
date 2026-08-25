@@ -156,7 +156,7 @@
         </div>    
     </div>
 </div>
- <div class="modal fade" id="customerProdukKatalog-modalBarangPadanan">
+<div class="modal fade" id="customerProdukKatalog-modalBarangPadanan">
     <div class="modal-dialog modal-lg">
         <form class="modal-content">
             <div class="modal-header">

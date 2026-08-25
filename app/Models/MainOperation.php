@@ -258,4 +258,30 @@ class MainOperation extends Model
         if(is_null($result)) return [];
         return $result;
     }
+    
+    public function getBaseURLAPIByProvider($idAPIOngkirProvider)
+    {	
+        $this->select("BASEURLAPI");
+        $this->from('a_apiprovider', true);
+        $this->where('IDAPIPROVIDER', $idAPIOngkirProvider);
+        $this->limit(1);
+
+        $result =   $this->first();
+
+        if(is_null($result)) return null;
+        return $result['BASEURLAPI'];
+    }
+
+    public function getDataPengaturanSistemById($idPengaturanSistem)
+    {	
+        $this->select("DATA");
+        $this->from('a_pengaturansistem', true);
+        $this->where('IDPENGATURANSISTEM', $idPengaturanSistem);
+        $this->limit(1);
+
+        $result =   $this->first();
+
+        if(is_null($result)) return null;
+        return $result['DATA'];
+    }
 }

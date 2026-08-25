@@ -106,23 +106,10 @@ class VariabelSistemModel extends Model
             $builder->orLike('A.KODEAPIKECAMATAN', $keyword);
             $builder->groupEnd();
         }
-        
+
         $builder->orderBy('C.NAMAPROVINSI ASC, B.NAMAKOTAKABUPATEN ASC, A.NAMAKECAMATAN ASC');
                
         return $builder;
-    }
-    
-    public function getBaseURLAPIByProvider($idAPIOngkirProvider)
-    {	
-        $this->select("BASEURLAPI");
-        $this->from('a_apiprovider', true);
-        $this->where('IDAPIPROVIDER', $idAPIOngkirProvider);
-        $this->limit(1);
-
-        $result =   $this->first();
-
-        if(is_null($result)) return null;
-        return $result['BASEURLAPI'];
     }
 
     public function getIdWilayahProvinsiByName($namaProvinsi)

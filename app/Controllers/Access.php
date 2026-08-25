@@ -267,28 +267,34 @@ class Access extends ResourceController
 
     private function getDataOption()
     {
-        $accessModel            =   new AccessModel();
-        $dataUserAdminLevel     =   encodeDatabaseObjectResultKey($accessModel->getDataUserAdminLevel(), 'ID');
-        $dataUserAdminLevelMenu =   encodeDatabaseObjectResultKey($accessModel->getDataUserAdminLevelMenu(), 'ID');
-        $dataMerk               =   encodeDatabaseObjectResultKey($accessModel->getDataMerk(), 'ID');
-        $dataBarangKategori     =   encodeDatabaseObjectResultKey($accessModel->getDataBarangKategori(), 'ID');
-        $dataCustomerRegional   =   encodeDatabaseObjectResultKey($accessModel->getDataCustomerRegional(), 'ID');
-        $dataCustomerMerk       =   encodeDatabaseObjectResultKey($accessModel->getDataCustomerMerk(), 'ID');
-        $dataCustomerKategori   =   encodeDatabaseObjectResultKey($accessModel->getDataCustomerKategori(), 'ID');
+        $accessModel                =   new AccessModel();
+        $dataUserAdminLevel         =   encodeDatabaseObjectResultKey($accessModel->getDataUserAdminLevel(), 'ID');
+        $dataUserAdminLevelMenu     =   encodeDatabaseObjectResultKey($accessModel->getDataUserAdminLevelMenu(), 'ID');
+        $dataMerk                   =   encodeDatabaseObjectResultKey($accessModel->getDataMerk(), 'ID');
+        $dataBarangKategori         =   encodeDatabaseObjectResultKey($accessModel->getDataBarangKategori(), 'ID');
+        $dataCustomerRegional       =   encodeDatabaseObjectResultKey($accessModel->getDataCustomerRegional(), 'ID');
+        $dataCustomerMerk           =   encodeDatabaseObjectResultKey($accessModel->getDataCustomerMerk(), 'ID');
+        $dataCustomerKategori       =   encodeDatabaseObjectResultKey($accessModel->getDataCustomerKategori(), 'ID');
+        $dataWilayahProvinsi        =   encodeDatabaseObjectResultKey($accessModel->getDataWilayahProvinsi(), 'ID');
+        $dataWilayahKotaKabupaten   =   encodeDatabaseObjectResultKey($accessModel->getDataWilayahKotaKabupaten(), ['ID', 'PARENTVALUE']);
+        $dataWilayahKecamatan       =   encodeDatabaseObjectResultKey($accessModel->getDataWilayahKecamatan(), ['ID', 'PARENTVALUE']);
 
         return [
-            "dataUserAdminLevel"    =>  $dataUserAdminLevel,
-            "dataUserAdminLevelMenu"=>  $dataUserAdminLevelMenu,
-            "dataMerk"              =>  $dataMerk,
-            "dataBarangKategori"    =>  $dataBarangKategori,
-            "dataCustomerRegional"  =>  $dataCustomerRegional,
-            "dataCustomerMerk"      =>  $dataCustomerMerk,
-            "dataCustomerKategori"  =>  $dataCustomerKategori,
-            "optionHours"	        =>  OPTION_HOURS,
-            "optionMinutes"         =>  OPTION_MINUTES,
-            "optionMinuteInterval"	=>  OPTION_MINUTEINTERVAL,
-            "optionMonth"	        =>  OPTION_MONTH,
-            "optionYear"	        =>  OPTION_YEAR
+            "dataUserAdminLevel"        =>  $dataUserAdminLevel,
+            "dataUserAdminLevelMenu"    =>  $dataUserAdminLevelMenu,
+            "dataMerk"                  =>  $dataMerk,
+            "dataBarangKategori"        =>  $dataBarangKategori,
+            "dataCustomerRegional"      =>  $dataCustomerRegional,
+            "dataCustomerMerk"          =>  $dataCustomerMerk,
+            "dataCustomerKategori"      =>  $dataCustomerKategori,
+            "dataWilayahProvinsi"       =>  $dataWilayahProvinsi,
+            "dataWilayahKotaKabupaten"  => $dataWilayahKotaKabupaten,
+            "dataWilayahKecamatan"      =>  $dataWilayahKecamatan,
+            "optionHours"	            =>  OPTION_HOURS,
+            "optionMinutes"             =>  OPTION_MINUTES,
+            "optionMinuteInterval"	    =>  OPTION_MINUTEINTERVAL,
+            "optionMonth"	            =>  OPTION_MONTH,
+            "optionYear"	            =>  OPTION_YEAR
         ];
     }
 
