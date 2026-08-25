@@ -104,7 +104,16 @@
                                     <th class="py-2 sticky-top text-end" width="10%">Keterangan</th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                                <tr id="utilitasCekOngkosKirim-rowInfoKosong">
+                                    <td colspan="8" class="text-center pt-5 border-bottom-0">
+                                        <div class="d-flex flex-column align-items-center justify-content-center gap-2 text-center mb-0">
+                                            <i class="fa fa-info-circle fa-3x opacity-70"></i>
+                                            <span>Silakan lengkapi filter wilayah asal, wilayah tujuan, dan berat, lalu klik <strong>Cek Ongkos Kirim</strong> untuk menampilkan daftar tarif ongkos kirim.</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>

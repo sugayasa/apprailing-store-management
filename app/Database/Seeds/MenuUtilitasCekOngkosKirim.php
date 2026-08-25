@@ -11,7 +11,7 @@ class MenuUtilitasCekOngkosKirim extends Seeder
         $data = [
             'IDMENUADMIN'  => 25,
             'IDPLATFORM'   => 0,
-            'GROUPNAME'    => 'Utilitas',
+            'GROUPNAME'    => 'Cek Ongkos Kirim',
             'MENUNAME'     => 'Cek Ongkos Kirim',
             'DESCRIPTION'  => 'Cek ongkos kirim menggunakan provider pihak ketiga',
             'MENUALIAS'    => 'UCOK',
