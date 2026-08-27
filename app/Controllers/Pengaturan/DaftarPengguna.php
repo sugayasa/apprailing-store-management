@@ -37,7 +37,7 @@ class DaftarPengguna extends ResourceController
     public function getData()
     {
         $rules     =   [
-            'searchKeyword' =>  ['label' => 'Nama Merk', 'rules' => 'permit_empty|alpha_numeric_punct']
+            'searchKeyword' =>  ['label' => 'Kata Kunci', 'rules' => 'permit_empty|alpha_numeric_punct']
         ];
 
         $messages   =   [];
