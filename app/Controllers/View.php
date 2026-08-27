@@ -339,6 +339,23 @@ class View extends ResourceController
         ]);
     }
     
+    public function customerKontenSlideKolaborasi()
+    {
+        $content    =   view(
+            'Menu/Customer/Konten/slideKolaborasi',
+            [
+                'menuDetail'            =>  $this->menuDetail,
+                'defaultImageProduk'    =>  BASE_URL_ASSETS_SLIDE_KOLABORASI_PRODUK . 'default.jpg',
+                'defaultImageThumbnail' =>  BASE_URL_ASSETS_SLIDE_KOLABORASI_THUMBNAIL . 'default.jpg'
+            ],
+            ['debug' => false]
+        );
+
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
+    
     public function customerProdukKatalog()
     {
         $content    =   view(

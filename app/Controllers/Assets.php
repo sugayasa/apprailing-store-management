@@ -97,6 +97,24 @@ class Assets extends ResourceController
         return $this->setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
+    public function imageSlideKolaborasiProduk($nameFile)
+    {
+        $fullFilePath   =   PATH_STORAGE_PHOTO_SLIDE_KOLABORASI_PRODUK.$nameFile;
+        $isDefault      =   strpos($nameFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_PHOTO_SLIDE_KOLABORASI_PRODUK.'default.jpg';
+
+        return $this->setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath);
+    }
+
+    public function imageSlideKolaborasiThumbnail($nameFile)
+    {
+        $fullFilePath   =   PATH_STORAGE_PHOTO_SLIDE_KOLABORASI_THUMBNAIL.$nameFile;
+        $isDefault      =   strpos($nameFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_PHOTO_SLIDE_KOLABORASI_THUMBNAIL.'default.jpg';
+
+        return $this->setReturnAssets($nameFile, $fullFilePath, $isDefault, $defaultFilePath);
+    }
+
     public function videoCompanyProfile($nameFile)
     {
         $fullFilePath   =   PATH_STORAGE_VIDEO_COMPANY_PROFILE.$nameFile;
