@@ -44,7 +44,7 @@ class HmacHandler
         if (!$apiKey || !$timestamp || !$signature) {
             return [
                 'isValid'   =>  false,
-                'message'   =>    'Missing security headers'
+                'message'   =>  'Missing security headers'
             ];
         }
 
@@ -77,5 +77,35 @@ class HmacHandler
             'isValid'   =>  true,
             'message'   =>  'Valid request'
         ];
+    }
+
+    /**
+     * 3. ENCODER DATA
+     */
+    public function encodeData(string $data): string
+    {
+        $encoded    =   base64_encode($data);
+        $signature  =   hash_hmac('sha256', $encoded, $this->secretKey);
+
+        return $encoded . '.' . $signature;
+    }
+
+    /**
+     * 4. DECODER DATA
+     */
+    public function decodeData(string $token): ?string
+    {
+        $parts  =   explode('.', $token, 2);
+
+        if (count($parts) !== 2) return null;
+
+        [$encoded, $signature]  =   $parts;
+
+        $expectedSignature  =   hash_hmac('sha256', $encoded, $this->secretKey);
+        if (!hash_equals($expectedSignature, $signature)) return null;
+
+        $decoded    =   base64_decode($encoded, true);
+
+        return $decoded === false ? null : $decoded;
     }
 }
