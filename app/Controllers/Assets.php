@@ -142,6 +142,15 @@ class Assets extends ResourceController
         return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
     }
 
+    public function imageMarketing($namaFile)
+    {
+        $fullFilePath   =   PATH_STORAGE_IMAGE_MARKETING.$namaFile;
+        $isDefault      =   strpos($namaFile, 'default') !== false;
+        $defaultFilePath=   PATH_STORAGE_IMAGE_MARKETING  .'default.jpg';
+
+        return $this->setReturnAssets($namaFile, $fullFilePath, $isDefault, $defaultFilePath);
+    }
+
     public function imageGaleriProyek($namaFile)
     {
         $fullFilePath   =   PATH_STORAGE_PHOTO_GALERI_PROYEK.$namaFile;

@@ -65,6 +65,7 @@ $routes->group('assets', [], function($routes) {
     $routes->get('pdfKatalog/thumbnail/(:any)', 'Assets::pdfKatalogThumbnail/$1');
     $routes->get('pdfKatalog/file/(:any)', 'Assets::pdfKatalogFile/$1');
     $routes->get('photoBarang/(:any)', 'Assets::photoBarang/$1');
+    $routes->get('imageMarketing/(:any)', 'Assets::imageMarketing/$1');
     $routes->get('imageSlideOnboarding/(:any)', 'Assets::imageSlideOnboarding/$1');
     $routes->get('imageSlideBanner/(:any)', 'Assets::imageSlideBanner/$1');
     $routes->get('imageSlideKolaborasi/produk/(:any)', 'Assets::imageSlideKolaborasiProduk/$1');
@@ -95,6 +96,7 @@ $routes->group('view', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
     $routes->post('customer-data-dasar-kategori-produk', $functionRoute.'::customerDataDasarKategoriProduk');
     $routes->post('customer-data-dasar-level-loyalti', $functionRoute.'::customerDataDasarLevelLoyalti');
     $routes->post('customer-data-dasar-sosmed-marketplace', $functionRoute.'::customerDataDasarSosmedMarketplace');
+    $routes->post('customer-data-dasar-daftar-marketing', $functionRoute.'::customerDataDasarDaftarMarketing');
     $routes->post('customer-konten-pengenalan-aplikasi', $functionRoute.'::customerKontenPengenalanAplikasi');
     $routes->post('customer-konten-galeri-klien', $functionRoute.'::customerKontenGaleriKlien');
     $routes->post('customer-konten-galeri-proyek', $functionRoute.'::customerKontenGaleriProyek');
@@ -187,6 +189,12 @@ $routes->group('customer', ['filter' => 'auth:mustBeLoggedIn'], function($routes
             $routes->post('saveUrutanTipe', $functionRoute.'::saveUrutanTipeSosmedMarketplace');
             $routes->post('saveDataAkun', $functionRoute.'::saveDataAkun');
             $routes->post('deleteDataAkun', $functionRoute.'::deleteDataAkun');
+        });
+        $routes->group('daftarMarketing', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+            $functionRoute =   'Customer\DataDasar\DaftarMarketing';
+            $routes->post('getData', $functionRoute.'::getData');
+            $routes->post('uploadImageMarketing', $functionRoute.'::uploadImageMarketing');
+            $routes->post('saveData', $functionRoute.'::saveData');
         });
     });
     $routes->group('konten', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {

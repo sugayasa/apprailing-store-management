@@ -227,6 +227,22 @@ class View extends ResourceController
             'content'   =>  $content
         ]);
     }
+
+    public function customerDataDasarDaftarMarketing()
+    {
+        $content    =   view(
+            'Menu/Customer/DataDasar/daftarMarketing',
+            [
+                'menuDetail'            =>  $this->menuDetail,
+                'baseURLImageMarketing' =>  BASE_URL_ASSETS_IMAGE_MARKETING,
+                'defaultImage'          =>  'default.jpg'
+            ],
+            ['debug' => false]
+        );
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
     
     public function customerKontenPengenalanAplikasi()
     {
