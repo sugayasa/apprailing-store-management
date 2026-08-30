@@ -18,7 +18,7 @@
                         <i class="fa fa-users fa-3x opacity-50"></i>
                         <div>
                             <div class="fw-semibold">Belum ada data marketing</div>
-                            <small class="text-muted">Data marketing akan tampil di sini setelah dimuat</small>
+                            <small class="text-muted info">Data marketing akan tampil di sini setelah dimuat</small>
                         </div>
                     </div>
                 </div>
