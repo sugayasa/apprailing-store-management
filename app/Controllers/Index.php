@@ -67,7 +67,7 @@ class Index extends BaseController
                                 $listPlatform   =   $accessModel->getDataPlatform();
                                 $platformElem   =   $this->generatePlatformElement($listPlatform);
                                 $listMenuDB     =   $accessModel->getUserAdminMenu($idUserAdminLevel);
-                                $menuElement    =	$this->menuBuilder($listMenuDB, $lastPageAlias);
+                                $menuElement    =	$this->menuBuilder($listMenuDB, $lastPageAlias, $listPlatform[0]->IDPLATFORM);
                                 $htmlRes        =   view(
                                     'mainPage',
                                     array(
@@ -126,70 +126,75 @@ class Index extends BaseController
         ];
     }
 
-    public function menuBuilder($listMenuDB, $lastPageAlias)
+    public function menuBuilder($listMenuDB, $lastPageAlias, $firstPlatformId)
     {
-        if($listMenuDB == "" || !is_array($listMenuDB) || empty($listMenuDB)){
-			return "";
-		} else {			
-			$activePlatformID       =	0;
-			$activeGroupMenu        =	"";
-            $activeGroupMenuChild   =	0;
-			$menuElement	        =	"";
+        if ($listMenuDB == "" || !is_array($listMenuDB) || empty($listMenuDB)) {
+            return "";
+        }
 
-			foreach($listMenuDB as $indexMenu => $keyMenu){
-                $groupName      =   $keyMenu->GROUPNAME;
-                $menuName       =   $keyMenu->MENUNAME;
-                $menuAlias      =   $keyMenu->MENUALIAS;
-                $menuURL        =   $keyMenu->URL;
-                $menuIcon       =   $keyMenu->ICON;
-                $active			=	$lastPageAlias != '' && $lastPageAlias == $menuAlias ? "active" : "";
-                $active			=	$active	== '' && $indexMenu == 0 ? 'active' : '';
+        $groupItemsMap = [];
+        foreach ($listMenuDB as $item) {
+            if ($item->GROUPNAME !== $item->MENUNAME) {
+                $groupItemsMap[$item->IDPLATFORM][$item->GROUPNAME][] = $item;
+            }
+        }
 
-                if($activeGroupMenu != $groupName){
-                    if($activeGroupMenu != "" && $activeGroupMenuChild > 1){
-                        $menuElement    .=  '</div></div>';
-                    }
+        $menuElement    = "";
+        $activePlatform = null;
+        $renderedGroups = [];
 
-                    if($activePlatformID != $keyMenu->IDPLATFORM){
-                        $activePlatformID   =   $keyMenu->IDPLATFORM;
-                        $menuElement        .=  '<div class="vr mx-2 px-1 text-white"></div>';
-                    }
+        foreach ($listMenuDB as $item) {
+            $platform       = $item->IDPLATFORM;
+            $platformEnc    = $platform == 0 ? 0 : hashidEncode($platform);
+            $dNoneClass     = ($platform !== $firstPlatformId && $platform != 0) ? ' d-none' : '';
+            $isStandalone   = ($item->GROUPNAME === $item->MENUNAME);
+            $groupKey       = $platform . '|' . $item->GROUPNAME;
 
-                    if($groupName == $menuName){
-                        $menuElement    .=  '<div class="menu-item">
-                                                <a href="#" class="menu-app-item menu-link" title="'.$menuName.'" data-alias="'.$menuAlias.'" data-url="'.$menuURL.'">
-                                                    <span class="menu-icon"><i class="fa '.$menuIcon.'"></i></span><span class="menu-text">'.$menuName.'</span>
-                                                </a>
-                                            </div>';
-                    } else {
-                        $menuElement.=  '<div class="menu-item has-sub">
-                                            <a href="#" class="menu-link">
-                                                <span class="menu-icon"><i class="fa '.$menuIcon.'"></i></span>
-                                                <span class="menu-text">'.$groupName.'</span>
-                                                <span class="menu-caret"><b class="caret"></b></span>
-                                            </a>
-                                            <div class="menu-submenu">
-                                                <div class="menu-item">
-                                                    <a href="#" class="menu-app-item menu-link" title="'.$menuName.'" data-alias="'.$menuAlias.'" data-url="'.$menuURL.'">
-                                                        <span class="menu-text">'.$menuName.'</span>
-                                                    </a>
-                                                </div>';
-                    }
+            if (!$isStandalone && isset($renderedGroups[$groupKey])) {
+                continue;
+            }
 
-                    $activeGroupMenuChild   =   1;
-                    $activeGroupMenu        =	$groupName;
-                } else {
-                    $menuElement.=  '<div class="menu-item">
-                                        <a href="#" class="menu-app-item menu-link" title="'.$menuName.'" data-alias="'.$menuAlias.'" data-url="'.$menuURL.'">
-                                            <span class="menu-text">'.$menuName.'</span>
-                                        </a>
-                                    </div>';
-                    $activeGroupMenuChild++;
+            if ($activePlatform !== null && $activePlatform == 0 && $activePlatform !== $platform) {
+                $menuElement .= '<div class="vr mx-2 px-1 text-white"></div>';
+            }
+            $activePlatform = $platform;
+
+            $active = ($lastPageAlias !== '' && $lastPageAlias === $item->MENUALIAS) ? ' active' : '';
+            if ($active === '' && $menuElement === '') {
+                $active = ' active';
+            }
+
+            if ($isStandalone) {
+                $menuElement .= '<div class="menu-item top-level' . $active . $dNoneClass . '" data-id-platform="' . $platformEnc . '">';
+                $menuElement .= '<a href="#" class="menu-app-item menu-link" title="' . $item->MENUNAME . '" data-alias="' . $item->MENUALIAS . '" data-url="' . $item->URL . '">';
+                $menuElement .= '<span class="menu-icon"><i class="fa ' . $item->ICON . '"></i></span>';
+                $menuElement .= '<span class="menu-text">' . $item->MENUNAME . '</span>';
+                $menuElement .= '</a></div>';
+            } else {
+                $renderedGroups[$groupKey] = true;
+                $groupItems = $groupItemsMap[$platform][$item->GROUPNAME] ?? [];
+                $icon       = $groupItems[0]->ICON ?? $item->ICON;
+
+                $menuElement .= '<div class="menu-item top-level has-sub' . $dNoneClass . '" data-id-platform="' . $platformEnc . '">';
+                $menuElement .= '<a href="#" class="menu-link">';
+                $menuElement .= '<span class="menu-icon"><i class="fa ' . $icon . '"></i></span>';
+                $menuElement .= '<span class="menu-text">' . $item->GROUPNAME . '</span>';
+                $menuElement .= '<span class="menu-caret"><b class="caret"></b></span>';
+                $menuElement .= '</a>';
+                $menuElement .= '<div class="menu-submenu">';
+
+                foreach ($groupItems as $gi) {
+                    $itemActive   = ($lastPageAlias !== '' && $lastPageAlias === $gi->MENUALIAS) ? ' active' : '';
+                    $menuElement .= '<div class="menu-item' . $itemActive . '">';
+                    $menuElement .= '<a href="#" class="menu-app-item menu-link" title="' . $gi->MENUNAME . '" data-alias="' . $gi->MENUALIAS . '" data-url="' . $gi->URL . '">';
+                    $menuElement .= '<span class="menu-text">' . $gi->MENUNAME . '</span>';
+                    $menuElement .= '</a></div>';
                 }
-			}
-			
-            $menuElement    .=  $activeGroupMenuChild > 1 || $groupName != $menuName ? '</div></div>' : '';
-			return $menuElement;
-		}
+
+                $menuElement .= '</div></div>';
+            }
+        }
+
+        return $menuElement;
     }
 }

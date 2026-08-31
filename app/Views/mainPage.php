@@ -108,7 +108,7 @@
 	<div data-bs-theme="dark">
 		<div id="top-nav" class="app-top-nav">
 			<div class="menu">
-				<div class="menu-item active">
+				<div class="menu-item active" data-id-platform="0">
 					<a href="#" class="menu-app-item menu-link" data-alias="DASH" data-url="dashboard">
 						<span class="menu-icon"><i class="fa fa-home"></i></span><span class="menu-text">Beranda</span>
 					</a>

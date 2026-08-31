@@ -94,7 +94,7 @@ class AccessModel extends Model
         $this->from('m_platform', true);
         $this->where('STATUS', true);
         $this->groupBy('IDPLATFORM, NAMAPLATFORM');
-        $this->orderBy('IDPLATFORM');
+        $this->orderBy('NAMAPLATFORM');
 
         return $this->get()->getResultObject();
     }
