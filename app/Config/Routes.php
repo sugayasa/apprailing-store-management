@@ -108,6 +108,7 @@ $routes->group('view', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
     $routes->post('customer-produk-katalog', $functionRoute.'::customerProdukKatalog');
     $routes->post('customer-customer-statistik', $functionRoute.'::customerCustomerStatistik');
     $routes->post('customer-customer-daftar', $functionRoute.'::customerCustomerDaftar');
+    $routes->post('customer-customer-review-marketing', $functionRoute.'::customerCustomerReviewMarketing');
     $routes->post('customer-customer-kritik-saran', $functionRoute.'::customerCustomerKritikSaran');
     $routes->post('customer-transaksi-statistik', $functionRoute.'::customerTransaksiStatistik');
     $routes->post('customer-transaksi-daftar', $functionRoute.'::customerTransaksiDaftar');
@@ -275,6 +276,11 @@ $routes->group('customer', ['filter' => 'auth:mustBeLoggedIn'], function($routes
             $functionRoute =   'Customer\Customer\DaftarCustomer';
             $routes->post('getData', $functionRoute.'::getData');
             $routes->post('getDataTableDetail', $functionRoute.'::getDataTableDetail');
+        });
+        $routes->group('reviewMarketing', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
+            $functionRoute =   'Customer\Customer\ReviewMarketing';
+            $routes->post('getDataStatistik', $functionRoute.'::getDataStatistik');
+            $routes->post('getDataTableReview', $functionRoute.'::getDataTableReview');
         });
         $routes->group('kritikSaran', ['filter' => 'auth:mustBeLoggedIn'], function($routes) {
             $functionRoute =   'Customer\Customer\KritikSaran';

@@ -418,6 +418,22 @@ class View extends ResourceController
         ]);
     }
 
+    public function customerCustomerReviewMarketing()
+    {
+        $content    =   view(
+            'Menu/Customer/Customer/reviewMarketing',
+            [
+                'menuDetail'            =>  $this->menuDetail,
+                'baseURLImageMarketing' =>  BASE_URL_ASSETS_IMAGE_MARKETING
+            ],
+            ['debug' => false]
+        );
+
+        return $this->setResponseFormat('json')->respond([
+            'content'   =>  $content
+        ]);
+    }
+
     public function customerCustomerKritikSaran()
     {
         $modelKritikSaran       =   new \App\Models\Customer\Customer\KritikSaranModel();
